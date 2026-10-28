@@ -1,0 +1,17 @@
+{
+  "name": "qanunhub",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "dev:server": "npm run dev -w @qanunhub/server",
+    "dev:web": "npm run dev -w @qanunhub/web",
+    "build": "npm run build -w @qanunhub/web && npm run build -w @qanunhub/server",
+    "build:demo": "npm run build:demo -w @qanunhub/web",
+    "test": "npm run test -w @qanunhub/core && npm run test -w @qanunhub/server",
+    "typecheck": "tsc -p packages/core && tsc -p apps/server && tsc -p apps/web",
+    "db:migrate": "npm run migrate -w @qanunhub/server",
+    "content:import": "npm run import -w @qanunhub/server"
+  },
+  "engines": { "node": ">=20" }
+}
