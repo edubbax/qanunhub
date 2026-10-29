@@ -14,6 +14,9 @@ def _title_case(s: str) -> str:
     if s.isupper():
         s = az_lower(s)
         s = ('İ' if s[:1] == 'i' else s[:1].upper()) + s[1:]
+        for w in ('azərbaycan', 'respublikası', 'respublikasının', 'konstitusiya', 'konstitusiyası', 'konstitusiyasına',
+                  'konstitusiyasında', 'naxçıvan', 'muxtar'):
+            s = re.sub(r'\b' + w + r'\b', w[:1].upper() + w[1:], s)
     return s
 
 
@@ -78,9 +81,11 @@ def parse_karguzarliq(text: str):
     parts = []
     cur_part = None
     cur_par = None
-    for l in lines[start + 1:]:
+    body = lines[start + 1:]
+    for idx, l in enumerate(body):
         m = re.match(r'^(\d{1,2})\.\s+([A-ZƏÖÜÇŞĞİ][^.;:]{2,95})$', l)
-        if m and int(m.group(1)) == part_no + 1 and not l.endswith('.'):
+        nxt = body[idx + 1] if idx + 1 < len(body) else ''
+        if m and int(m.group(1)) == part_no + 1 and not l.endswith('.') and re.match(r'^\d{1,3}(-\d+)?\.\s', nxt):
             part_no += 1
             cur_part = {'ref': f'hissə {part_no}', 'title': m.group(2).strip(), 'pars': []}
             parts.append(cur_part)

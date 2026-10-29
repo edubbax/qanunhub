@@ -203,7 +203,9 @@ def main(src, out_path):
             names = [a['title'] for a in l['arts'] if a['title']]
             chapter = l['arts'][0]['chapter']
             same_chapter = [x for x in lessons if x['arts'][0]['chapter'] == chapter and chapter]
-            if chapter and len(chapter) <= 70 and tid != 'karguzarliq':
+            if tid == 'karguzarliq':
+                title = l['arts'][0]['title'] + (f' ({same_chapter.index(l) + 1})' if len(same_chapter) > 1 else '')
+            elif chapter and len(chapter) <= 70:
                 title = prefix + chapter + (f' ({same_chapter.index(l) + 1})' if len(same_chapter) > 1 else '')
             else:
                 title = prefix + (names[0] if names else tshort) + (' və s.' if len(names) > 1 else '')
