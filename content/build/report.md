@@ -7,7 +7,7 @@
 | tesnifat | 0 | 0 | 0 | 0 |
 | etik | 9 | 80 | 80 | 80 |
 | korrupsiya | 13 | 90 | 90 | 90 |
-| melumat-azadligi | 4 | 101 | 105 | 104 |
+| melumat-azadligi | 4 | 101 | 105 | 103 |
 | muraciet | 13 | 110 | 110 | 110 |
 | informasiya | 12 | 31 | 31 | 31 |
 | dovlet-sirri | 26 | 25 | 25 | 25 |
@@ -29,6 +29,7 @@
 - `no_key`: 33
 - `key_conflict`: 10
 - `dup_options`: 8
+- `garbled`: 2
 - `stem_length`: 1
 - `key_corrected`: 1
 

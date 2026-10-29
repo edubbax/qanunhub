@@ -1,0 +1,13 @@
+{
+  "name": "QanunHub: qanunvericilik imtahanına hazırlıq",
+  "short_name": "QanunHub",
+  "lang": "az",
+  "start_url": "/bu-gun",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f3f5f6",
+  "theme_color": "#0b5e79",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,34 @@
+# Local or staging stack: Postgres + QanunHub on http://localhost:8080
+#   docker compose up --build
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: qanunhub
+      POSTGRES_PASSWORD: qanunhub
+      POSTGRES_DB: qanunhub
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qanunhub"]
+      interval: 3s
+      retries: 20
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://qanunhub:qanunhub@db:5432/qanunhub
+      APP_ORIGIN: http://localhost:8080
+      COOKIE_SECURE: "false"
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me-please}
+      AUTO_VERIFY_EMAIL: ${AUTO_VERIFY_EMAIL:-false}
+      MAIL_MODE: outbox
+
+volumes:
+  pgdata:

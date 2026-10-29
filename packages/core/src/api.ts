@@ -161,6 +161,8 @@ export interface CompleteDto {
   rank: { title: string; changed: boolean } | null;
   review: ReviewEntryDto[];
   leaderboardCounted: boolean;
+  /** Why XP did or did not reach the leaderboard. */
+  leaderboard: 'counted' | 'no_xp' | 'not_premium' | 'unverified' | 'banned' | 'too_fast' | 'daily_cap';
 }
 
 export interface LeaderboardDto {

@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "start": "node dist/server.js",
-    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/server.js --packages=external && esbuild src/cli.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/cli.js --packages=external",
+    "start": "node dist/index.js",
+    "build": "esbuild src/index.ts src/cli.ts --bundle --platform=node --format=esm --target=node20 --outdir=dist --external:hono --external:@hono/node-server --external:postgres --external:zod",
     "migrate": "tsx src/cli.ts migrate",
     "import": "tsx src/cli.ts import ../../content/build/content.json",
     "test": "vitest run"

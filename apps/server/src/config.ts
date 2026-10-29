@@ -17,6 +17,8 @@ export const config = {
   adminEmail: process.env.ADMIN_EMAIL ?? '',
   adminPassword: process.env.ADMIN_PASSWORD ?? '',
   webDist: process.env.WEB_DIST ?? '',
+  /** content.json imported on start when the database has no content yet. */
+  contentSeed: process.env.CONTENT_SEED ?? '',
   mailMode: (process.env.MAIL_MODE ?? 'outbox') as 'outbox' | 'console',
   trustProxy: bool(process.env.TRUST_PROXY, false),
 };

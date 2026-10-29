@@ -20,7 +20,7 @@ from parse_tests import parse_test  # noqa: E402
 from pdftext import pdf_to_text  # noqa: E402
 from program import (DRAFT_FILES, KEY_OVERRIDES, OUTDATED_TERMS, QA_TEXT_FIXES, TOPICS,  # noqa: E402
                      article_categories, classify_file)
-from textutil import build_vocab, cut_promo_tail, fix_split_words, fold, strip_branding  # noqa: E402
+from textutil import build_vocab, cut_promo_tail, fix_split_words, fold, strip_branding, strip_test_headers  # noqa: E402
 
 LESSON_CHARS = 2200
 LESSON_MAX_ARTS = 5
@@ -271,7 +271,15 @@ def main(src, out_path):
                     explanation = ov['note']
                 if draft_reason or answer is None:
                     flags.append('no_key')
-                opts = q['options']
+                opts = [strip_test_headers(o) for o in q['options']]
+                if all(opts):
+                    q['options'] = opts
+                    q['stem'] = strip_test_headers(q['stem']) or q['stem']
+                    if q['statements']:
+                        q['statements'] = [strip_test_headers(x) or x for x in q['statements']]
+                else:
+                    opts = q['options']
+                    flags.append('garbled')   # an option is only a page header: the real text was lost
                 if q['type'] == 'single' and len(opts) < 3:
                     flags.append('options')
                 if len({fold(o) for o in opts}) < len(opts):

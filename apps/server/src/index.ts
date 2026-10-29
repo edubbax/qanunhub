@@ -1,8 +1,10 @@
+import { readFileSync } from 'node:fs';
 import { serve } from '@hono/node-server';
+import type { ContentBundle } from '@qanunhub/core';
 import { createApp } from './app';
 import { createUser } from './auth';
 import { config } from './config';
-import { ContentCache } from './content';
+import { ContentCache, importBundle } from './content';
 import { connect, migrate } from './db';
 
 async function main() {
@@ -14,6 +16,12 @@ async function main() {
       await createUser(sql, config.adminEmail, config.adminPassword, 'admin', Date.now(), { verified: true, role: 'admin' });
       console.log(`admin account created: ${config.adminEmail}`);
     }
+  }
+  // First start on an empty database: load the bundled content so the app is usable right away.
+  const [hasContent] = await sql`select 1 from content_meta where key = 'version'`;
+  if (!hasContent && config.contentSeed) {
+    const res = await importBundle(sql, JSON.parse(readFileSync(config.contentSeed, 'utf8')) as ContentBundle, { overwriteEdited: false });
+    console.log(`content seeded from ${config.contentSeed}:`, res);
   }
   const content = new ContentCache(sql);
   await content.reload();

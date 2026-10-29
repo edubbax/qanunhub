@@ -130,7 +130,50 @@ def fix_split_words(text: str, vocab: Counter) -> str:
             i += best_k + 1
         return ' '.join(out)
 
-    return '\n'.join(fix_line(l) for l in text.split('\n'))
+    return fix_g_splits('\n'.join(fix_line(l) for l in text.split('\n')))
+
+
+G_WORDS = REAL_SHORT | {'təbliğ', 'məbləğ'}
+VOWELS = 'aıoueəiöü'
+G_PAIR = re.compile(r'(\w*ğ) (\w+)')
+
+
+def fix_g_splits(text: str) -> str:
+    """The font quirk is most common after ğ, where the joined words are too rare to learn from the corpus:
+    'olacağ ını' -> 'olacağını', 'iğ tişaş' -> 'iğtişaş', 'sağ lamlıq' -> 'sağlamlıq'.
+    Real words stay apart: 'sağ küncündə', 'ağ rəngli', 'təbliğ etmək', 'sağ olan'."""
+    def join(m: re.Match) -> str:
+        left, right = m.group(1), m.group(2)
+        l, r = az_lower(left), az_lower(right)
+        if not right[0].islower() or len(l) < 2:
+            return m.group(0)
+        real = l in G_WORDS
+        if r[0] in VOWELS:
+            ok = not (real and r[0] in 'eo')      # sağ olan, təbliğ etmək / edir / olunması
+        else:
+            ok = not real or (l in ('bağ', 'sağ') and r[0] == 'l')   # bağlı, sağlamlıq
+        return left + right if ok else m.group(0)
+
+    for _ in range(3):
+        nxt = G_PAIR.sub(join, text)
+        if nxt == text:
+            break
+        text = nxt
+    return text
+
+
+TEST_HEADER = r'\((?:Qapalı və Açıq|Qapalı|Açıq) tipli\)'
+HEADER_ONLY = re.compile(rf'^(?:Konstitusiya|Azərbaycan Respublikasının|AR)\b.*{TEST_HEADER}\s*[-–]?\s*$')
+HEADER_TAIL = re.compile(rf'\s+[-–]\s+(?:Azərbaycan Respublikasının|AR|Konstitusiya)\b.*{TEST_HEADER}\s*[-–]?\s*$')
+STRAY_TAIL = re.compile(r'(?<=[.;])\s+\w{1,3}\s+(?:Qapalı və )?Açıq tipli\s*$')
+
+
+def strip_test_headers(s: str) -> str:
+    """Removes running page headers of test files ('… haqqında AR QANUNU (Qapalı və Açıq tipli) -') that the
+    PDF layout glued onto an option. Returns '' when the text is nothing but a header."""
+    if HEADER_ONLY.match(s.strip()):
+        return ''
+    return STRAY_TAIL.sub('', HEADER_TAIL.sub('', s)).strip()
 
 
 def normalize_spaces(s: str) -> str:

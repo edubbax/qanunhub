@@ -637,6 +637,8 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   if (xp > 0 && premium && u.emailVerified && !u.leaderboardBanned && !fast) {
     lbXp = Math.max(0, Math.min(xp, XP.dailyLeaderboardCap - u.today.lbXp));
   }
+  const lbStatus: CompleteDto['leaderboard'] = lbXp > 0 ? 'counted' : xp <= 0 ? 'no_xp' : !premium ? 'not_premium'
+    : !u.emailVerified ? 'unverified' : u.leaderboardBanned ? 'banned' : fast ? 'too_fast' : 'daily_cap';
   if (xp > 0) {
     if (lbXp > 0) {
       await ctx.store.addXpEvent({ userId, sessionId, source: s.kind, amount: lbXp, correct: firstCorrect, answered: first.length, leaderboard: true, category: cat, at: ctx.now });
@@ -663,6 +665,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
     rank: rankAfter ? { title: rankAfter.title, changed: !!rankBefore && rankBefore.code !== rankAfter.code } : null,
     review: s.kind === 'lesson' ? [] : reviewEntries(ctx, s),
     leaderboardCounted: lbXp > 0,
+    leaderboard: lbStatus,
   };
   s.result = result;
   await ctx.store.saveSession(s);

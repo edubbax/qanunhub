@@ -153,6 +153,7 @@ describe('premium features', () => {
     await answerAll(s, [0]);
     const r = await complete(ctx(), 'u1', s.id);
     expect(r.leaderboardCounted).toBe(true);
+    expect(r.leaderboard).toBe('counted');
     const lb = await getLeaderboard(ctx(), 'u1', 'week', 'BB');
     expect(lb.me?.rank).toBe(1);
     expect(lb.rows[0].xp).toBe(r.xp);
@@ -175,6 +176,7 @@ describe('free plan leaderboard', () => {
     await answerAll(s);
     const r = await complete(ctx(), 'u1', s.id);
     expect(r.leaderboardCounted).toBe(false);
+    expect(r.leaderboard).toBe('not_premium');
     const lb = await getLeaderboard(ctx(), 'u1', 'week', 'ALL');
     expect(lb.eligible).toBe(false);
     expect(lb.rows).toHaveLength(0);
