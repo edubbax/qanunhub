@@ -6,9 +6,13 @@ import { IconFlame, IconSettings, IconShield, IconStar } from '../ui/icons';
 
 type Theme = 'auto' | 'light' | 'dark';
 
+// A host page (e.g. an embedding viewer) may set data-theme itself; "auto" restores its value.
+const hostTheme = typeof document !== 'undefined' ? document.documentElement.getAttribute('data-theme') : null;
+
 export function applyTheme(t: Theme) {
-  if (t === 'auto') document.documentElement.removeAttribute('data-theme');
-  else document.documentElement.setAttribute('data-theme', t);
+  if (t !== 'auto') document.documentElement.setAttribute('data-theme', t);
+  else if (hostTheme) document.documentElement.setAttribute('data-theme', hostTheme);
+  else document.documentElement.removeAttribute('data-theme');
 }
 
 export function savedTheme(): Theme {

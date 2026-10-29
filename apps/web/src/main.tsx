@@ -9,7 +9,8 @@ import { Spinner } from './ui/components';
 import './styles.css';
 
 
-applyTheme(savedTheme());
+const theme = savedTheme();
+if (theme !== 'auto') applyTheme(theme);
 
 /** The demo build embeds the content bundle as gzip+base64 and decompresses it in the browser. */
 async function demoBundle(): Promise<ContentBundle> {
