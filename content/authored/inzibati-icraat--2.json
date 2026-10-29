@@ -1,0 +1,40 @@
+{
+  "questions": [
+    {"l": 10, "q": "İşin nəticəsində marağı olan vəzifəli şəxs inzibati icraatda iştirak edə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız rəhbərin icazəsi ilə", "Yalnız müşahidəçi kimi"], "a": 0, "r": "m. 22.2", "e": "Maddə 22.2: qərəzsizlik prinsipi."},
+    {"l": 10, "q": "Hansı halda inzibati orqan maraqlı şəxsi dinləməkdən imtina edə bilər?", "o": ["Maraqlı şəxsin tələbləri tam təmin edilən akt qəbul ediləcəksə", "Maraqlı şəxs xarici vətəndaşdırsa", "İş mürəkkəbdirsə", "Maraqlı şəxsin nümayəndəsi varsa"], "a": 0, "r": "m. 21.3.1", "e": "Maddə 21.3 dinləmədən imtina hallarını sadalayır."},
+
+    {"l": 11, "q": "İnzibati orqan maraqlı şəxslərin xeyrinə olan halların araşdırılmasından imtina edə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız vaxt çatışmadıqda", "Yalnız şəxs vəsatət verməyibsə"], "a": 0, "r": "m. 24.2", "e": "Maddə 24.2."},
+    {"l": 11, "q": "Təqdim olunmuş sübutlar yetərli olmadıqda inzibati orqan nə etməlidir?", "o": ["Öz təşəbbüsü ilə əlavə sübutlar toplamalıdır", "Ərizəni rədd etməlidir", "İcraatı dayandırmalıdır", "Maraqlı şəxsdən notarial təsdiq tələb etməlidir"], "a": 0, "r": "m. 24.4", "e": "Maddə 24.4."},
+    {"l": 11, "q": "İnzibati orqan ərizə blanklarının nümunələrini şəxsə verməyə borcludurmu?", "o": ["Bəli, müraciət əsasında verməyə və ya göndərməyə borcludur", "Xeyr", "Yalnız ödənişlə", "Yalnız hüquqi şəxslərə"], "a": 0, "r": "m. 23.2", "e": "Maddə 23.2."},
+
+    {"l": 12, "q": "İnzibati orqan icraat materialları ilə bağlı məlumatı müraciət daxil olduğu gündən hansı müddətdə verməlidir?", "o": ["3 gün", "5 gün", "10 gün", "15 gün"], "a": 0, "r": "m. 25.3", "e": "Maddə 25.3."},
+    {"l": 12, "q": "İnzibati icraatla bağlı məlumatlar başqa şəxslərə (qanunda başqa qayda yoxdursa) hansı şərtlə verilə bilər?", "o": ["Yalnız maraqlı şəxslərin razılığı ilə", "İstənilən sorğu ilə", "Yalnız məhkəmənin qərarı ilə", "Heç vaxt"], "a": 0, "r": "m. 25.2", "e": "Maddə 25.2."},
+
+    {"l": 13, "q": "İnzibati icraat hansı dildə aparılır?", "o": ["Dövlət dilində və ya müəyyən ərazi əhalisinin əksəriyyətinin dilində", "Yalnız ərizəçinin seçdiyi dildə", "Yalnız ingilis və Azərbaycan dillərində", "İstənilən dildə"], "a": 0, "r": "m. 27.1", "e": "Maddə 27.1."},
+    {"l": 13, "q": "İcraatın dilini bilməyən şəxsə hansı hüquq təmin edilir?", "o": ["Tərcüməçinin xidmətindən istifadə hüququ", "İcraatın onun dilində aparılması hüququ", "İcraatın təxirə salınması hüququ", "Heç bir hüquq"], "a": 0, "r": "m. 27.2", "e": "Maddə 27.2."},
+
+    {"l": 14, "q": "Ərizə əsasında inzibati icraat hansı andan başlanır?", "o": ["Ərizənin qeydiyyata alındığı andan", "Ərizə yazıldığı andan", "İnzibati akt qəbul edildiyi andan", "Ərizəçiyə cavab göndərildiyi andan"], "a": 0, "r": "m. 28.2", "e": "Maddə 28.2."},
+    {"l": 14, "q": "Aşağıdakılardan hansı inzibati icraatın başlanılması üçün əsas deyil?", "o": ["Mediada dərc olunmuş məqalə", "Fiziki və ya hüquqi şəxsin ərizəsi", "İnzibati orqanın təşəbbüsü", "İnzibati şikayət"], "a": 0, "r": "m. 28.1", "e": "Maddə 28.1."},
+
+    {"l": 15, "q": "İnzibati orqan ərizənin qeydiyyat tarixi və nömrəsi barədə ərizəçiyə ən geci nə qədər müddətdə arayış verməlidir?", "o": ["Üç gün", "Bir gün", "On gün", "Beş gün"], "a": 0, "r": "m. 31.2", "e": "Maddə 31.2; ərizə daxil olduğu gün qeydiyyata alınır (31.1)."},
+    {"l": 15, "q": "Ərizəyə əlavə edilməli sənəd Elektron Hökumət İnformasiya Sistemindən əldə edilə bilirsə, ərizəçidən tələb olunurmu?", "o": ["Xeyr", "Bəli, həmişə", "Yalnız surəti tələb olunur", "Yalnız notarial təsdiqli forması tələb olunur"], "a": 0, "r": "m. 30.5", "e": "Maddə 30.5."},
+    {"l": 15, "q": "Ərizə hansı formada tərtib olunmalıdır?", "o": ["Yazılı", "Şifahi", "İstənilən", "Yalnız elektron"], "a": 0, "r": "m. 30.1", "e": "Maddə 30.1."},
+
+    {"l": 16, "q": "Əlavə sənədlərin təqdim edilməsi üçün təyin edilən müddət (qanunda başqa müddət yoxdursa) nə qədərdən çox olmamalıdır?", "o": ["15 gün", "10 gün", "30 gün", "7 gün"], "a": 0, "r": "m. 32.4", "e": "Maddə 32.4."},
+    {"l": 16, "q": "Başqa inzibati orqanın sərəncamında olan sənədi ərizəçidən tələb etmək hansı nəticəyə səbəb olur?", "o": ["İnzibati Xətalar Məcəlləsinə uyğun inzibati məsuliyyətə", "Heç bir nəticəyə", "Cinayət məsuliyyətinə", "Yalnız şifahi xəbərdarlığa"], "a": 0, "r": "m. 32.2-1", "e": "Maddə 32.2-1: belə sənədləri inzibati orqan özü əldə edir."},
+    {"l": 16, "q": "İnzibati orqan ərizənin tələblərə uyğunluğunu hansı müddətdə yoxlayır?", "o": ["Üç gün", "Bir gün", "On gün", "On beş gün"], "a": 0, "r": "m. 32.1", "e": "Maddə 32.1."},
+
+    {"l": 17, "q": "Ərizə başqa orqanın səlahiyyətinə aiddirsə, onu qəbul edən orqan ərizəni ən geci nə qədər müddətdə səlahiyyətli orqana göndərməlidir?", "o": ["10 gün", "3 gün", "6 gün", "15 gün"], "a": 0, "r": "m. 33.1", "e": "Maddə 33.1; ərizəçiyə 6 gün ərzində məlumat verilir (33.2)."},
+    {"l": 17, "q": "Ərizənin baxılmamış saxlanılması barədə qərar hansı formada qəbul edilir?", "o": ["İnzibati akt formasında", "Şifahi bildiriş formasında", "Məhkəmə qərarı formasında", "Protokol formasında"], "a": 0, "r": "m. 34.2", "e": "Maddə 34.2."},
+
+    {"l": 18, "q": "İcraatın təzələnməsi üçün təkrar ərizə nə qədər müddətdə təqdim olunmalıdır?", "o": ["3 ay (əsas halların məlum olduğu gündən)", "1 ay", "6 ay", "1 il"], "a": 0, "r": "m. 35.4", "e": "Maddə 35.4."},
+    {"l": 18, "q": "Aşağıdakılardan hansı icraatın təzələnməsi üçün təkrar ərizə əsası deyil?", "o": ["Maraqlı şəxsin fikrini dəyişməsi", "Faktiki və ya hüquqi halların maraqlı şəxsin xeyrinə dəyişməsi", "Yeni sübutların aşkar olunması", "Aktın aldatma nəticəsində qəbul edildiyinin məhkəmə ilə müəyyən olunması"], "a": 0, "r": "m. 35.1", "e": "Maddə 35.1."},
+
+    {"l": 19, "q": "İnzibati icraatda ərizə ilə müraciət etmək və prosessual hərəkətlər etmək hüququ kimə məxsusdur?", "o": ["Yalnız yetkinlik yaşına çatmış və tam fəaliyyət qabiliyyətli şəxslərə", "16 yaşına çatmış istənilən şəxsə", "Yalnız hüquqi şəxslərə", "Yalnız vəkillərə"], "a": 0, "r": "m. 36.2", "e": "Maddə 36.2."},
+    {"l": 19, "q": "Şəxsiyyətlə birbaşa bağlı olan hüquqlar inzibati icraatda varislik qaydasında keçə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız ailə üzvlərinə", "Yalnız məhkəmə qərarı ilə"], "a": 0, "r": "m. 36.6", "e": "Maddə 36.6."},
+
+    {"l": 20, "q": "Qanunda başqa qayda yoxdursa, inzibati icraatla bağlı xərclər kimin hesabına ödənilir?", "o": ["Müvafiq inzibati orqanın", "Ərizəçinin", "Dövlət büdcəsindən ayrıca fondun", "Tərəflər arasında bərabər"], "a": 0, "r": "m. 39.1", "e": "Maddə 39.1; maraqlı şəxsin öz xərcləri və nümayəndəlik haqqı onun hesabınadır (39.2)."},
+    {"l": 20, "q": "Nümayəndənin səlahiyyətləri nə ilə təsdiq olunur?", "o": ["Qanunvericiliyə uyğun rəsmiləşdirilmiş etibarnamə ilə", "Şifahi bəyanatla", "Şəxsiyyət vəsiqəsi ilə", "Şahid ifadəsi ilə"], "a": 0, "r": "m. 37.3", "e": "Maddə 37.3."},
+    {"l": 20, "q": "İnzibati şikayət təmin olunduqda icraatla bağlı xərclər kimin hesabına ödənilir?", "o": ["Müvafiq inzibati orqanın", "Şikayətçinin", "Yuxarı orqanın", "Dövlət rüsumu hesabına"], "a": 0, "r": "m. 39.3", "e": "Maddə 39.3."}
+  ]
+}

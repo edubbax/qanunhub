@@ -1,0 +1,56 @@
+{
+  "questions": [
+    {"l": 40, "q": "Azərbaycan Respublikasında məhkəmə hakimiyyətini kim həyata keçirir?", "o": ["Ədalət mühakiməsi yolu ilə yalnız məhkəmələr", "Məhkəmələr və prokurorluq", "Ədliyyə Nazirliyi", "Məhkəmə-Hüquq Şurası"], "a": 0, "r": "m. 125.I", "e": "Maddə 125.I."},
+    {"l": 40, "q": "Fövqəladə məhkəmələrin yaradılması barədə Konstitusiya nə müəyyən edir?", "o": ["Qadağandır", "Fövqəladə vəziyyətdə icazə verilir", "Prezidentin fərmanı ilə mümkündür", "Milli Məclisin qərarı ilə mümkündür"], "a": 0, "r": "m. 125.VI", "e": "Maddə 125.VI."},
+    {"l": 40, "q": "Cinayət məhkəmə icraatında hansı tərəflər iştirak edir?", "o": ["Prokurorluq və müdafiə tərəfi", "Yalnız prokurorluq", "Polis və vəkil", "Yalnız hakim"], "a": 0, "r": "m. 125.IV", "e": "Maddə 125.IV."},
+
+    {"l": 41, "q": "Hakim olmaq üçün hüquqşünas ixtisası üzrə ən azı neçə ildən artıq iş təcrübəsi tələb olunur?", "o": ["5 il", "3 il", "10 il", "7 il"], "a": 0, "r": "m. 126.I", "e": "Maddə 126.I."},
+    {"l": 41, "q": "Hakimlər siyasi partiyalara üzv ola bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız rəhbər vəzifə tutmadan", "Yalnız Ali Məhkəmənin icazəsi ilə"], "a": 0, "r": "m. 126.II", "e": "Maddə 126.II."},
+    {"l": 41, "q": "Məhkəmə icraatı hansı prinsip əsasında həyata keçirilir?", "o": ["Çəkişmə prinsipi", "İnkvizisiya prinsipi", "Yazılılıq prinsipi", "Məxfilik prinsipi"], "a": 0, "r": "m. 127.VII", "e": "Maddə 127.VII."},
+
+    {"l": 42, "q": "Konstitusiya Məhkəməsi, Ali Məhkəmə və apellyasiya məhkəmələri hakimlərinin işdən kənarlaşdırılması haqqında qərar Milli Məclisdə neçə səs çoxluğu ilə qəbul edilir?", "o": ["83", "63", "95", "42"], "a": 0, "r": "m. 128.V", "e": "Maddə 128.V: başqa hakimlər üçün — 63 səs."},
+    {"l": 42, "q": "Hakimin vəzifədən kənarlaşdırılması təşəbbüsünü kim irəli sürür?", "o": ["Prezident — Ali Məhkəmənin rəyi əsasında", "Baş prokuror", "Milli Məclisin sədri", "Ədliyyə naziri"], "a": 0, "r": "m. 128.IV", "e": "Maddə 128.IV: Ali Məhkəmə rəyi 30 gün ərzində təqdim edir."},
+    {"l": 42, "q": "Məhkəmə qərarları kimin adından çıxarılır?", "o": ["Dövlətin adından", "Xalqın adından", "Hakimin öz adından", "Ali Məhkəmənin adından"], "a": 0, "r": "m. 129.I", "e": "Maddə 129.I."},
+
+    {"l": 43, "q": "Konstitusiya Məhkəməsi neçə hakimdən ibarətdir?", "o": ["9", "7", "11", "15"], "a": 0, "r": "m. 130.I", "e": "Maddə 130.I."},
+    {"l": 43, "q": "Konstitusiya Məhkəməsinin qərarının hüquqi qüvvəsi necədir?", "o": ["Azərbaycan ərazisində məcburi qüvvəyə malikdir", "Tövsiyə xarakterlidir", "Yalnız tərəflər üçün məcburidir", "Milli Məclisin təsdiqindən sonra qüvvəyə minir"], "a": 0, "r": "m. 130.IX", "e": "Maddə 130.IX."},
+    {"l": 43, "q": "Hüquq və azadlıqları pozulan hər kəs Konstitusiya Məhkəməsinə müraciət edə bilərmi?", "o": ["Bəli, qanunla müəyyən edilmiş qaydada şikayət verə bilər", "Xeyr, yalnız dövlət orqanları müraciət edə bilər", "Yalnız ombudsman vasitəsilə", "Yalnız vəkil vasitəsilə"], "a": 0, "r": "m. 130.V", "e": "Maddə 130.V."},
+
+    {"l": 44, "q": "Ali Məhkəmə ədalət mühakiməsini hansı qaydada həyata keçirir?", "o": ["Kassasiya qaydasında", "Apellyasiya qaydasında", "Birinci instansiya qaydasında", "Konstitusiya nəzarəti qaydasında"], "a": 0, "r": "m. 131.I", "e": "Maddə 131.I."},
+    {"l": 44, "q": "Baş prokuroru kim vəzifəyə təyin edir?", "o": ["Prezident — Milli Məclisin razılığı ilə", "Milli Məclis", "Ali Məhkəmə", "Ədliyyə Nazirliyi"], "a": 0, "r": "m. 133.III", "e": "Maddə 133.III."},
+    {"l": 44, "q": "Ərazi və ixtisaslaşdırılmış prokurorları kim təyin edir?", "o": ["Baş prokuror — Prezidentin razılığı ilə", "Prezident birbaşa", "Milli Məclis", "Yerli icra hakimiyyəti"], "a": 0, "r": "m. 133.V", "e": "Maddə 133.V."},
+
+    {"l": 45, "q": "Naxçıvan Muxtar Respublikasının ali vəzifəli şəxsi kimdir?", "o": ["Ali Məclisin sədri", "Baş nazir", "Prezidentin səlahiyyətli nümayəndəsi", "Ali Məhkəmənin sədri"], "a": 0, "r": "m. 136", "e": "Maddə 136."},
+    {"l": 45, "q": "Naxçıvan MR Ali Məclisi neçə üzvdən ibarətdir?", "o": ["45", "50", "35", "125"], "a": 0, "r": "m. 137.I", "e": "Maddə 137: 45 üzv, səlahiyyət müddəti 5 il."},
+    {"l": 45, "q": "Naxçıvan MR Konstitusiyası necə təsdiq edilir?", "o": ["Prezidentin təqdimatı ilə Milli Məclis tərəfindən Konstitusiya qanunu ilə", "Naxçıvan MR referendumu ilə", "Naxçıvan MR Ali Məclisinin qərarı ilə", "Prezidentin fərmanı ilə"], "a": 0, "r": "m. 134.VI", "e": "Maddə 134.VI."},
+
+    {"l": 46, "q": "Naxçıvan MR Baş nazirini kim təyin edir?", "o": ["Naxçıvan MR Ali Məclisi — Azərbaycan Prezidentinin təqdimatı ilə", "Azərbaycan Prezidenti birbaşa", "Milli Məclis", "Naxçıvan MR Ali Məclisinin sədri"], "a": 0, "r": "m. 140.II", "e": "Maddə 140.II."},
+    {"l": 46, "q": "Naxçıvan MR-da yerli icra hakimiyyəti başçılarını kim təyin edir?", "o": ["Azərbaycan Prezidenti — Ali Məclis sədrinin təqdimatı ilə", "Naxçıvan MR Ali Məclisi", "Naxçıvan MR Nazirlər Kabineti", "Bələdiyyələr"], "a": 0, "r": "m. 141", "e": "Maddə 141."},
+
+    {"l": 47, "q": "Yerli vergilər və ödənişlərlə bağlı bələdiyyə qərarları necə qəbul edilir?", "o": ["Bələdiyyə üzvlərinin üçdə iki səs çoxluğu ilə", "Sadə səs çoxluğu ilə", "Yekdilliklə", "Bələdiyyə sədrinin qərarı ilə"], "a": 0, "r": "m. 145.III", "e": "Maddə 145: digər qərarlar sadə səs çoxluğu ilə qəbul edilir."},
+    {"l": 47, "q": "Yerli özünüidarəni kim həyata keçirir?", "o": ["Bələdiyyələr", "Yerli icra hakimiyyətləri", "Nazirlər Kabineti", "Prezidentin nümayəndələri"], "a": 0, "r": "m. 142.I", "e": "Maddə 142.I."},
+    {"l": 47, "q": "Bələdiyyənin iclaslarını kim çağırır?", "o": ["Bələdiyyənin sədri", "Yerli icra hakimiyyətinin başçısı", "Milli Məclis", "Bələdiyyə üzvlərinin yarısı"], "a": 0, "r": "m. 143.II", "e": "Maddə 143.II."},
+
+    {"l": 48, "q": "Bələdiyyələr qanunla müəyyən edilmiş hallarda fəaliyyətləri barədə hara hesabat təqdim edirlər?", "o": ["Milli Məclisə", "Prezidentə", "Nazirlər Kabinetinə", "Ədliyyə Nazirliyinə"], "a": 0, "r": "m. 146.IV", "e": "Maddə 146.IV."},
+    {"l": 48, "q": "Bələdiyyələrin fəaliyyətinə kim nəzarət edir?", "o": ["Dövlət", "Yalnız sakinlər", "Heç kim", "Beynəlxalq təşkilatlar"], "a": 0, "r": "m. 146.III", "e": "Maddə 146.III."},
+
+    {"l": 49, "q": "Azərbaycan Respublikasında ən yüksək hüquqi qüvvəyə malik akt hansıdır?", "o": ["Konstitusiya", "Qanun", "Prezidentin fərmanı", "Beynəlxalq müqavilə"], "a": 0, "r": "m. 147.I", "e": "Maddə 147.I."},
+    {"l": 49, "q": "Aşağıdakılardan hansı qanunvericilik sisteminə daxil olan normativ hüquqi aktlara aid deyil?", "o": ["Məhkəmə qərarları", "Referendumla qəbul edilmiş aktlar", "Prezidentin fərmanları", "Nazirlər Kabinetinin qərarları"], "a": 0, "r": "m. 148.I", "e": "Maddə 148.I."},
+
+    {"l": 50, "q": "Hansı normativ hüquqi aktların qüvvəsi geriyə şamil edilir?", "o": ["Hüquqi vəziyyəti yaxşılaşdıran, məsuliyyəti aradan qaldıran və ya yüngülləşdirən aktların", "Bütün aktların", "Heç bir aktın", "Yalnız Prezidentin fərmanlarının"], "a": 0, "r": "m. 149.VII", "e": "Maddə 149.VII."},
+    {"l": 50, "q": "Dərc edilməyən normativ hüquqi aktın icrasına kimsə məcbur edilə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız dövlət qulluqçuları", "Yalnız hüquqi şəxslər"], "a": 0, "r": "m. 149.VIII", "e": "Maddə 149.VIII."},
+
+    {"l": 51, "q": "Qanun ilə Azərbaycanın tərəfdar çıxdığı dövlətlərarası müqavilə arasında ziddiyyət yaranarsa, hansı tətbiq edilir?", "o": ["Beynəlxalq müqavilə", "Qanun", "Sonra qəbul edilmiş akt", "Konstitusiya Məhkəməsinin seçdiyi akt"], "a": 0, "r": "m. 151", "e": "Maddə 151: Konstitusiya və referendumla qəbul edilən aktlar istisnadır."},
+    {"l": 51, "q": "Bələdiyyə aktının icrası kimlər üçün məcburidir?", "o": ["Onun ərazisində yaşayan vətəndaşlar və yerləşən hüquqi şəxslər üçün", "Bütün ölkə vətəndaşları üçün", "Yalnız bələdiyyə üzvləri üçün", "Yalnız yerli icra hakimiyyəti üçün"], "a": 0, "r": "m. 150.II", "e": "Maddə 150.II."},
+
+    {"l": 52, "q": "Konstitusiyanın mətnində dəyişikliklər necə qəbul edilə bilər?", "o": ["Yalnız referendumla", "Milli Məclisin 95 səsi ilə", "Prezidentin fərmanı ilə", "Konstitusiya Məhkəməsinin qərarı ilə"], "a": 0, "r": "m. 152", "e": "Maddə 152."},
+    {"l": 52, "q": "Konstitusiyanın hansı maddələrində dəyişikliklər haqqında təkliflər referenduma çıxarıla bilməz?", "o": ["1, 2, 6, 7, 8 və 21-ci maddələr", "1, 3, 5, 7-ci maddələr", "Yalnız 1-ci maddə", "125–133-cü maddələr"], "a": 0, "r": "m. 155", "e": "Maddə 155."},
+
+    {"l": 53, "q": "Konstitusiyaya əlavələr Milli Məclisdə neçə səs çoxluğu ilə qəbul edilir?", "o": ["95", "83", "63", "125"], "a": 0, "r": "m. 156.I", "e": "Maddə 156.I."},
+    {"l": 53, "q": "Konstitusiyaya əlavələr haqqında Konstitusiya qanunları üzrə ikinci səsvermə birincidən neçə ay sonra keçirilir?", "o": ["6 ay", "3 ay", "1 ay", "12 ay"], "a": 0, "r": "m. 156.II", "e": "Maddə 156.II."},
+    {"l": 53, "q": "Konstitusiyaya əlavələri kim təklif edə bilər?", "o": ["Prezident və ya Milli Məclisin azı 63 deputatı", "Konstitusiya Məhkəməsi", "40 min vətəndaş", "Ali Məhkəmə"], "a": 0, "r": "m. 157", "e": "Maddə 157."},
+
+    {"l": 54, "q": "Konstitusiyanın hansı bölməsində əks etdirilmiş müddəalarla əlaqədar əlavələr təklif edilə bilməz?", "o": ["Birinci bölməsində", "İkinci bölməsində", "Üçüncü bölməsində", "Keçid müddəalarında"], "a": 0, "r": "m. 158", "e": "Maddə 158."},
+    {"l": 54, "q": "1995-ci il Konstitusiyasının qüvvəyə minməsi ilə hansı il qəbul edilmiş Konstitusiya qüvvədən düşdü?", "o": ["1978", "1991", "1937", "1924"], "a": 0, "r": "Keçid müddəaları, 1", "e": "Keçid müddəaları, 1-ci bənd: 1978-ci il aprelin 21-də qəbul edilmiş Konstitusiya."}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "questions": [
+    {"l": 31, "q": "Hamiləliyə və doğuşa görə (ümumi qayda) ödənişli məzuniyyət neçə təqvim günüdür?", "o": ["126 (doğuşdan əvvəl 70, sonra 56)", "140 (doğuşdan əvvəl 70, sonra 70)", "112 (doğuşdan əvvəl 56, sonra 56)", "180 (doğuşdan əvvəl 70, sonra 110)"], "a": 0, "r": "m. 125.1", "e": "Maddə 125, 1-ci hissə; doğuş çətin olduqda və ya iki və daha çox uşaq doğulduqda doğuşdan sonrakı hissə 70 gündür."},
+    {"l": 31, "q": "Ali təhsil müəssisəsinin qiyabi şöbəsində 3-cü kursda oxuyan işçiyə imtahan dövründə hər tədris ilində neçə gün məzuniyyət verilir?", "o": ["40 təqvim günü", "30 təqvim günü", "20 təqvim günü", "50 təqvim günü"], "a": 0, "r": "m. 124.3", "e": "Maddə 124, 3-cü hissə: I–II kurs — 30, qalan kurslar — 40 gün."},
+    {"l": 31, "q": "Ali təhsil müəssisəsinin qiyabi şöbəsində diplom işinin hazırlanması və müdafiəsi üçün nə qədər məzuniyyət verilir?", "o": ["4 təqvim ayınadək", "2 təqvim ayınadək", "30 təqvim günü", "6 təqvim ayınadək"], "a": 0, "r": "m. 124.5", "e": "Maddə 124, 5-ci hissə: orta ixtisas təhsilində 2 ayadək."},
+
+    {"l": 32, "q": "Qismən ödənişli sosial məzuniyyət uşağın neçə yaşı tamam olanadək verilir?", "o": ["Üç yaşı", "İki yaşı", "Bir yaşyarımı", "Altı yaşı"], "a": 0, "r": "m. 127.1", "e": "Maddə 127, 1-ci hissə."},
+    {"l": 32, "q": "Tərəflərin qarşılıqlı razılığı ilə verilən ödənişsiz məzuniyyətin müddəti ən çoxu nə qədər ola bilər?", "o": ["Altı ay", "Bir il", "Üç ay", "Bir ay"], "a": 0, "r": "m. 129.2", "e": "Maddə 129, 2-ci hissə."},
+
+    {"l": 33, "q": "Arvadı doğuşla əlaqədar məzuniyyətdə olan kişiyə xahişi ilə nə qədər ödənişsiz məzuniyyət verilir?", "o": ["14 təqvim gününədək", "7 təqvim gününədək", "Bir təqvim ayınadək", "3 təqvim gününədək"], "a": 0, "r": "m. 130 (b)", "e": "Maddə 130 «b» bəndi."},
+    {"l": 33, "q": "Əlilliyi olan işçilərə xahişi ilə nə qədər ödənişsiz məzuniyyət verilir?", "o": ["Bir təqvim ayınadək", "14 təqvim gününədək", "7 təqvim gününədək", "İki təqvim ayınadək"], "a": 0, "r": "m. 130 (ç)", "e": "Maddə 130 «ç» bəndi."},
+    {"l": 33, "q": "Ailə, məişət və başqa sosial məsələləri həll etmək üçün işçiyə nə qədər ödənişsiz məzuniyyət verilir?", "o": ["7 təqvim gününədək", "14 təqvim gününədək", "3 təqvim gününədək", "Bir təqvim ayınadək"], "a": 0, "r": "m. 130 (i)", "e": "Maddə 130 «i» bəndi."},
+
+    {"l": 34, "q": "Birinci iş ili üçün əmək məzuniyyəti hüququ (ümumi qayda) nə vaxt yaranır?", "o": ["Altı ay işlədikdən sonra", "Üç ay işlədikdən sonra", "Bir il işlədikdən sonra", "İşə başladığı gündən"], "a": 0, "r": "m. 131.1", "e": "Maddə 131, 1-ci hissə."},
+    {"l": 34, "q": "Kim birinci iş ili üçün məzuniyyətdən altı ay tamam olmadan istifadə edə bilər?", "o": ["On səkkiz yaşına çatmamış işçi", "Yeni işə qəbul edilmiş istənilən işçi", "Sınaq müddətində olan işçi", "Əlavə iş yerində işləyən istənilən işçi"], "a": 0, "r": "m. 131.4", "e": "Maddə 131, 4-cü hissə."},
+    {"l": 34, "q": "İşçi iş ilində əmək məzuniyyətindən istifadə etmədikdə nə baş verir?", "o": ["İstifadə edilməmiş məzuniyyətə görə kompensasiya ödənilir", "Məzuniyyət hüququ itir", "Məzuniyyət avtomatik olaraq verilir", "İşəgötürən cərimələnir, işçiyə heç nə ödənilmir"], "a": 0, "r": "m. 135.2", "e": "Maddə 135, 2-ci hissə."},
+
+    {"l": 35, "q": "Əmək məzuniyyəti hissələrə bölündükdə hissələrdən biri ən azı nə qədər olmalıdır?", "o": ["İki təqvim həftəsi", "Bir təqvim həftəsi", "Üç təqvim həftəsi", "On təqvim günü"], "a": 0, "r": "m. 137.1", "e": "Maddə 137, 1-ci hissə."},
+    {"l": 35, "q": "Məzuniyyətdə olan işçi müstəsna hallarda məzuniyyətdən necə geri çağırıla bilər?", "o": ["Yalnız onun razılığı ilə, əmrlə rəsmiləşdirilməklə", "İşəgötürənin şifahi göstərişi ilə", "Həmkarlar ittifaqının qərarı ilə, razılığı olmadan", "Geri çağırıla bilməz"], "a": 0, "r": "m. 137.2", "e": "Maddə 137, 2-ci hissə."},
+
+    {"l": 36, "q": "İşçinin təqsiri üzündən dəymiş ziyan işəgötürənin sərəncamı ilə hansı həddə tutula bilər (tam maddi məsuliyyət halları istisna)?", "o": ["Orta aylıq əmək haqqından artıq olmayan miqdarda", "Əmək haqqının 50 faizinədək", "Tam həcmdə", "Heç vaxt tutula bilməz"], "a": 0, "r": "m. 175.2 (c)", "e": "Maddə 175, 2-ci hissə «c» bəndi."},
+    {"l": 36, "q": "Avansın qaytarılması üçün müddət bitdikdən sonra işəgötürən nə qədər müddətdə tutulma əməliyyatı apara bilər?", "o": ["Bir ay", "Üç ay", "Bir il", "On gün"], "a": 0, "r": "m. 175.3", "e": "Maddə 175, 3-cü hissə: bu müddət bitdikdən sonra tutula bilməz."},
+    {"l": 36, "q": "İşdənçıxma müavinətindən tutulma aparıla bilərmi?", "o": ["Xeyr", "Bəli, istənilən borca görə", "Bəli, işçinin razılığı olmadan", "Yalnız vergi borcuna görə"], "a": 0, "r": "m. 175.4", "e": "Maddə 175, 4-cü hissə."},
+
+    {"l": 37, "q": "İşçi şahid kimi istintaq orqanına çağırıldıqda onun iş yeri və orta əmək haqqı saxlanılırmı?", "o": ["Bəli, saxlanılır", "Xeyr, ödənişsiz məzuniyyət sayılır", "Yalnız iş yeri saxlanılır", "Yalnız yarım gün ödənilir"], "a": 0, "r": "m. 179.2 (a)", "e": "Maddə 179, 2-ci hissə «a» bəndi."},
+    {"l": 37, "q": "Aşağıdakı hallardan hansında işçinin iş yeri və orta əmək haqqı saxlanılır?", "o": ["Donor kimi qan verdiyi gün", "Ödənişsiz məzuniyyətdə olduqda", "Üzürsüz səbəbdən işə gəlmədikdə", "Şəxsi işlərini həll etdikdə"], "a": 0, "r": "m. 179.2 (j)", "e": "Maddə 179, 2-ci hissə «j» bəndi."},
+
+    {"l": 38, "q": "Aşağıdakılardan hansı Əmək Məcəlləsində nəzərdə tutulmuş intizam tənbehi deyil?", "o": ["Vəzifədən aşağı salma", "Töhmət", "Sonuncu xəbərdarlıqla şiddətli töhmət", "Kollektiv müqavilədə nəzərdə tutulubsa, cərimə"], "a": 0, "r": "m. 186.2", "e": "Maddə 186, 2-ci hissə: töhmət, şiddətli töhmət, cərimə (aylıq əmək haqqının 1/4-dən çox olmamaqla), 70-ci maddənin «ç» bəndi ilə ləğv."},
+    {"l": 38, "q": "Cərimə intizam tənbehi kimi hansı həddə tətbiq oluna bilər?", "o": ["Aylıq əmək haqqının 1/4-i məbləğindən çox olmamaqla", "Aylıq əmək haqqının yarısınadək", "Aylıq əmək haqqı qədər", "Aylıq əmək haqqının 10 faizinədək"], "a": 0, "r": "m. 186.2 (c)", "e": "Maddə 186, 2-ci hissə «c» bəndi."},
+    {"l": 38, "q": "Xəbərdarlıq intizam tənbehi sayılırmı?", "o": ["Xeyr", "Bəli", "Yalnız yazılı olduqda", "Yalnız təkrar olduqda"], "a": 0, "r": "m. 186.3", "e": "Qanun: «Xəbərdarlıq intizam tənbehi sayılmır.»"},
+
+    {"l": 39, "q": "İntizam xətası törədildiyi gündən neçə ay keçdikdən sonra (ümumi qayda) intizam tənbehi verilə bilməz?", "o": ["Altı ay", "Bir ay", "Üç ay", "Bir il"], "a": 0, "r": "m. 187.3", "e": "Maddə 187: aşkar edildiyi gündən 1 ay, törədildiyi gündən 6 ay; audit nəticəsində aşkar edilmiş xətalar üçün 2 il."},
+    {"l": 39, "q": "Bir intizam xətasına görə neçə intizam tənbehi verilə bilər?", "o": ["Yalnız bir", "İki", "Üç", "Məhdudiyyət yoxdur"], "a": 0, "r": "m. 189.1", "e": "Maddə 189, 1-ci hissə."},
+    {"l": 39, "q": "İşçi yazılı izahat verməkdən imtina edərsə, intizam tənbehi verilə bilərmi?", "o": ["Bəli, imtina tənbeh verilməsini istisna etmir", "Xeyr, izahatsız tənbeh verilə bilməz", "Yalnız məhkəmənin qərarı ilə", "Yalnız həmkarlar ittifaqının razılığı ilə"], "a": 0, "r": "m. 187.1", "e": "Maddə 187, 1-ci hissə."},
+
+    {"l": 40, "q": "İntizam tənbehi verildiyi gündən nə qədər müddətdə qüvvədə olur?", "o": ["Altı ay", "Bir il", "Üç ay", "İki il"], "a": 0, "r": "m. 190.1", "e": "Maddə 190, 1-ci hissə."},
+    {"l": 40, "q": "İntizam tənbehi qüvvədə olarkən işçi həvəsləndirmə ilə mükafatlandırılarsa, nə olur?", "o": ["Tənbeh mükafatlandırıldığı gündən qüvvədən düşmüş hesab edilir", "Mükafat ləğv edilir", "Tənbehin müddəti uzadılır", "Heç nə dəyişmir"], "a": 0, "r": "m. 190.4", "e": "Maddə 190, 4-cü hissə."}
+  ]
+}

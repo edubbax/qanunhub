@@ -1,0 +1,52 @@
+{
+  "sections": [
+    {"from": 1, "title": "Ümumi müddəalar və hüquqi yardım"},
+    {"from": 7, "title": "Prinsiplər və prosedur təminatlar"},
+    {"from": 14, "title": "İnzibati icraatın gedişi"},
+    {"from": 28, "title": "İnzibati aktlar"},
+    {"from": 37, "title": "Şikayət, icra və məsuliyyət"}
+  ],
+  "questions": [
+    {"l": 32, "q": "Ölkə daxilində poçtla göndərilmiş inzibati akt nə vaxt maraqlı şəxsə təqdim olunmuş sayılır?", "o": ["Poçta təqdim edildiyi gündən 5 gün keçdikdən sonra", "Göndərildiyi gün", "3 gün keçdikdən sonra", "10 gün keçdikdən sonra"], "a": 0, "r": "m. 62.2", "e": "Maddə 62.2: poçtla — 5 gün, elektron üsulla — 3 gün."},
+    {"l": 32, "q": "Mediada dərc olunan yazılı inzibati akt nə vaxt elan olunmuş sayılır?", "o": ["Dərc edildiyi gündən 10 gün keçdikdən sonra", "Dərc edildiyi gün", "5 gün keçdikdən sonra", "30 gün keçdikdən sonra"], "a": 0, "r": "m. 62.4", "e": "Maddə 62.4."},
+    {"l": 32, "q": "Maraqlı şəxs aktı almadığını iddia edərsə, təqdimetmə faktını sübut etmək vəzifəsi kimin üzərinə düşür?", "o": ["İnzibati orqanın", "Maraqlı şəxsin", "Poçt operatorunun", "Məhkəmənin"], "a": 0, "r": "m. 62.3", "e": "Maddə 62.3."},
+
+    {"l": 33, "q": "Aşağıdakı inzibati aktlardan hansı etibarsız sayılır?", "o": ["Kimə ünvanlandığı aydın olmayan akt", "Əlverişsiz akt", "Diskresion səlahiyyətlə qəbul edilmiş akt", "Şifahi qəbul edilib 5 gün ərzində yazılı təsbit olunmuş akt"], "a": 0, "r": "m. 65.1.6", "e": "Maddə 65.1."},
+    {"l": 33, "q": "Etibarsız inzibati akt hansı andan yararsız sayılır?", "o": ["Qəbul edildiyi andan", "Etibarsızlığı təsdiq edildiyi andan", "Məhkəmə qərarından", "Maraqlı şəxsə bildirildiyi andan"], "a": 0, "r": "m. 65.2", "e": "Maddə 65.2."},
+    {"l": 33, "q": "52-ci maddədəki müddətdə inzibati akt qəbul olunmadıqda maraqlı şəxs nə edə bilər?", "o": ["Məhkəməyə müraciət edə bilər", "Aktı qəbul olunmuş sayır", "Yalnız gözləməlidir", "Ombudsmana müraciət etməlidir"], "a": 0, "r": "m. 66", "e": "Maddə 66."},
+
+    {"l": 34, "q": "Qanunsuz əlverişsiz inzibati aktla bağlı hansı qayda var?", "o": ["Hər bir halda ləğv olunmalıdır", "Ləğv oluna bilməz", "Yalnız məhkəmə ləğv edə bilər", "Yalnız maraqlı şəxsin razılığı ilə ləğv edilir"], "a": 0, "r": "m. 67.3", "e": "Maddə 67.3."},
+    {"l": 34, "q": "Hansı halda maraqlı şəxs etimadın qorunması hüququna istinad edə bilməz?", "o": ["Aktın qəbuluna rüşvət yolu ilə nail olduqda", "Verilən pulu xərclədikdə", "Aktın qanuniliyinə inandıqda", "Əmlakdan istifadə etdikdə"], "a": 0, "r": "m. 67.6", "e": "Maddə 67.6: rüşvət, hədə-qorxu, aldatma, saxta məlumat və ya aktın qanunsuzluğunu bilmə halları."},
+    {"l": 34, "q": "Maraqlı şəxs qanunsuz aktın ləğvinə görə kompensasiyanı nə qədər müddətdə tələb edə bilər?", "o": ["1 il", "6 ay", "3 ay", "3 il"], "a": 0, "r": "m. 67.11", "e": "Maddə 67.11."},
+
+    {"l": 35, "q": "Qanuni inzibati aktın ləğvi onun qüvvəyə mindiyi andan yaranmış hüquqi nəticələri aradan qaldırırmı?", "o": ["Xeyr", "Bəli", "Yalnız əlverişsiz aktlarda", "Yalnız məhkəmə qərarı ilə"], "a": 0, "r": "m. 68.3", "e": "Maddə 68.3."},
+    {"l": 35, "q": "Qanuni inzibati akt ləğvə əsas olan hallar məlum olduğu gündən nə qədər müddətdə ləğv edilə bilər?", "o": ["1 il", "6 ay", "3 ay", "Məhdudiyyətsiz"], "a": 0, "r": "m. 68.4", "e": "Maddə 68.4."},
+    {"l": 35, "q": "Qanuni əlverişli inzibati aktın ləğvinə hansı halda yol verilir?", "o": ["Maraqlı şəxs aktla verilən hüquqdan istifadə etmədikdə", "Orqanın rəhbəri dəyişdikdə", "Maraqlı şəxs şikayət verdikdə", "İstənilən vaxt"], "a": 0, "r": "m. 68.2.2", "e": "Maddə 68.2."},
+
+    {"l": 36, "q": "İnzibati aktın bir hissəsinin ləğvi digər hissələrin ləğvinə səbəb olurmu?", "o": ["Xeyr, hissələr bir-biri ilə əlaqədar deyilsə", "Bəli, həmişə", "Yalnız əlverişli aktlarda", "Yalnız məhkəmə qərarı ilə"], "a": 0, "r": "m. 69.2", "e": "Maddə 69.2."},
+    {"l": 36, "q": "Akt ləğv edildikdən sonra onun əsasında verilmiş sənədlərə faktiki sahib olan şəxs nə etməlidir?", "o": ["Onları qaytarmağa borcludur", "Saxlaya bilər", "Məhv etməlidir", "Notariusa təhvil verməlidir"], "a": 0, "r": "m. 70", "e": "Maddə 70."},
+
+    {"l": 37, "q": "Eyni aktdan həm inzibati, həm də məhkəmə qaydasında şikayət verildikdə nə baş verir?", "o": ["Şikayətə məhkəmə qaydasında baxılır, inzibati icraata xitam verilir", "Hər ikisinə paralel baxılır", "İnzibati şikayətə üstünlük verilir", "Hər ikisi rədd edilir"], "a": 0, "r": "m. 72.2", "e": "Maddə 72.2."},
+    {"l": 37, "q": "Şikayət aktı qəbul edən orqan vasitəsilə verildikdə, həmin orqan onu şikayət instansiyasına nə qədər müddətdə göndərməlidir?", "o": ["3 gün", "5 gün", "10 gün", "1 gün"], "a": 0, "r": "m. 72.3", "e": "Maddə 72.3."},
+
+    {"l": 38, "q": "Qanunda başqa qayda yoxdursa, inzibati şikayət aktın qüvvəyə mindiyi gündən nə qədər müddətdə verilir?", "o": ["30 gün", "15 gün", "2 ay", "6 ay"], "a": 0, "r": "m. 73.1", "e": "Maddə 73.1."},
+    {"l": 38, "q": "Aktda hüquqi müdafiə vasitələri və şikayət müddəti göstərilməyibsə, şikayət nə qədər müddətdə verilə bilər?", "o": ["Qüvvəyə mindiyi gündən 6 ay", "30 gün", "1 il", "3 ay"], "a": 0, "r": "m. 73.2", "e": "Maddə 73.2."},
+
+    {"l": 39, "q": "İnzibati şikayətin verilməsi aktın icrasını dayandırırmı?", "o": ["Xeyr, şikayət instansiyası dayandırma barədə ayrıca qərar qəbul etmədikdə", "Bəli, avtomatik dayandırır", "Yalnız əlverişsiz aktlarda dayandırır", "Yalnız məhkəmə dayandıra bilər"], "a": 0, "r": "m. 76.1", "e": "Maddə 76.1."},
+    {"l": 39, "q": "Aşağıdakılardan hansı inzibati şikayətin baxılmamış saxlanılması üçün əsasdır?", "o": ["Müddət buraxılıb və bərpa edilməyib", "Şikayət əsaslıdır", "Şikayətçi vəkil cəlb edib", "Akt diskresion səlahiyyətlə qəbul edilib"], "a": 0, "r": "m. 75.1.3", "e": "Maddə 75.1."},
+
+    {"l": 40, "q": "Şikayət instansiyası inzibati şikayətə (qanunda başqa müddət yoxdursa) nə qədər müddətdə baxmalıdır?", "o": ["Daxil olduğu gündən 1 ay", "15 gün", "3 ay", "10 gün"], "a": 0, "r": "m. 78.1", "e": "Maddə 78.1."},
+    {"l": 40, "q": "Şikayət instansiyası şikayətə baxılmasını aktı qəbul etmiş orqana həvalə edə bilərmi?", "o": ["Heç bir halda", "Bəli", "Yalnız sadə işlərdə", "Yalnız şikayətçinin razılığı ilə"], "a": 0, "r": "m. 79.5", "e": "Maddə 79.5."},
+    {"l": 40, "q": "Şikayət instansiyasının şikayət üzrə qəbul etdiyi qərar necə sayılır?", "o": ["İnzibati akt", "Məhkəmə qərarı", "Məsləhət xarakterli rəy", "Aralıq sənəd"], "a": 0, "r": "m. 80.2", "e": "Maddə 80.2."},
+
+    {"l": 41, "q": "Mediasiya müqaviləsi bağlandıqda inzibati şikayət üzrə icraata nə olur?", "o": ["Dayandırılır", "Xitam verilir", "Davam etdirilir", "Məhkəməyə göndərilir"], "a": 0, "r": "m. 80-1.2", "e": "Maddə 80-1.2."},
+    {"l": 41, "q": "Mübahisə mediasiya ilə həll edildikdə şikayət instansiyası nə edir?", "o": ["İnzibati şikayət üzrə icraata xitam verir", "Şikayətə yenidən baxır", "Barışıq sazişini ləğv edir", "İşi məhkəməyə göndərir"], "a": 0, "r": "m. 80-1.3", "e": "Maddə 80-1.3."},
+
+    {"l": 42, "q": "Qanunda başqa qayda yoxdursa, inzibati aktı kim icra edir?", "o": ["Onu qəbul etmiş inzibati orqan", "Məhkəmə icraçısı", "Polis", "Maraqlı şəxsin seçdiyi orqan"], "a": 0, "r": "m. 81.2", "e": "Maddə 81.2."},
+    {"l": 42, "q": "Maraqlı şəxs inzibati aktı necə icra etməyə haqlıdır?", "o": ["Onun üçün daha əlverişli olan qanuni üsul və vasitələrlə", "Yalnız orqanın göstərdiyi üsulla", "İstədiyi vaxt, müddətsiz", "Yalnız nümayəndə vasitəsilə"], "a": 0, "r": "m. 81.4", "e": "Maddə 81.4."},
+
+    {"l": 43, "q": "Qanunsuz inzibati aktla vurulmuş ziyana görə inzibati orqan hansı qaydada məsuliyyət daşıyır?", "o": ["Mülki Məcəllə ilə müəyyən olunmuş qaydada", "Cinayət Məcəlləsi ilə", "Yalnız intizam qaydasında", "Məsuliyyət daşımır"], "a": 0, "r": "m. 89.1", "e": "Maddə 89.1."},
+    {"l": 43, "q": "Kompensasiya ödənildikdən sonra təqsirli vəzifəli şəxs necə məsuliyyətə cəlb oluna bilər?", "o": ["Reqres iddia qaydasında maddi məsuliyyətə", "Avtomatik işdən çıxarılmaqla", "Yalnız şifahi xəbərdarlıqla", "Cəlb oluna bilməz"], "a": 0, "r": "m. 90.2", "e": "Maddə 90.2: kobud ehtiyatsızlıq və ya qəsd olduqda."},
+    {"l": 43, "q": "«İnzibati icraat haqqında» Qanun nə vaxt qüvvəyə minib?", "o": ["İnzibati-Prosessual Məcəllə ilə eyni gündə", "İmzalandığı gün", "2006-cı il yanvarın 1-dən", "Dərc edildiyi gündən 10 gün sonra"], "a": 0, "r": "m. 91", "e": "Maddə 91."}
+  ]
+}

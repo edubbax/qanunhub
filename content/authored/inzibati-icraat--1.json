@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {"l": 1, "q": "«İnzibati icraat haqqında» Qanun nəyi müəyyən edir?", "o": ["İnzibati aktların qəbulu, icrası və ləğvi ilə bağlı inzibati orqanların fəaliyyətinin hüquqi əsaslarını, prinsiplərini və prosedur qaydalarını", "İnzibati xətalara görə məsuliyyəti", "Cinayət təqibi qaydalarını", "Məhkəmələrin inzibati işlərə baxma qaydasını"], "a": 0, "r": "m. 1.1", "e": "Maddə 1.1."},
+    {"l": 1, "q": "Qanunun müddəaları inzibati orqanların faktiki xarakterli digər fəaliyyətinə şamil olunurmu?", "o": ["Bəli, şamil olunur", "Xeyr", "Yalnız yazılı aktlara şamil olunur", "Yalnız bələdiyyələrə şamil olunur"], "a": 0, "r": "m. 1.2", "e": "Maddə 1.2."},
+
+    {"l": 2, "q": "Maraqlı şəxsi hüquqdan məhrum edən və ya üzərinə vəzifə qoyan inzibati akt necə adlanır?", "o": ["Əlverişsiz (yükləyici) inzibati akt", "Əlverişli inzibati akt", "Aralıq inzibati akt", "Diskresion akt"], "a": 0, "r": "m. 2.0.11", "e": "Maddə 2.0.11."},
+    {"l": 2, "q": "Qanunla inzibati orqana mümkün qanunauyğun qərarlardan birini seçmək hüququnun verilməsi necə adlanır?", "o": ["Diskresion səlahiyyətlər", "Qarşılıqlı etimad", "Aralıq inzibati akt", "Subordinasiya"], "a": 0, "r": "m. 2.0.7", "e": "Maddə 2.0.7."},
+    {"l": 2, "q": "İnzibati şikayət hara verilir?", "o": ["Subordinasiya baxımından yuxarı inzibati orqana", "Məhkəməyə", "Aktı qəbul edən orqanın özünə", "Ombudsmana"], "a": 0, "r": "m. 2.0.5", "e": "Maddə 2.0.5: inzibati şikayət — subordinasiya baxımından yuxarı inzibati orqana yazılı müraciət."},
+
+    {"l": 3, "q": "«İnzibati icraat haqqında» Qanun aşağıdakılardan hansına şamil olunmur?", "o": ["İnzibati xətalara dair işlər üzrə fəaliyyətə", "Lisenziya verilməsinə", "Bələdiyyənin qərarlarına", "Nazirliyin icazə verməsinə"], "a": 0, "r": "m. 3.2", "e": "Maddə 3.2: cinayət-prosessual fəaliyyətə və inzibati xətalara dair işlər üzrə fəaliyyətə şamil olunmur."},
+    {"l": 3, "q": "İnzibati orqan digər orqanın hüquqi yardım müraciətinə hansı müddətdə cavab verməlidir?", "o": ["15 gün (əsaslandırılmaqla daha 15 günədək uzadıla bilər)", "5 gün", "30 gün", "3 gün"], "a": 0, "r": "m. 5.1-1", "e": "Maddə 5.1-1."},
+    {"l": 3, "q": "Tabelik münasibətində olan inzibati orqanların bir-birinə yardımı qarşılıqlı hüquqi yardım sayılırmı?", "o": ["Xeyr", "Bəli", "Yalnız yazılı müraciət olduqda", "Yalnız ödənişli olduqda"], "a": 0, "r": "m. 5.2", "e": "Maddə 5.2."},
+
+    {"l": 4, "q": "Aşağıdakılardan hansı inzibati orqanın hüquqi yardım üçün müraciət edə biləcəyi hallardan deyil?", "o": ["İş yükünü azaltmaq istədikdə", "Hərəkəti müstəqil həyata keçirmək iqtidarında olmadıqda", "Zəruri sənədlər başqa orqanın sərəncamında olduqda", "Müstəqil həll xərcləri yardım qaydasındakı xərclərdən çox olduqda"], "a": 0, "r": "m. 6", "e": "Maddə 6 dörd halı sadalayır."},
+    {"l": 4, "q": "Məsələnin həlli üçün inzibati orqana məlum olmayan və özünün müəyyən edə bilmədiyi faktlar tələb olunduqda o nə edə bilər?", "o": ["Başqa orqana hüquqi yardım üçün müraciət edə bilər", "İcraatı dayandırmalıdır", "Ərizəni rədd etməlidir", "Məhkəməyə müraciət etməlidir"], "a": 0, "r": "m. 6.0.2", "e": "Maddə 6.0.2."},
+
+    {"l": 5, "q": "Hüquqi yardımdan imtina edən orqan müraciət edən orqana nə qədər müddətdə yazılı məlumat verməlidir?", "o": ["Üç gün", "Beş gün", "On gün", "On beş gün"], "a": 0, "r": "m. 7.3", "e": "Maddə 7.3."},
+    {"l": 5, "q": "Hüquqi yardımla bağlı xərclər hansı məbləğdən yuxarı olduqda müraciət edən orqan onları ödəməlidir?", "o": ["22 manatdan", "50 manatdan", "100 manatdan", "10 manatdan"], "a": 0, "r": "m. 8", "e": "Maddə 8."},
+    {"l": 5, "q": "Hüquqi yardımdan imtina barədə yuxarı orqan şikayətə hansı müddətdə baxır?", "o": ["5 gün", "3 gün", "15 gün", "1 ay"], "a": 0, "r": "m. 7.4", "e": "Maddə 7.4: yuxarı orqan 5 gün ərzində qəti qərar qəbul edir."},
+
+    {"l": 6, "q": "Məzmunu dəyişdirilmiş və ya bütövlüyü pozulmuş sənədin surəti təsdiq oluna bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız rəhbərin icazəsi ilə", "Yalnız notarius tərəfindən"], "a": 0, "r": "m. 9.3", "e": "Maddə 9.3."},
+    {"l": 6, "q": "Sənədin təsdiq olunmuş surətinin hansı səhifələri imzalanmalı və möhürlənməlidir?", "o": ["Hər səhifəsi", "Yalnız birinci səhifəsi", "Yalnız sonuncu səhifəsi", "Birinci və sonuncu səhifələri"], "a": 0, "r": "m. 9.5", "e": "Maddə 9.5."},
+
+    {"l": 7, "q": "Eyni mühüm faktiki hallara malik müxtəlif işlər üzrə müxtəlif qərarların qəbul edilməsi hansı prinsipə ziddir?", "o": ["Bərabərlik prinsipinə", "Mütənasiblik prinsipinə", "Mötəbərlik prezumpsiyasına", "Çoxun azı ehtiva etməsi prinsipinə"], "a": 0, "r": "m. 12.2", "e": "Maddə 12.2."},
+    {"l": 7, "q": "İnzibati orqanların vədləri və bəyanatları hansı halda etibarlı təminat sayılır?", "o": ["Yalnız yazılı formada olduqda", "Şifahi verildikdə də", "Yalnız mediada dərc edildikdə", "Yalnız notarial təsdiq edildikdə"], "a": 0, "r": "m. 13.4", "e": "Maddə 13.4."},
+    {"l": 7, "q": "Mövcud inzibati praktika hansı halda yeni praktika ilə dəyişdirilə bilər?", "o": ["Yalnız ictimai maraqların tələb etdiyi hallarda", "Rəhbər dəyişdikdə", "İstənilən vaxt", "Heç vaxt"], "a": 0, "r": "m. 13.2", "e": "Maddə 13.2."},
+
+    {"l": 8, "q": "İnzibati orqan sənəddə yol verilmiş aşkar və düzəldilə bilən yazı səhvinə görə sənədi qəbul etməkdən imtina edə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız rəsmi blanklarda", "Yalnız hesab səhvlərində"], "a": 0, "r": "m. 15.3", "e": "Maddə 15.3."},
+    {"l": 8, "q": "Müdaxilə tədbirinin qanuni məqsədə uyğun, zəruri və yararlı olması tələbi hansı prinsipdir?", "o": ["Mütənasiblik prinsipi", "Qanunçuluq prinsipi", "Bərabərlik prinsipi", "Etimad prinsipi"], "a": 0, "r": "m. 17", "e": "Maddə 17."},
+
+    {"l": 9, "q": "Şəxsin təqdim etdiyi sənədlər, həqiqətə uyğun olmadığı sübuta yetirilməyibsə, necə hesab olunur?", "o": ["Mötəbər", "Şübhəli", "Əlavə təsdiq tələb edən", "Etibarsız"], "a": 0, "r": "m. 19.1", "e": "Maddə 19.1: mötəbərlik prezumpsiyası; əlavə təsdiqedici sənəd tələb edilməsi qadağandır."},
+    {"l": 9, "q": "Təqdim olunmuş sənədlərin mötəbərliyinə əsaslı şübhə olduqda kim və kimin hesabına yoxlama aparır?", "o": ["İnzibati orqan müstəqil şəkildə və öz hesabına", "Şəxs özü, öz hesabına", "Notarius", "Məhkəmə"], "a": 0, "r": "m. 19.2", "e": "Maddə 19.2."}
+  ]
+}

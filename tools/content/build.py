@@ -20,6 +20,7 @@ from parse_tests import parse_test  # noqa: E402
 from pdftext import pdf_to_text  # noqa: E402
 from program import (DRAFT_FILES, KEY_OVERRIDES, OUTDATED_TERMS, QA_TEXT_FIXES, TOPICS,  # noqa: E402
                      article_categories, classify_file)
+from authored import merge as merge_authored  # noqa: E402
 from textutil import build_vocab, cut_promo_tail, fix_split_words, fold, strip_branding, strip_test_headers  # noqa: E402
 
 LESSON_CHARS = 2200
@@ -374,6 +375,9 @@ def main(src, out_path):
         if seen[i['id']] > 1:
             i['id'] += '-' + short_id(i['stem'], 4)
 
+    errors, warnings, _ = merge_authored(bundle)
+    if errors:
+        raise SystemExit('authored content: ' + '; '.join(errors))
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, 'w') as f:
         json.dump(bundle, f, ensure_ascii=False, separators=(',', ':'))

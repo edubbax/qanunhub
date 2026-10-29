@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {"l": 9, "q": "Konstitusiyaya görə müəlliflik və ixtiraçılıq hüququ necə qorunur?", "o": ["Qanunla qorunur", "Yalnız beynəlxalq müqavilələrlə", "Qorunmur", "Yalnız müqavilə ilə"], "a": 0, "r": "m. 30.II", "e": "Maddə 30.II."},
+    {"l": 9, "q": "Qanunda nəzərdə tutulmuş hallar istisna olmaqla şəxsin mənzilinə, mülkiyyətinə qəsd etmək hansı hüquqa ziddir?", "o": ["Təhlükəsiz yaşamaq hüququna", "Əqli mülkiyyət hüququna", "Sahibkarlıq hüququna", "Seçki hüququna"], "a": 0, "r": "m. 31.II", "e": "Maddə 31."},
+
+    {"l": 10, "q": "Mənzildə yaşayanların iradəsi ziddinə mənzilə daxil olmağa hansı hallarda yol verilir?", "o": ["Qanunla müəyyən edilmiş hallarda və ya məhkəmə qərarı ilə", "Polisin istənilən tələbi ilə", "Bələdiyyənin qərarı ilə", "Heç bir halda"], "a": 0, "r": "m. 33.II", "e": "Maddə 33.II."},
+    {"l": 10, "q": "Yazışma və telefon danışıqlarının sirri hüququ hansı məqsədlə məhdudlaşdırıla bilər?", "o": ["Cinayətin qarşısını almaq və ya istintaq zamanı həqiqəti üzə çıxarmaq üçün", "Vergi yoxlaması üçün", "İşəgötürənin tələbi ilə", "Heç vaxt məhdudlaşdırıla bilməz"], "a": 0, "r": "m. 32.IV", "e": "Maddə 32.IV."},
+    {"l": 10, "q": "Şəxsin razılığı olmadan onun şəxsi həyatı haqqında məlumatın toplanmasına yol verilirmi?", "o": ["Xeyr", "Bəli", "Yalnız dövlət orqanlarına", "Yalnız mediaya"], "a": 0, "r": "m. 32.III", "e": "Maddə 32.III."},
+
+    {"l": 11, "q": "Neçə yaşına çatmış əmək qabiliyyətli uşaqlar əmək qabiliyyəti olmayan valideynlərini saxlamağa borcludurlar?", "o": ["18", "16", "21", "15"], "a": 0, "r": "m. 34.V", "e": "Maddə 34.V."},
+    {"l": 11, "q": "Kimlər tətil edə bilməz?", "o": ["Silahlı Qüvvələrdə xidmət edən hərbi qulluqçular və mülki şəxslər", "Müəllimlər", "Həkimlər", "Dövlət qulluqçuları"], "a": 0, "r": "m. 36.II", "e": "Maddə 36.II."},
+    {"l": 11, "q": "Lokaut barədə Konstitusiya nə müəyyən edir?", "o": ["Qanunla müəyyən edilmiş hallar istisna olmaqla qadağandır", "Sərbəstdir", "Yalnız dövlət müəssisələrində qadağandır", "Həmkarlar ittifaqının razılığı ilə mümkündür"], "a": 0, "r": "m. 36.IV", "e": "Maddə 36.IV."},
+
+    {"l": 12, "q": "Konstitusiyaya görə ödənişli məzuniyyət ildə azı neçə təqvim günü olmalıdır?", "o": ["21", "30", "28", "18"], "a": 0, "r": "m. 37.II", "e": "Maddə 37.II: gündə 8 saatdan artıq olmayan iş günü, ildə azı 21 təqvim günü ödənişli məzuniyyət."},
+    {"l": 12, "q": "Yardıma möhtac olanlara kömək etmək ilk növbədə kimin borcudur?", "o": ["Onların ailə üzvlərinin", "Dövlətin", "Bələdiyyənin", "Xeyriyyə təşkilatlarının"], "a": 0, "r": "m. 38.II", "e": "Maddə 38.II."},
+    {"l": 12, "q": "İnsanların həyatı və sağlamlığı üçün təhlükəli faktları gizlədən vəzifəli şəxslər barədə Konstitusiya nə deyir?", "o": ["Qanun əsasında məsuliyyətə cəlb edilirlər", "Yalnız xəbərdarlıq alırlar", "Məsuliyyət daşımırlar", "Yalnız işdən çıxarılırlar"], "a": 0, "r": "m. 41.III", "e": "Maddə 41.III."},
+
+    {"l": 13, "q": "Dövlət hansı təhsili pulsuz və icbari təmin edir?", "o": ["Ümumi orta təhsili", "Ali təhsili", "Peşə təhsilini", "Məktəbəqədər təhsili"], "a": 0, "r": "m. 42.II", "e": "Maddə 42.II."},
+    {"l": 13, "q": "Şəxsin üzərində tibbi və elmi təcrübələr hansı şərtlə aparıla bilər?", "o": ["Yalnız onun könüllü razılığı ilə", "Həkimin qərarı ilə", "Məhkəmənin qərarı ilə", "Heç vaxt"], "a": 0, "r": "m. 46.III", "e": "Maddə 46.III."},
+    {"l": 13, "q": "Heç kəs milli mənsubiyyətini dəyişdirməyə məcbur edilə bilərmi?", "o": ["Xeyr", "Bəli, qanunla", "Yalnız vətəndaşlıq dəyişdikdə", "Yalnız məhkəmə qərarı ilə"], "a": 0, "r": "m. 44.II", "e": "Maddə 44.II."},
+
+    {"l": 14, "q": "Kütləvi informasiya vasitələrində dövlət senzurası barədə Konstitusiya nə müəyyən edir?", "o": ["Qadağandır", "Fövqəladə vəziyyətdə məcburidir", "Yalnız televiziyada tətbiq olunur", "Qanunla tənzimlənir"], "a": 0, "r": "m. 50.II", "e": "Maddə 50.II."},
+    {"l": 14, "q": "Yığıncaq və mitinq keçirmək üçün hansı şərt var?", "o": ["Dövlət orqanlarını qabaqcadan xəbərdar etmək, dinc və silahsız olmaq", "Prezidentin icazəsi", "Bələdiyyənin razılığı və ödəniş", "Heç bir şərt yoxdur"], "a": 0, "r": "m. 49.II", "e": "Maddə 49.II."},
+    {"l": 14, "q": "Dini etiqad hüquq pozuntusuna bəraət qazandırırmı?", "o": ["Xeyr", "Bəli", "Yalnız ibadət zamanı", "Yalnız rəsmi dinlər üçün"], "a": 0, "r": "m. 48.IV", "e": "Maddə 48.IV."},
+
+    {"l": 15, "q": "Azərbaycan Respublikasının vətəndaşı xarici dövlətə verilə bilərmi?", "o": ["Heç bir halda", "Bəli, beynəlxalq müqavilə ilə", "Bəli, məhkəmə qərarı ilə", "Yalnız ağır cinayətə görə"], "a": 0, "r": "m. 53.II", "e": "Maddə 53.II."},
+    {"l": 15, "q": "Kimin seçkilərdə və referendumda iştirak etmək hüququ yoxdur?", "o": ["Məhkəmənin qərarı ilə fəaliyyət qabiliyyətsizliyi təsdiq olunmuş şəxslərin", "Hərbi qulluqçuların", "Din xadimlərinin", "Hakimlərin"], "a": 0, "r": "m. 56.II", "e": "Maddə 56.II; hərbi qulluqçuların, hakimlərin, din xadimlərinin isə seçilmək hüququ məhdudlaşdırıla bilər (56.III)."},
+    {"l": 15, "q": "Dövlət çevrilişinə müstəqil müqavimət göstərmək barədə Konstitusiya nə deyir?", "o": ["Hər bir vətəndaşın hüququdur", "Qadağandır", "Yalnız hərbçilərin vəzifəsidir", "Yalnız polisin səlahiyyətidir"], "a": 0, "r": "m. 54.II", "e": "Maddə 54.II."},
+
+    {"l": 16, "q": "Hərbi qulluqçular müraciət hüququndan necə istifadə edə bilərlər?", "o": ["Yalnız fərdi qaydada", "Yalnız kollektiv qaydada", "Ümumiyyətlə istifadə edə bilməzlər", "Yalnız komandir vasitəsilə"], "a": 0, "r": "m. 57.I", "e": "Maddə 57.I."},
+    {"l": 16, "q": "Konstitusiya və qanunları pozan birliklərin fəaliyyətinə necə xitam verilə bilər?", "o": ["Yalnız məhkəmə qaydasında", "Ədliyyə Nazirliyinin qərarı ilə", "Prezidentin fərmanı ilə", "Prokurorun qərarı ilə"], "a": 0, "r": "m. 58.IV", "e": "Maddə 58.IV."},
+    {"l": 16, "q": "Təhqir və böhtan tənqid sayıla bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız mətbuatda", "Yalnız siyasətçilərə münasibətdə"], "a": 0, "r": "m. 57.II", "e": "Maddə 57.II: tənqidə görə təqib qadağandır, təhqir və böhtan tənqid sayılmır."},
+
+    {"l": 17, "q": "Cinayətdə təqsirləndirilən şəxs öz təqsirsizliyini sübuta yetirməyə borcludurmu?", "o": ["Xeyr", "Bəli", "Yalnız ağır cinayətlərdə", "Yalnız məhkəmədə"], "a": 0, "r": "m. 63.III", "e": "Maddə 63.III."},
+    {"l": 17, "q": "Şəxs nə vaxtdan müdafiəçinin köməyindən istifadə etmək hüququna malikdir?", "o": ["Tutulduğu, həbsə alındığı, ittiham olunduğu andan", "Məhkəmə prosesi başlayandan", "Hökm çıxarıldıqdan sonra", "İstintaq bitəndən sonra"], "a": 0, "r": "m. 61.III", "e": "Maddə 61.III."},
+    {"l": 17, "q": "Şəxsin razılığı olmadan onun işinə başqa məhkəmədə baxıla bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız Ali Məhkəmənin qərarı ilə", "Yalnız prokurorun tələbi ilə"], "a": 0, "r": "m. 62", "e": "Maddə 62."},
+
+    {"l": 18, "q": "Kim özünə, həyat yoldaşına, övladlarına, valideynlərinə, qardaş və bacısına qarşı ifadə verməyə məcbur edilə bilər?", "o": ["Heç kim", "Yalnız hərbi qulluqçular", "Yalnız ağır cinayət işlərində hər kəs", "Məhkəmənin qərarı ilə hər kəs"], "a": 0, "r": "m. 66", "e": "Maddə 66."},
+    {"l": 18, "q": "Dövlət orqanlarının qanuna zidd hərəkətləri nəticəsində vurulmuş zərəri kim ödəyir?", "o": ["Dövlət", "Yalnız vəzifəli şəxs", "Sığorta şirkəti", "Zərər ödənilmir"], "a": 0, "r": "m. 68.III", "e": "Maddə 68.III."},
+    {"l": 18, "q": "Cinayətdə təqsirləndirilən şəxs məhkum edilməzdən əvvəl nə edilməlidir?", "o": ["Dinlənilməlidir", "Psixoloji ekspertizadan keçirilməlidir", "Mütləq həbs edilməlidir", "Əfv ərizəsi yazmalıdır"], "a": 0, "r": "m. 67.II", "e": "Maddə 67.II."},
+
+    {"l": 19, "q": "Siyasi əqidəsinə görə təqib edilən şəxslərin başqa dövlətə verilməsinə yol verilirmi?", "o": ["Xeyr", "Bəli", "Yalnız beynəlxalq müqavilə ilə", "Yalnız Prezidentin qərarı ilə"], "a": 0, "r": "m. 70.II", "e": "Maddə 70.II."},
+    {"l": 19, "q": "Hüquq pozuntusundan sonra yeni qanun məsuliyyəti yüngülləşdirmişsə, hansı qanun tətbiq edilir?", "o": ["Yeni qanun", "Köhnə qanun", "Hakimin seçdiyi qanun", "Hər ikisi"], "a": 0, "r": "m. 71.VIII", "e": "Maddə 71.VIII."},
+    {"l": 19, "q": "Müharibə və fövqəladə vəziyyətdə hüquq və azadlıqlar necə məhdudlaşdırıla bilər?", "o": ["Beynəlxalq öhdəliklər nəzərə alınmaqla qismən və müvəqqəti", "Tamamilə və müddətsiz", "Heç vaxt məhdudlaşdırıla bilməz", "Yalnız vətəndaşlar üçün tamamilə"], "a": 0, "r": "m. 71.III", "e": "Maddə 71.III."}
+  ]
+}

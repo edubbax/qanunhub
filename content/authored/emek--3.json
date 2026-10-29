@@ -1,0 +1,42 @@
+{
+  "questions": [
+    {"l": 21, "q": "Natamam iş vaxtı necə müəyyən edilir?", "o": ["İşçi ilə işəgötürənin qarşılıqlı razılığı ilə", "Yalnız işəgötürənin əmri ilə", "Yalnız həmkarlar ittifaqının qərarı ilə", "Yalnız tibbi rəy əsasında"], "a": 0, "r": "m. 94.1", "e": "Maddə 94, 1-ci hissə; 3-cü hissədəki hallarda isə işəgötürən natamam iş vaxtı müəyyən etməyə borcludur."},
+    {"l": 21, "q": "İşçinin bir iş günü ilə növbəti iş günü arasındakı gündəlik istirahət vaxtı ən azı nə qədər olmalıdır?", "o": ["12 saat", "8 saat", "10 saat", "14 saat"], "a": 0, "r": "m. 103.4", "e": "Maddə 103, 4-cü hissə."},
+    {"l": 21, "q": "İstirahət və nahar fasilələrinin müddəti iş vaxtına daxil edilirmi?", "o": ["Xeyr", "Bəli", "Yalnız yarısı daxil edilir", "Yalnız növbəli işdə daxil edilir"], "a": 0, "r": "m. 103.5", "e": "Maddə 103, 5-ci hissə."},
+
+    {"l": 22, "q": "Beşgünlük iş həftəsində həftələrarası istirahət günlərinin sayı neçədir?", "o": ["İki gün", "Bir gün", "Üç gün", "Bir yarım gün"], "a": 0, "r": "m. 104.1", "e": "Maddə 104, 1-ci hissə: beşgünlükdə iki, altıgünlükdə bir gün."},
+    {"l": 22, "q": "Qanı pulsuz verən donora nə verilir?", "o": ["Orta əməkhaqqı saxlanılmaqla əlavə istirahət günü", "Birdəfəlik pul mükafatı", "Əlavə 5 gün məzuniyyət", "Heç nə"], "a": 0, "r": "m. 104.3", "e": "Maddə 104, 3-cü hissə: həmin gün illik məzuniyyətə əlavə edilə və ya il ərzində istifadə edilə bilər."},
+
+    {"l": 23, "q": "Novruz bayramı neçə gün qeyd edilir?", "o": ["Beş gün", "İki gün", "Üç gün", "Dörd gün"], "a": 0, "r": "m. 105.1", "e": "Maddə 105: Novruz — beş gün; Qurban və Ramazan — iki gün."},
+    {"l": 23, "q": "Zəfər Günü hansı tarixdə qeyd edilir?", "o": ["Noyabrın 8-i", "Noyabrın 9-u", "Oktyabrın 18-i", "Noyabrın 12-si"], "a": 0, "r": "m. 105.1", "e": "Maddə 105, 1-ci hissə."},
+    {"l": 23, "q": "Aşağıdakı bayramlardan hansı iş günü hesab edilir (iş günü sayılmayan günlər siyahısında yoxdur)?", "o": ["Konstitusiya günü", "Müstəqillik Günü", "Dövlət bayrağı günü", "Zəfər Günü"], "a": 0, "r": "m. 105.2", "e": "Maddə 105, 2-ci hissədəki siyahıda Konstitusiya günü, Müstəqilliyin Bərpası Günü və Milli Dirçəliş günü yoxdur."},
+    {"l": 23, "q": "Həftələrarası istirahət günü iş günü sayılmayan bayram günü ilə üst-üstə düşərsə, nə olur?", "o": ["İstirahət günü bayramdan sonrakı iş gününə keçirilir", "Heç bir dəyişiklik olmur", "Əvvəlki iş günü istirahət günü olur", "Bayram təxirə salınır"], "a": 0, "r": "m. 105.5", "e": "Maddə 105, 5-ci hissə."},
+
+    {"l": 24, "q": "Ümumxalq hüzn günü hansı tarixdir?", "o": ["Yanvarın 20-si", "Sentyabrın 27-si", "Fevralın 26-sı", "Martın 31-i"], "a": 0, "r": "m. 106", "e": "Maddə 106: 20 Yanvar iş günü hesab edilmir. Sentyabrın 27-si Anım Günüdür (m. 106-1)."},
+    {"l": 24, "q": "İş günü sayılmayan bayram və ümumxalq hüzn günü qabağı iş gününün müddəti nə qədər qısaldılır?", "o": ["Bir saat", "İki saat", "Yarım saat", "Qısaldılmır"], "a": 0, "r": "m. 108.1", "e": "Maddə 108, 1-ci hissə."},
+    {"l": 24, "q": "Seçki və referendum zamanı səsvermə günü seçki keçirilən ərazidə iş günü hesab edilirmi?", "o": ["Xeyr", "Bəli", "Yalnız dövlət orqanlarında iş günüdür", "Yalnız yarım gün iş günüdür"], "a": 0, "r": "m. 105-1", "e": "Maddə 105-1."},
+
+    {"l": 25, "q": "Məzuniyyətdə olan işçinin intizam məsuliyyətinə cəlb edilməsi mümkündürmü?", "o": ["Xeyr, yolverilməzdir", "Bəli", "Yalnız kobud pozuntu olduqda", "Yalnız həmkarlar ittifaqının razılığı ilə"], "a": 0, "r": "m. 111.1", "e": "Maddə 111, 1-ci hissə."},
+    {"l": 25, "q": "Aşağıdakılardan hansı Əmək Məcəlləsində nəzərdə tutulmuş məzuniyyət növü deyil?", "o": ["Mükafat məzuniyyəti", "Əmək məzuniyyəti", "Sosial məzuniyyət", "Ödənişsiz məzuniyyət"], "a": 0, "r": "m. 112.1", "e": "Maddə 112: əmək, sosial, təhsil və yaradıcılıq, ödənişsiz məzuniyyətlər."},
+    {"l": 25, "q": "Əlavə iş yerində əvəzçiliklə işləyənlərin məzuniyyət hüququ varmı?", "o": ["Bəli, var", "Xeyr", "Yalnız ödənişsiz məzuniyyət hüququ var", "Yalnız əsas iş yerində işləmirsə"], "a": 0, "r": "m. 110.2", "e": "Maddə 110, 2-ci hissə."},
+
+    {"l": 26, "q": "Əmək məzuniyyətinin müddəti necə hesablanır?", "o": ["Təqvim günü ilə", "İş günü ilə", "Saatla", "Həftə ilə"], "a": 0, "r": "m. 113.1", "e": "Maddə 113, 1-ci hissə."},
+    {"l": 26, "q": "İş ili nə vaxt başlanır?", "o": ["İşçinin işə götürüldüyü gündən", "Yanvarın 1-dən", "Sınaq müddəti bitəndən", "İlk məzuniyyətdən sonra"], "a": 0, "r": "m. 113.3", "e": "Maddə 113, 3-cü hissə."},
+    {"l": 26, "q": "Bir iş ilinə görə neçə əmək məzuniyyəti verilə bilər?", "o": ["Yalnız bir", "İki", "Üç", "Məhdudiyyət yoxdur"], "a": 0, "r": "m. 113.3", "e": "Maddə 113, 3-cü hissə."},
+
+    {"l": 27, "q": "Ödənişli əsas məzuniyyət ən azı neçə təqvim günü olmalıdır?", "o": ["21", "30", "18", "28"], "a": 0, "r": "m. 114.2", "e": "Maddə 114, 2-ci hissə."},
+    {"l": 27, "q": "Aşağıdakılardan hansına ödənişli əsas məzuniyyət 30 təqvim günü verilməlidir?", "o": ["Həkimlərə", "Ticarət müəssisəsinin satıcısına", "Ofis köməkçisinə", "Sürücüyə"], "a": 0, "r": "m. 114.3 (e)", "e": "Maddə 114, 3-cü hissə: kənd təsərrüfatı işçiləri, məsul vəzifəli dövlət qulluqçuları, rəhbər işçilər, elmi işçilər, həkimlər, orta tibb işçiləri, əczaçılar və s."},
+    {"l": 27, "q": "Məzuniyyət dövrünə düşən iş günü hesab olunmayan bayram günləri məzuniyyətə daxil edilirmi?", "o": ["Xeyr, daxil edilmir və ödənilmir", "Bəli, daxil edilir", "Daxil edilir, lakin ödənilmir", "Yalnız Novruz bayramı daxil edilir"], "a": 0, "r": "m. 114.6", "e": "Maddə 114, 6-cı hissə."},
+
+    {"l": 28, "q": "On beş ildən çox əmək stajı olan işçiyə staja görə əlavə məzuniyyət neçə gündür?", "o": ["6 təqvim günü", "4 təqvim günü", "2 təqvim günü", "8 təqvim günü"], "a": 0, "r": "m. 116.1", "e": "Maddə 116: 5–10 il — 2, 10–15 il — 4, 15 ildən çox — 6 gün."},
+    {"l": 28, "q": "14 yaşınadək üç uşağı olan qadına əlavə məzuniyyət neçə gün verilir?", "o": ["5 təqvim günü", "2 təqvim günü", "3 təqvim günü", "7 təqvim günü"], "a": 0, "r": "m. 117.1", "e": "Maddə 117: iki uşaq — 2 gün; üç və daha çox uşaq və ya əlilliyi olan uşaq — 5 gün."},
+    {"l": 28, "q": "Əmək şəraitinə görə əlavə məzuniyyətin müddəti ən azı neçə gün olmalıdır?", "o": ["6 təqvim günü", "2 təqvim günü", "10 təqvim günü", "4 təqvim günü"], "a": 0, "r": "m. 115.1", "e": "Maddə 115, 1-ci hissə."},
+
+    {"l": 29, "q": "16 yaşı tamam olmayan işçilərə əmək məzuniyyəti ən azı neçə gün verilir?", "o": ["42 təqvim günü", "35 təqvim günü", "30 təqvim günü", "46 təqvim günü"], "a": 0, "r": "m. 119.1", "e": "Maddə 119: 16 yaşadək — 42, 16–18 yaş — 35, əlilliyi olan işçilər — 42 gün."},
+    {"l": 29, "q": "Vətən Müharibəsi Qəhrəmanlarına əmək məzuniyyəti ən azı neçə gün verilir?", "o": ["46 təqvim günü", "42 təqvim günü", "35 təqvim günü", "30 təqvim günü"], "a": 0, "r": "m. 120", "e": "Maddə 120."},
+
+    {"l": 30, "q": "Fəlsəfə doktoru dissertasiyasını tamamlamaq üçün nə qədər ödənişli yaradıcılıq məzuniyyəti verilir?", "o": ["İki təqvim ayınadək", "Üç təqvim ayınadək", "Bir təqvim ayınadək", "Altı ayadək"], "a": 0, "r": "m. 122.2", "e": "Maddə 122: fəlsəfə doktoru — 2 ayadək; elmlər doktoru — 3 ayadək."},
+    {"l": 30, "q": "İşləməklə yanaşı doktoranturada təhsil alan işçilərə hər tədris ilində nə qədər ödənişli məzuniyyət verilir?", "o": ["30 təqvim günü", "21 təqvim günü", "15 təqvim günü", "45 təqvim günü"], "a": 0, "r": "m. 122.3", "e": "Maddə 122, 3-cü hissə."},
+    {"l": 30, "q": "Ödənişli təhsil məzuniyyəti müddətində işçiyə nə ödənilir?", "o": ["Orta əmək haqqı", "Minimum əmək haqqı", "Əmək haqqının yarısı", "Heç nə"], "a": 0, "r": "m. 123.2", "e": "Maddə 123, 2-ci hissə."}
+  ]
+}

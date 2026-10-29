@@ -1,0 +1,48 @@
+{
+  "sections": [
+    {"from": 1, "title": "Ümumi müddəalar"},
+    {"from": 3, "title": "Əmək müqaviləsinin bağlanması"},
+    {"from": 9, "title": "Əmək müqaviləsinə xitam"},
+    {"from": 19, "title": "İş vaxtı və istirahət vaxtı"},
+    {"from": 26, "title": "Məzuniyyətlər"},
+    {"from": 36, "title": "Əmək haqqı, təminatlar və intizam"}
+  ],
+  "questions": [
+    {"l": 1, "q": "Əmək Məcəlləsi aşağıdakılardan hansına şamil edilir?", "o": ["Nazirlikdə kargüzar işləyən şəxsə", "Hərbi qulluqçulara", "Məhkəmə hakimlərinə", "Milli Məclisin deputatlarına"], "a": 0, "r": "m. 6", "e": "Maddə 6: Məcəllə hərbi qulluqçulara, hakimlərə, deputatlara və bələdiyyələrə seçilmiş şəxslərə, xarici hüquqi şəxslə xaricdə müqavilə bağlamış əcnəbilərə və mülki-hüquqi müqavilə ilə işləyənlərə şamil edilmir."},
+    {"l": 1, "q": "Podrat, tapşırıq, komisyon müqaviləsi ilə iş görən şəxslərə Əmək Məcəlləsi şamil edilirmi?", "o": ["Xeyr, şamil edilmir", "Bəli, tam şamil edilir", "Yalnız məzuniyyət hissəsində", "Yalnız müqavilə 1 ildən uzun olduqda"], "a": 0, "r": "m. 6 (d)", "e": "Maddə 6 «d» bəndi."},
+    {"l": 1, "q": "Bələdiyyələrə seçilmiş şəxslərə Əmək Məcəlləsi şamil edilirmi?", "o": ["Xeyr", "Bəli", "Yalnız bələdiyyə sədrinə", "Yalnız ödənişli işləyənlərə"], "a": 0, "r": "m. 6 (c)", "e": "Maddə 6 «c» bəndi."},
+
+    {"l": 2, "q": "Ümumi qaydaya görə əmək münasibətləri nə vaxt yaranır?", "o": ["Əmək müqaviləsi elektron informasiya sistemində elektron sənəd formasında bağlandıqda", "İşçi işə faktiki başladıqda", "Şifahi razılaşma əldə edildikdə", "İşçi ərizə verdikdə"], "a": 0, "r": "m. 7.2", "e": "Maddə 7, 2-ci hissə; siyahısı təsdiq edilmiş dövlət orqanlarında isə kağız üzərində yazılı müqavilə ilə (2-1)."},
+    {"l": 2, "q": "Əmək müqaviləsinə işçinin hüquqlarını qanunvericiliyə nisbətən məhdudlaşdıran şərtlərin daxil edilməsi mümkündürmü?", "o": ["Xeyr, yolverilməzdir; dəyən ziyan işəgötürən tərəfindən tam ödənilir", "Bəli, tərəflərin razılığı ilə", "Bəli, kollektiv müqavilə ilə", "Yalnız müddətli müqavilələrdə"], "a": 0, "r": "m. 7.3", "e": "Maddə 7, 3-cü hissə."},
+    {"l": 2, "q": "Hansı halda tərəflər arasındakı münasibət əmək münasibəti sayılır və mülki-hüquqi müqavilə ilə rəsmiləşdirilə bilməz?", "o": ["Münasibət işəgötürənin əsas fəaliyyət sahəsinə aid işlərin yerinə yetirilməsi ilə bağlı yarandıqda", "Birdəfəlik podrat işi görüldükdə", "Müəlliflik əsəri sifariş edildikdə", "Komisyon müqaviləsi bağlandıqda"], "a": 0, "r": "m. 7.2-3.4", "e": "Maddə 7, 2-3.4-cü hissə."},
+
+    {"l": 3, "q": "Neçə yaşına çatmış şəxs işçi kimi əmək müqaviləsinin tərəfi ola bilər?", "o": ["15", "16", "18", "14"], "a": 0, "r": "m. 42.3", "e": "Qanun: «On beş yaşına çatmış hər bir şəxs işçi kimi əmək müqaviləsinin tərəfi ola bilər.»"},
+    {"l": 3, "q": "Tam fəaliyyət qabiliyyəti olmayan şəxs işəgötürən ola bilərmi?", "o": ["Xeyr", "Bəli", "Valideynin razılığı ilə", "Yalnız fərdi sahibkar kimi"], "a": 0, "r": "m. 42.4", "e": "Qanun: «Tam fəaliyyət qabiliyyəti olmayan şəxs işəgötürən ola bilməz.»"},
+
+    {"l": 4, "q": "Əmək müqaviləsinin şərtləri birtərəfli qaydada dəyişdirilə bilərmi?", "o": ["Məcəllədə başqa hal nəzərdə tutulmayıbsa, xeyr", "Bəli, işəgötürən istənilən vaxt dəyişə bilər", "Bəli, işçi istənilən vaxt dəyişə bilər", "Yalnız əmək haqqı hissəsində"], "a": 0, "r": "m. 43.4", "e": "Maddə 43, 4-cü hissə."},
+    {"l": 4, "q": "Aşağıdakılardan hansı əmək müqaviləsində mütləq göstərilməli olan şərtlərə aid deyil?", "o": ["İşçinin ailə vəziyyəti", "İşçinin FİN-i", "Əmək müqaviləsinin müddəti", "İşçinin əmək funksiyası"], "a": 0, "r": "m. 43.2", "e": "Maddə 43, 2-ci hissə əsas şərtləri sadalayır; ailə vəziyyəti onların arasında yoxdur."},
+
+    {"l": 5, "q": "Əmək müqaviləsində müddət göstərilməyibsə, o necə hesab edilir?", "o": ["Müddətsiz bağlanmış", "1 il müddətinə bağlanmış", "Etibarsız", "Sınaq müddətinə bağlanmış"], "a": 0, "r": "m. 45.2", "e": "Maddə 45, 2-ci hissə."},
+    {"l": 5, "q": "Müddətli əmək müqaviləsi fasiləsiz olaraq neçə ildən artıq davam edərsə, müddətsiz hesab edilir?", "o": ["5 il", "3 il", "2 il", "10 il"], "a": 0, "r": "m. 45.5", "e": "Maddə 45, 5-ci hissə."},
+    {"l": 5, "q": "Kağız daşıyıcıda bağlanan əmək müqaviləsi ən azı neçə nüsxədə tərtib olunur?", "o": ["İki", "Bir", "Üç", "Dörd"], "a": 0, "r": "m. 44.3", "e": "Maddə 44, 3-cü hissə: bir nüsxə işçidə, digəri işəgötürəndə saxlanılır."},
+
+    {"l": 6, "q": "15 yaşına çatmamış şəxslə bağlanılan əmək müqaviləsinin hüquqi nəticəsi nədir?", "o": ["Etibarsız sayılır, işəgötürən inzibati məsuliyyətə cəlb edilir", "Valideynin razılığı ilə etibarlıdır", "Etibarlıdır, lakin iş vaxtı qısaldılır", "Müddətli müqavilə kimi etibarlıdır"], "a": 0, "r": "m. 46.4", "e": "Maddə 46, 4-cü hissə."},
+    {"l": 6, "q": "15–18 yaşlı şəxslə əmək müqaviləsi bağlanarkən nə tələb olunur?", "o": ["Valideynlərindən (övladlığa götürənlərdən, qəyyumlardan) birinin yazılı razılığı", "Notarial təsdiq", "Məhkəmənin qərarı", "Heç bir əlavə şərt"], "a": 0, "r": "m. 46.4", "e": "Maddə 46, 4-cü hissə."},
+    {"l": 6, "q": "Əmək müqaviləsinə dəyişikliklər necə edilir?", "o": ["Yalnız tərəflərin razılığı ilə", "İşəgötürənin əmri ilə", "Həmkarlar ittifaqının qərarı ilə", "Avtomatik olaraq hər il"], "a": 0, "r": "m. 46.6", "e": "Maddə 46, 6-cı hissə."},
+
+    {"l": 7, "q": "Əmək müqaviləsinin bağlanması işçinin yaşayış yerində qeydiyyatının olması ilə şərtləndirilə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız dövlət orqanlarında", "Yalnız əcnəbilər üçün"], "a": 0, "r": "m. 48.2", "e": "Maddə 48, 2-ci hissə."},
+    {"l": 7, "q": "Qida sənayesi, ictimai iaşə, səhiyyə və ticarətdə əmək müqaviləsi bağlanarkən işçi əlavə olaraq nə təqdim etməlidir?", "o": ["Sağlamlığı haqqında tibbi arayış", "Məhkumluğun olmaması barədə arayış", "Hərbi bilet", "Bank hesabından çıxarış"], "a": 0, "r": "m. 48.5", "e": "Maddə 48, 5-ci hissə."},
+    {"l": 7, "q": "İşçidən dövlət informasiya sistemlərindən əldə edilməsi mümkün olan əlavə sənədlərin tələb edilməsi barədə hansı qayda var?", "o": ["Qadağandır", "İcazə verilir", "Yalnız dövlət orqanlarında icazə verilir", "Yalnız işçinin razılığı ilə icazə verilir"], "a": 0, "r": "m. 48.6", "e": "Maddə 48, 6-cı hissə."},
+
+    {"l": 8, "q": "Elektron formada bağlanan əmək müqaviləsi nə vaxt hüquqi qüvvəyə minir?", "o": ["Tərəflərin gücləndirilmiş elektron imzası ilə son imzalanma tarixindən", "İşçi işə başladığı gündən", "Müqavilə çap edildiyi gündən", "Vergi orqanına təqdim edildiyi gündən"], "a": 0, "r": "m. 49.1", "e": "Maddə 49, 1-ci hissə."},
+    {"l": 8, "q": "Kağız daşıyıcıda bağlanmış əmək müqaviləsi (başqa hal nəzərdə tutulmayıbsa) nə vaxt qüvvəyə minir?", "o": ["Tərəflərin imzaladığı gündən", "Növbəti aydan", "İşəgötürənin əmrindən 3 gün sonra", "Qeydiyyatdan keçdiyi gündən"], "a": 0, "r": "m. 49.3", "e": "Maddə 49, 3-cü hissə."},
+    {"l": 8, "q": "Əmək müqaviləsinə xitam tarixi xitam barədə əmrin imzalandığı tarixdən əvvəlki tarixə müəyyən edilə bilərmi (istisnalar nəzərə alınmadan)?", "o": ["Xeyr", "Bəli, 1 ayadək", "Bəli, məhdudiyyətsiz", "Yalnız işçinin razılığı ilə"], "a": 0, "r": "m. 49.5", "e": "Maddə 49, 5-ci hissə."},
+
+    {"l": 9, "q": "Aşağıdakılardan hansı əmək müqaviləsinə xitam verilməsinin əsaslarına aid deyil?", "o": ["İşəgötürənin rəhbərinin dəyişməsi", "Tərəflərdən birinin təşəbbüsü", "Əmək müqaviləsinin müddətinin qurtarması", "Tərəflərin iradəsindən asılı olmayan hallar"], "a": 0, "r": "m. 68.2", "e": "Maddə 68, 2-ci hissə əsasları sadalayır; rəhbərin dəyişməsi əsas deyil (mülkiyyətçinin dəyişməsi isə məhdud hallarda əsasdır)."},
+    {"l": 9, "q": "Əmək müqaviləsinə hansı əsaslarla xitam verilə bilər?", "o": ["Yalnız Əmək Məcəlləsi ilə müəyyən edilmiş əsaslarla və qaydada", "İşəgötürənin müəyyən etdiyi istənilən əsasla", "Kollektivin qərarı ilə", "Yalnız məhkəmə qərarı ilə"], "a": 0, "r": "m. 68.1", "e": "Maddə 68, 1-ci hissə."},
+
+    {"l": 10, "q": "İşçi əmək müqaviləsini ləğv etmək üçün işəgötürəni nə qədər əvvəl xəbərdar etməlidir?", "o": ["Bir təqvim ayı", "İki həftə", "Üç gün", "İki ay"], "a": 0, "r": "m. 69.1", "e": "Maddə 69, 1-ci hissə."},
+    {"l": 10, "q": "Hansı halda işçinin müqaviləsi ərizəsində göstərdiyi gün ləğv edilə bilər?", "o": ["Seksual qısnamaya məruz qaldıqda", "Başqa şəhərdə məzuniyyətə getmək istədikdə", "Əmək haqqından narazı olduqda", "Rəhbərlə mübahisə etdikdə"], "a": 0, "r": "m. 69.3", "e": "Maddə 69, 3-cü hissə: pensiyaya çıxma, təhsil müəssisəsinə daxil olma, yeni yerə köçmə, başqa işəgötürənlə razılıq, seksual qısnama və s."},
+    {"l": 10, "q": "İşçi ləğv barədə ərizəsini nə vaxta qədər geri götürə bilər?", "o": ["Xəbərdarlıq müddəti bitənədək (işəgötürən yeni işçi götürülməsi barədə xəbərdarlıq etməyibsə)", "Ərizə verildiyi gün", "Müqavilə ləğv edildikdən sonra 1 ay ərzində", "Geri götürə bilməz"], "a": 0, "r": "m. 69.4", "e": "Maddə 69, 4-cü hissə."}
+  ]
+}

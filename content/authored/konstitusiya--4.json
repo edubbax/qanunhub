@@ -1,0 +1,39 @@
+{
+  "questions": [
+    {"l": 31, "q": "Azərbaycan Respublikasının Prezidenti neçə il müddətinə seçilir?", "o": ["7 il", "5 il", "4 il", "6 il"], "a": 0, "r": "m. 101.I", "e": "Maddə 101.I."},
+    {"l": 31, "q": "Prezidentliyə namizəd Azərbaycan ərazisində ən azı neçə ildən artıq daimi yaşamalıdır?", "o": ["10 il", "5 il", "15 il", "20 il"], "a": 0, "r": "m. 100", "e": "Maddə 100: 10 ildən artıq daimi yaşayan, ali təhsilli, ikili vətəndaşlığı olmayan və s."},
+    {"l": 31, "q": "Prezident seçkilərinin yekunlarını kim rəsmən elan edir?", "o": ["Konstitusiya Məhkəməsi — 14 gün ərzində", "Mərkəzi Seçki Komissiyası — 7 gün ərzində", "Milli Məclis — 30 gün ərzində", "Ali Məhkəmə — 10 gün ərzində"], "a": 0, "r": "m. 102", "e": "Maddə 102."},
+    {"l": 31, "q": "Prezident seçilmiş şəxs nəticələr elan olunduqdan sonra neçə gün ərzində and içir?", "o": ["3 gün", "7 gün", "10 gün", "1 gün"], "a": 0, "r": "m. 103.I", "e": "Maddə 103.I: and Konstitusiya Məhkəməsi hakimlərinin iştirakı ilə içilir."},
+
+    {"l": 32, "q": "Birinci vitse-prezident və vitse-prezidentlər necə vəzifəyə gəlir?", "o": ["Prezident tərəfindən təyin edilir", "Xalq tərəfindən seçilir", "Milli Məclis tərəfindən seçilir", "Konstitusiya Məhkəməsi tərəfindən təsdiq edilir"], "a": 0, "r": "m. 103-1.I", "e": "Maddə 103-1.I."},
+    {"l": 32, "q": "Prezident istefa verdikdə istefa ərizəsi hara təqdim olunur?", "o": ["Konstitusiya Məhkəməsinə", "Milli Məclisə", "Mərkəzi Seçki Komissiyasına", "Ali Məhkəməyə"], "a": 0, "r": "m. 104.II", "e": "Maddə 104.II."},
+    {"l": 32, "q": "Prezidentin səhhətinə görə səlahiyyətlərini icra edə bilməməsi faktını Konstitusiya Məhkəməsi neçə hakimin səs çoxluğu ilə təsdiq edir?", "o": ["6", "5", "9", "7"], "a": 0, "r": "m. 104.III", "e": "Maddə 104.III."},
+
+    {"l": 33, "q": "Prezident vaxtından əvvəl vəzifədən getdikdə növbədənkənar seçkilər neçə gün ərzində keçirilir?", "o": ["60 gün", "90 gün", "30 gün", "120 gün"], "a": 0, "r": "m. 105.I", "e": "Maddə 105.I."},
+    {"l": 33, "q": "Prezident vaxtından əvvəl vəzifədən getdikdə səlahiyyətlərini ilk növbədə kim icra edir?", "o": ["Birinci vitse-prezident", "Baş nazir", "Milli Məclisin sədri", "Konstitusiya Məhkəməsinin sədri"], "a": 0, "r": "m. 105.I", "e": "Maddə 105: Birinci vitse-prezident → vitse-prezident → Baş nazir → Milli Məclisin sədri."},
+
+    {"l": 34, "q": "Prezidentin vəzifədən kənarlaşdırılması haqqında qərar Milli Məclisdə neçə səs çoxluğu ilə qəbul edilir?", "o": ["95", "83", "63", "125"], "a": 0, "r": "m. 107.II", "e": "Maddə 107.II."},
+    {"l": 34, "q": "Vitse-prezidentin toxunulmazlığına kim xitam verə bilər?", "o": ["Prezident — Baş prokurorun təqdimatı əsasında", "Milli Məclis", "Konstitusiya Məhkəməsi", "Ali Məhkəmə"], "a": 0, "r": "m. 106-1.IV", "e": "Maddə 106-1.IV."},
+    {"l": 34, "q": "Prezidentin vəzifədən kənarlaşdırılması barədə qərar Konstitusiya Məhkəməsinin müraciətindən sonra hansı müddətdə qəbul olunmalıdır?", "o": ["2 ay", "1 ay", "30 gün", "6 ay"], "a": 0, "r": "m. 107.III", "e": "Maddə 107.III: qəbul edilməzsə, ittiham rədd edilmiş sayılır."},
+
+    {"l": 35, "q": "Baş naziri Prezident necə vəzifəyə təyin edir?", "o": ["Milli Məclisin razılığı ilə", "Birbaşa, heç kimin razılığı olmadan", "Konstitusiya Məhkəməsinin razılığı ilə", "Referendum yolu ilə"], "a": 0, "r": "m. 109.4", "e": "Maddə 109, 4-cü bənd."},
+    {"l": 35, "q": "Aşağıdakılardan hansı Prezidentin səlahiyyətidir?", "o": ["Əfv etmək", "Amnistiya elan etmək", "Dövlət büdcəsini təsdiq etmək", "Hakimləri vəzifədən kənarlaşdırmaq"], "a": 0, "r": "m. 109.22", "e": "Maddə 109, 22-ci bənd; amnistiya, büdcənin təsdiqi və hakimlərin kənarlaşdırılması Milli Məclisin səlahiyyətidir."},
+    {"l": 35, "q": "Mərkəzi Bankın sədrini kim təyin edir?", "o": ["Prezident — İdarə Heyətinin üzvləri sırasından", "Milli Məclis", "Nazirlər Kabineti", "Maliyyə naziri"], "a": 0, "r": "m. 109.10", "e": "Maddə 109, 10-cu bənd."},
+
+    {"l": 36, "q": "Prezident qanunları ona təqdim olunduğu gündən neçə gün ərzində imzalayır?", "o": ["56 gün", "14 gün", "30 gün", "60 gün"], "a": 0, "r": "m. 110.I", "e": "Maddə 110.I."},
+    {"l": 36, "q": "Prezident hərbi vəziyyət haqqında fərmanı Milli Məclisin təsdiqinə nə qədər müddətdə verir?", "o": ["24 saat", "48 saat", "3 gün", "7 gün"], "a": 0, "r": "m. 111", "e": "Maddə 111; fövqəladə vəziyyət haqqında fərman da 24 saat ərzində təqdim edilir (m. 112)."},
+    {"l": 36, "q": "Ümumi qaydalar müəyyən etdikdə Prezident hansı aktı qəbul edir?", "o": ["Fərman", "Sərəncam", "Qərar", "Qanun"], "a": 0, "r": "m. 113.I", "e": "Maddə 113.I: ümumi qaydalar — fərman, başqa məsələlər — sərəncam."},
+    {"l": 36, "q": "Prezidentin imzalamadığı Konstitusiya qanunları qüvvəyə minirmi?", "o": ["Xeyr", "Bəli, 95 səslə yenidən qəbul edilərsə", "Bəli, 83 səslə yenidən qəbul edilərsə", "Bəli, 56 gün keçdikdən sonra"], "a": 0, "r": "m. 110.II", "e": "Maddə 110.II."},
+
+    {"l": 37, "q": "Nazirlər Kabineti kimə tabedir və kimin qarşısında cavabdehdir?", "o": ["Prezidentə", "Milli Məclisə", "Baş nazirə", "Konstitusiya Məhkəməsinə"], "a": 0, "r": "m. 114.III", "e": "Maddə 114.III."},
+    {"l": 37, "q": "Milli Məclis Prezidentin təqdim etdiyi namizədlərin Baş nazir təyin olunmasına neçə dəfə razılıq vermədikdə Prezident razılıq olmadan təyin edə bilər?", "o": ["Üç dəfə", "İki dəfə", "Bir dəfə", "Dörd dəfə"], "a": 0, "r": "m. 118.III", "e": "Maddə 118.III."},
+    {"l": 37, "q": "Nazirlər Kabineti nə vaxt Prezidentə istefa verir?", "o": ["Yeni seçilmiş Prezident səlahiyyətlərinin icrasına başladığı gün", "Hər il yanvarın 1-də", "Milli Məclis seçkilərindən sonra", "Baş nazir dəyişdikdə"], "a": 0, "r": "m. 116", "e": "Maddə 116."},
+
+    {"l": 38, "q": "Ümumi qaydalar müəyyən etdikdə Nazirlər Kabineti hansı aktı qəbul edir?", "o": ["Qərar", "Fərman", "Sərəncam", "Əmr"], "a": 0, "r": "m. 120.I", "e": "Maddə 120.I."},
+    {"l": 38, "q": "Dövlət büdcəsinin layihəsini kim hazırlayıb Prezidentə təqdim edir?", "o": ["Nazirlər Kabineti", "Maliyyə Nazirliyi müstəqil olaraq", "Milli Məclis", "Hesablama Palatası"], "a": 0, "r": "m. 119", "e": "Maddə 119."},
+    {"l": 38, "q": "Baş nazirin toxunulmazlığına kim xitam verə bilər?", "o": ["Prezident — Baş prokurorun təqdimatı əsasında", "Milli Məclis", "Ali Məhkəmə", "Konstitusiya Məhkəməsi"], "a": 0, "r": "m. 123.IV", "e": "Maddə 123.IV."},
+
+    {"l": 39, "q": "Yerli icra hakimiyyəti başçılarını kim vəzifəyə təyin və vəzifədən azad edir?", "o": ["Prezident", "Nazirlər Kabineti", "Bələdiyyə", "Milli Məclis"], "a": 0, "r": "m. 124.II", "e": "Maddə 124.II."},
+    {"l": 39, "q": "Yerli icra hakimiyyətlərinin səlahiyyətlərini kim müəyyən edir?", "o": ["Prezident", "Milli Məclis", "Nazirlər Kabineti", "Bələdiyyələr"], "a": 0, "r": "m. 124.III", "e": "Maddə 124.III."}
+  ]
+}

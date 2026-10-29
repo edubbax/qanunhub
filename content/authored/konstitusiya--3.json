@@ -1,0 +1,44 @@
+{
+  "questions": [
+    {"l": 20, "q": "Konstitusiyaya görə qanunu bilməmək məsuliyyətdən azad edirmi?", "o": ["Xeyr", "Bəli", "Yalnız əcnəbiləri azad edir", "Yalnız ilk dəfə azad edir"], "a": 0, "r": "m. 72.III", "e": "Maddə 72.III."},
+    {"l": 20, "q": "Hər kəsin üzərinə vəzifələr nə ilə qoyula bilər?", "o": ["Yalnız Konstitusiya ilə və ya qanunla", "Prezidentin sərəncamı ilə", "Nazirliyin əmri ilə", "Bələdiyyənin qərarı ilə"], "a": 0, "r": "m. 72.I", "e": "Maddə 72.I."},
+    {"l": 20, "q": "Vətəndaşın əqidəsi həqiqi hərbi xidmətə ziddirsə, nəyə yol verilir?", "o": ["Qanunla müəyyən edilmiş hallarda alternativ xidmətə", "Hərbi xidmətdən tam azad olunmaya", "Xaricə getməyə", "Heç nəyə"], "a": 0, "r": "m. 76.II", "e": "Maddə 76.II."},
+
+    {"l": 21, "q": "Heç kəs Konstitusiyaya və qanunlara zidd vəzifələrin icrasına məcbur edilə bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız fövqəladə vəziyyətdə", "Yalnız hərbi qulluqçular"], "a": 0, "r": "m. 79", "e": "Maddə 79."},
+    {"l": 21, "q": "Ətraf mühitin və tarix-mədəniyyət abidələrinin qorunması kimin borcudur?", "o": ["Hər bir şəxsin", "Yalnız dövlətin", "Yalnız bələdiyyələrin", "Yalnız vətəndaşların"], "a": 0, "r": "m. 77, 78", "e": "Maddə 77 və 78."},
+
+    {"l": 22, "q": "Milli Məclis neçə deputatdan ibarətdir?", "o": ["125", "100", "150", "83"], "a": 0, "r": "m. 82", "e": "Maddə 82."},
+    {"l": 22, "q": "Milli Məclisin hər çağırışının səlahiyyət müddəti neçə ildir?", "o": ["5 il", "4 il", "7 il", "6 il"], "a": 0, "r": "m. 84.I", "e": "Maddə 84.I; seçkilər hər 5 ildən bir noyabrın birinci bazar günü keçirilir."},
+    {"l": 22, "q": "Milli Məclisin deputatları hansı seçki sistemi ilə seçilirlər?", "o": ["Majoritar", "Proporsional", "Qarışıq", "Partiya siyahısı"], "a": 0, "r": "m. 83", "e": "Maddə 83."},
+
+    {"l": 23, "q": "Milli Məclis neçə deputatının səlahiyyətləri təsdiq olunduqda səlahiyyətlidir?", "o": ["83", "63", "95", "125"], "a": 0, "r": "m. 87.III", "e": "Maddə 87.III."},
+    {"l": 23, "q": "Milli Məclisin seçkilərinin nəticələrinin düzgünlüyünü kim yoxlayır və təsdiq edir?", "o": ["Konstitusiya Məhkəməsi", "Mərkəzi Seçki Komissiyası", "Ali Məhkəmə", "Prezident"], "a": 0, "r": "m. 86", "e": "Maddə 86."},
+    {"l": 23, "q": "Səlahiyyət müddətinin bitməsinə neçə gündən az qalarsa, deputatlıqdan çıxanların yerinə seçki keçirilmir?", "o": ["120 gün", "90 gün", "180 gün", "60 gün"], "a": 0, "r": "m. 87.II", "e": "Maddə 87.II."},
+
+    {"l": 24, "q": "Milli Məclisin növbədənkənar sessiyasını kim çağırır?", "o": ["Milli Məclisin sədri — Prezidentin və ya 42 deputatın tələbi ilə", "Prezident özü", "Konstitusiya Məhkəməsi", "Baş nazir"], "a": 0, "r": "m. 88.II", "e": "Maddə 88.II."},
+    {"l": 24, "q": "Milli Məclis ildə hansı növbəti sessiyalara yığılır?", "o": ["Yaz və payız", "Qış və yaz", "Yay və payız", "Payız və qış"], "a": 0, "r": "m. 88.I", "e": "Maddə 88.I."},
+    {"l": 24, "q": "Milli Məclisin qapalı iclası kimin tələbi və ya təklifi ilə keçirilə bilər?", "o": ["83 deputatın tələbi və ya Prezidentin təklifi ilə", "42 deputatın tələbi ilə", "Konstitusiya Məhkəməsinin qərarı ilə", "Sədrin qərarı ilə"], "a": 0, "r": "m. 88.IV", "e": "Maddə 88.IV."},
+
+    {"l": 25, "q": "Deputatın toxunulmazlığına kim xitam verir?", "o": ["Milli Məclis — Baş prokurorun təqdimatı əsasında", "Prezident", "Konstitusiya Məhkəməsi", "Ali Məhkəmə"], "a": 0, "r": "m. 90.II", "e": "Maddə 90.II."},
+    {"l": 25, "q": "Deputat cinayət başında yaxalanarsa, onu tutan orqan dərhal kimə xəbər verməlidir?", "o": ["Baş prokurora", "Milli Məclisin sədrinə", "Prezidentə", "Konstitusiya Məhkəməsinə"], "a": 0, "r": "m. 90.I", "e": "Maddə 90.I."},
+    {"l": 25, "q": "Deputat Milli Məclisdəki səsverməyə və söylədiyi fikrə görə məsuliyyətə cəlb oluna bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız toxunulmazlıq götürüləndən sonra", "Yalnız mandat bitəndən sonra"], "a": 0, "r": "m. 91", "e": "Maddə 91."},
+
+    {"l": 26, "q": "Milli Məclis hansı aktları qəbul edir?", "o": ["Konstitusiya qanunları, qanunlar və qərarlar", "Fərmanlar və sərəncamlar", "Qərarlar və sərəncamlar", "Qanunlar və fərmanlar"], "a": 0, "r": "m. 93.I", "e": "Maddə 93.I."},
+    {"l": 26, "q": "Deputatlar səsvermə hüququnu necə həyata keçirirlər?", "o": ["Şəxsən", "Etibarnamə ilə", "Fraksiya rəhbəri vasitəsilə", "Elektron, istənilən şəxs vasitəsilə"], "a": 0, "r": "m. 93.III", "e": "Maddə 93.III."},
+    {"l": 26, "q": "Hesablama Palatasını kim yaradır?", "o": ["Milli Məclis", "Prezident", "Nazirlər Kabineti", "Maliyyə Nazirliyi"], "a": 0, "r": "m. 92", "e": "Maddə 92."},
+
+    {"l": 27, "q": "Prezident seçkiləri, Milli Məclisə seçkilər və referendum haqqında qanunlar neçə səs çoxluğu ilə qəbul edilir?", "o": ["83", "63", "95", "42"], "a": 0, "r": "m. 94.II", "e": "Maddə 94.II: 2, 3, 4-cü bəndlər — 83 səs, qalanları — 63 səs."},
+    {"l": 27, "q": "Dövlət qulluğu, vergilər və əmək münasibətləri haqqında qanunlar neçə səs çoxluğu ilə qəbul edilir?", "o": ["63", "83", "95", "125"], "a": 0, "r": "m. 94.II", "e": "Maddə 94.II."},
+
+    {"l": 28, "q": "Prezidentin impiçment qaydasında vəzifədən kənarlaşdırılması kimin təqdimatına əsasən həyata keçirilir?", "o": ["Konstitusiya Məhkəməsinin", "Baş prokurorun", "Ali Məhkəmənin", "83 deputatın"], "a": 0, "r": "m. 95.I.12", "e": "Maddə 95.I, 12-ci bənd."},
+    {"l": 28, "q": "İnsan hüquqları üzrə müvəkkil (ombudsman) kimin təqdimatı ilə seçilir?", "o": ["Prezidentin təqdimatı ilə Milli Məclis tərəfindən", "Milli Məclisin sədrinin təqdimatı ilə", "Ali Məhkəmənin təqdimatı ilə", "Birbaşa xalq tərəfindən"], "a": 0, "r": "m. 95.I.6", "e": "Maddə 95.I, 6-cı bənd."},
+    {"l": 28, "q": "Amnistiya haqqında qərarı kim qəbul edir?", "o": ["Milli Məclis", "Prezident", "Ali Məhkəmə", "Ədliyyə Nazirliyi"], "a": 0, "r": "m. 95.I.19", "e": "Maddə 95.I, 19-cu bənd; əfv etmə isə Prezidentin səlahiyyətidir."},
+
+    {"l": 29, "q": "Seçki hüququ olan neçə vətəndaşın qanunvericilik təşəbbüsü hüququ var?", "o": ["40 min", "50 min", "20 min", "100 min"], "a": 0, "r": "m. 96.I", "e": "Maddə 96.I."},
+    {"l": 29, "q": "Qanunlar qəbul edildiyi gündən nə qədər müddətdə Prezidentə imzalanmaq üçün təqdim edilir?", "o": ["14 gün", "7 gün", "30 gün", "56 gün"], "a": 0, "r": "m. 97.I", "e": "Maddə 97.I; təcili qanunlar — 24 saat ərzində."},
+    {"l": 29, "q": "Prezidentin təcili elan etdiyi qanun layihəsi neçə gün ərzində səsə qoyulur?", "o": ["20 gün", "2 ay", "14 gün", "10 gün"], "a": 0, "r": "m. 96.V", "e": "Maddə 96: ümumi qayda 2 ay, təcili — 20 gün."},
+
+    {"l": 30, "q": "Milli Məclisin eyni çağırışı bir il ərzində neçə dəfə Nazirlər Kabinetinə etimadsızlıq göstərdikdə Prezident Milli Məclisi buraxa bilər?", "o": ["İki dəfə", "Bir dəfə", "Üç dəfə", "Dörd dəfə"], "a": 0, "r": "m. 98-1.I", "e": "Maddə 98-1.I."},
+    {"l": 30, "q": "Milli Məclisi kim buraxır?", "o": ["Azərbaycan Respublikasının Prezidenti", "Konstitusiya Məhkəməsi", "Milli Məclisin sədri", "Referendum"], "a": 0, "r": "m. 98-1.I", "e": "Maddə 98-1.I."}
+  ]
+}

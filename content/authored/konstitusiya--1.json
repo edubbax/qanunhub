@@ -1,0 +1,43 @@
+{
+  "sections": [
+    {"from": 1, "title": "Xalq hakimiyyəti və dövlətin əsasları"},
+    {"from": 7, "title": "Əsas hüquq və azadlıqlar"},
+    {"from": 20, "title": "Vətəndaşların vəzifələri"},
+    {"from": 22, "title": "Qanunvericilik hakimiyyəti"},
+    {"from": 31, "title": "İcra hakimiyyəti"},
+    {"from": 40, "title": "Məhkəmə hakimiyyəti"},
+    {"from": 45, "title": "Naxçıvan, bələdiyyələr, qanunvericilik sistemi"}
+  ],
+  "questions": [
+    {"l": 1, "q": "Azərbaycan Respublikasında dövlət hakimiyyətinin yeganə mənbəyi kimdir?", "o": ["Azərbaycan xalqı", "Azərbaycan Respublikasının Prezidenti", "Milli Məclis", "Konstitusiya Məhkəməsi"], "a": 0, "r": "m. 1.I", "e": "Konstitusiya: «Azərbaycan Respublikasında dövlət hakimiyyətinin yeganə mənbəyi Azərbaycan xalqıdır.»"},
+    {"l": 1, "q": "Aşağıdakı məsələlərdən hansı yalnız referendumla həll oluna bilər?", "o": ["Dövlət sərhədlərinin dəyişdirilməsi", "Dövlət büdcəsinin qəbulu", "Amnistiya", "Vergilərin müəyyən edilməsi"], "a": 0, "r": "m. 3.II", "e": "Maddə 3.II: Konstitusiyanın qəbulu və ona dəyişikliklər, dövlət sərhədlərinin dəyişdirilməsi. Vergilər, büdcə, amnistiya və əfv üzrə referendum keçirilə bilməz (3.III)."},
+    {"l": 1, "q": "Hansı məsələ üzrə referendum keçirilə bilməz?", "o": ["Amnistiya və əfv etmə", "Konstitusiyaya dəyişikliklər", "Dövlət sərhədlərinin dəyişdirilməsi", "Xalqın mənafeyi ilə bağlı istənilən digər məsələ"], "a": 0, "r": "m. 3.III", "e": "Maddə 3.III."},
+
+    {"l": 2, "q": "Konstitusiyaya görə xalqa qarşı ən ağır cinayət hansıdır?", "o": ["Hakimiyyətin mənimsənilməsi", "Vətənə xəyanət", "Terrorçuluq", "Dövlət sirrinin yayılması"], "a": 0, "r": "m. 6.II", "e": "Konstitusiya: «Hakimiyyətin mənimsənilməsi xalqa qarşı ən ağır cinayətdir.»"},
+    {"l": 2, "q": "Hakimiyyətin həyata keçirilməsi səlahiyyətini kim mənimsəyə bilər?", "o": ["Heç kim — xalqın heç bir hissəsi, qrup, təşkilat və ya şəxs", "Siyasi partiyalar", "Sosial qruplar", "Seçilmiş nümayəndələr"], "a": 0, "r": "m. 6.I", "e": "Maddə 6.I."},
+
+    {"l": 3, "q": "Konstitusiyaya görə Azərbaycan dövləti necə respublikadır?", "o": ["Demokratik, hüquqi, dünyəvi, unitar", "Demokratik, sosial, federativ", "Prezident, dünyəvi, federativ", "Parlament, hüquqi, unitar"], "a": 0, "r": "m. 7.I", "e": "Maddə 7.I."},
+    {"l": 3, "q": "Daxili məsələlərdə dövlət hakimiyyəti nə ilə məhdudlaşır?", "o": ["Yalnız hüquqla", "Beynəlxalq müqavilələrlə", "Prezidentin fərmanları ilə", "Milli Məclisin qərarları ilə"], "a": 0, "r": "m. 7.II", "e": "Maddə 7.II: daxili məsələlərdə — yalnız hüquqla; xarici məsələlərdə — beynəlxalq müqavilələrdən irəli gələn müddəalarla."},
+    {"l": 3, "q": "Silahlı Qüvvələrin Ali Baş Komandanı kimdir?", "o": ["Azərbaycan Respublikasının Prezidenti", "Müdafiə naziri", "Baş nazir", "Baş Qərargah rəisi"], "a": 0, "r": "m. 9.III", "e": "Maddə 9.III."},
+
+    {"l": 4, "q": "Konstitusiyaya görə mülkiyyət hansı növlərdə ola bilər?", "o": ["Dövlət, xüsusi və bələdiyyə mülkiyyəti", "Dövlət və kollektiv mülkiyyət", "Xüsusi və ictimai mülkiyyət", "Dövlət, kooperativ və şəxsi mülkiyyət"], "a": 0, "r": "m. 13.II", "e": "Maddə 13.II."},
+    {"l": 4, "q": "Dövlətin ali məqsədi nədir?", "o": ["İnsan və vətəndaş hüquq və azadlıqlarının, layiqli həyat səviyyəsinin təmin edilməsi", "İqtisadi artım", "Ərazi bütövlüyünün qorunması", "Xarici siyasətdə uğur"], "a": 0, "r": "m. 12.I", "e": "Maddə 12.I."},
+    {"l": 4, "q": "Dövlət sərhədləri hansı yolla dəyişdirilə bilər?", "o": ["Milli Məclisin qərarı ilə bütün əhali arasında keçirilən referendum yolu ilə", "Prezidentin fərmanı ilə", "Milli Məclisin qanunu ilə", "Beynəlxalq müqavilə ilə"], "a": 0, "r": "m. 11.III", "e": "Maddə 11.III."},
+
+    {"l": 5, "q": "Konstitusiyaya görə neçə yaşına çatmamış uşaqlar işə götürülə bilməz?", "o": ["15", "16", "14", "18"], "a": 0, "r": "m. 17.V", "e": "Maddə 17.V."},
+    {"l": 5, "q": "Dövlət təhsil sistemi hansı xarakter daşıyır?", "o": ["Dünyəvi", "Dini", "Qarışıq", "Özəl"], "a": 0, "r": "m. 18.III", "e": "Maddə 18.III."},
+    {"l": 5, "q": "Azərbaycan dövləti bazar münasibətləri əsasında hansı iqtisadiyyatın inkişafına şərait yaradır?", "o": ["Sosial yönümlü", "Planlı", "Qarışıq dövlət", "Liberal"], "a": 0, "r": "m. 15.II", "e": "Maddə 15.II."},
+
+    {"l": 6, "q": "Pul nişanlarının tədavülə buraxılması hüququ kimə mənsubdur?", "o": ["Yalnız Mərkəzi Banka", "Maliyyə Nazirliyinə", "Prezidentə", "Kommersiya banklarına"], "a": 0, "r": "m. 19.II", "e": "Maddə 19.II."},
+    {"l": 6, "q": "Dövlət bayrağının eninin uzunluğuna nisbəti neçədir?", "o": ["1:2", "2:3", "1:3", "3:5"], "a": 0, "r": "m. 23.II", "e": "Maddə 23.II."},
+    {"l": 6, "q": "Dövlət bayrağının və gerbinin təsviri, himnin musiqisi və mətni nə ilə müəyyən edilir?", "o": ["Konstitusiya qanunu ilə", "Prezidentin fərmanı ilə", "Adi qanunla", "Nazirlər Kabinetinin qərarı ilə"], "a": 0, "r": "m. 23.III", "e": "Maddə 23.III."},
+
+    {"l": 7, "q": "Hər kəsin doğulduğu andan hansı hüquq və azadlıqları vardır?", "o": ["Toxunulmaz, pozulmaz və ayrılmaz", "Məhdud və şərti", "Yalnız vətəndaşlıqla bağlı", "Yetkinlik yaşından sonra yaranan"], "a": 0, "r": "m. 24.II", "e": "Maddə 24.II."},
+    {"l": 7, "q": "Konstitusiyaya görə hamı nəyin qarşısında bərabərdir?", "o": ["Qanun və məhkəmə qarşısında", "Yalnız qanun qarşısında", "Dövlət orqanları qarşısında", "Prezident qarşısında"], "a": 0, "r": "m. 25.I", "e": "Maddə 25.I."},
+    {"l": 7, "q": "Hər kəs öz hüquqlarını hansı üsullarla müdafiə edə bilər?", "o": ["Qanunla qadağan olunmayan üsul və vasitələrlə", "Yalnız məhkəmə vasitəsilə", "Yalnız dövlət orqanları vasitəsilə", "İstənilən üsulla"], "a": 0, "r": "m. 26.I", "e": "Maddə 26.I."},
+
+    {"l": 8, "q": "Heç kəs mülkiyyətindən nə olmadan məhrum edilə bilməz?", "o": ["Məhkəmənin qərarı olmadan", "Prezidentin fərmanı olmadan", "Prokurorun razılığı olmadan", "Bələdiyyənin qərarı olmadan"], "a": 0, "r": "m. 29.IV", "e": "Maddə 29.IV; əmlakın tam müsadirəsinə yol verilmir."},
+    {"l": 8, "q": "Dövlət ehtiyacları üçün mülkiyyətin özgəninkiləşdirilməsinə hansı şərtlə yol verilir?", "o": ["Qabaqcadan dəyərini ədalətli ödəmək şərti ilə", "Sonradan kompensasiya ilə", "Mülkiyyətçinin razılığı olmadan, ödənişsiz", "Yalnız müharibə vəziyyətində"], "a": 0, "r": "m. 29.IV", "e": "Maddə 29.IV."},
+    {"l": 8, "q": "Vətəndaşların öz ölkəsinə qayıtmaq hüququ necədir?", "o": ["Hər zaman maneəsiz", "Yalnız icazə ilə", "Yalnız pasportla", "Məhdudlaşdırıla bilər"], "a": 0, "r": "m. 28.IV", "e": "Maddə 28.IV."}
+  ]
+}

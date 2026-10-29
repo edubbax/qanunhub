@@ -1,0 +1,40 @@
+{
+  "questions": [
+    {"l": 21, "q": "Azərbaycanda daimi yaşayış yeri olmayan maraqlı şəxs sənədləri almaq üçün müvəkkili hansı müddətdə təyin etməlidir?", "o": ["Xəbərdar edildiyi gündən üç gün", "On gün", "Bir ay", "Beş iş günü"], "a": 0, "r": "m. 40.1", "e": "Maddə 40.1."},
+    {"l": 21, "q": "Şəxs müvəkkil təyin etmədikdə və sənədləri almadıqda inzibati orqan məsuliyyət daşıyırmı?", "o": ["Xeyr, və bu (qanunda nəzərdə tutulmuş hallar istisna) aktın etibarsızlığına əsas deyil", "Bəli, akt etibarsız sayılır", "Bəli, orqan cərimələnir", "İcraat dayandırılır"], "a": 0, "r": "m. 40.2", "e": "Maddə 40.2."},
+
+    {"l": 22, "q": "Qanunvericilikdə başqa müddət yoxdursa, ekspert rəyini nə qədər müddətdə verməlidir?", "o": ["Qərar ekspertiza idarəsinə daxil olduğu vaxtdan 30 gündən gec olmayaraq", "10 gün", "15 gün", "60 gün"], "a": 0, "r": "m. 41.5", "e": "Maddə 41.5."},
+    {"l": 22, "q": "Mütəxəssisin ifadə etdiyi fikir ekspert rəyini əvəz edirmi?", "o": ["Xeyr", "Bəli", "Yalnız texniki məsələlərdə", "Yalnız maraqlı şəxsin razılığı ilə"], "a": 0, "r": "m. 41.6-1", "e": "Maddə 41.6-1."},
+    {"l": 22, "q": "Qanunda başqa qayda yoxdursa, inzibati orqanın təyin etdiyi ekspertiza xərcləri kimin hesabına ödənilir?", "o": ["İnzibati orqanın", "Maraqlı şəxsin", "Ekspertin", "Tərəflər arasında bərabər"], "a": 0, "r": "m. 41.7", "e": "Maddə 41.7; maraqlı şəxsin özünün sifariş etdiyi ekspertiza isə onun hesabına aparılır (41.8)."},
+
+    {"l": 23, "q": "Hansı halda vəzifəli şəxs inzibati icraatda iştirak edə bilməz?", "o": ["Maraqlı şəxslə qohumluq əlaqəsində olduqda", "Eyni şəhərdə yaşadıqda", "Maraqlı şəxsin ərizəsini əvvəllər qeydə aldıqda", "Hüquq təhsili olmadıqda"], "a": 0, "r": "m. 42.1.2", "e": "Maddə 42.1."},
+    {"l": 23, "q": "Etiraz əsasları olduqda vəzifəli şəxs nə etməlidir?", "o": ["Özü-özünə etiraz etməyə borcludur", "Maraqlı şəxsin etirazını gözləməlidir", "İşi sürətlə bitirməlidir", "Heç nə etməməlidir"], "a": 0, "r": "m. 42.2", "e": "Maddə 42.2."},
+
+    {"l": 24, "q": "Etiraz haqqında ərizəyə ən geci nə qədər müddətdə baxılmalıdır?", "o": ["Bir gün", "Üç gün", "Beş gün", "On gün"], "a": 0, "r": "m. 44.2", "e": "Maddə 44.2."},
+    {"l": 24, "q": "Qanunu pozmaqla əldə edilmiş sübutlardan istifadə oluna bilərmi?", "o": ["Xeyr", "Bəli", "Yalnız maraqlı şəxsin xeyrinə", "Yalnız rəhbərin icazəsi ilə"], "a": 0, "r": "m. 45.3", "e": "Maddə 45.3."},
+    {"l": 24, "q": "İnzibati orqanın rəhbərinə etiraz haqqında ərizəyə kim baxır?", "o": ["Müvafiq nəzarət orqanı", "Rəhbərin müavini", "Maraqlı şəxsin nümayəndəsi", "Kollektiv"], "a": 0, "r": "m. 44.3", "e": "Maddə 44.3."},
+
+    {"l": 25, "q": "İnzibati icraatda müddətlər necə hesablanır?", "o": ["Təqvim günləri ilə", "İş günləri ilə", "Saatlarla", "Həftələrlə"], "a": 0, "r": "m. 48.5", "e": "Maddə 48.5."},
+    {"l": 25, "q": "Müddətin son günü qeyri-iş gününə düşərsə, nə olur?", "o": ["Növbəti iş günü müddətin qurtardığı gün sayılır", "Müddət əvvəlki iş günü bitir", "Müddət uzadılmır", "Müddət 3 gün uzadılır"], "a": 0, "r": "m. 48.6", "e": "Maddə 48.6."},
+    {"l": 25, "q": "Maraqlı şəxsdən işdə olan sənədin məzmununun həqiqiliyi barədə sübut tələb oluna bilərmi?", "o": ["Xeyr, qadağandır", "Bəli", "Yalnız şübhə olduqda", "Yalnız notarial formada"], "a": 0, "r": "m. 46.3", "e": "Maddə 46.3."},
+
+    {"l": 26, "q": "Maraqlı şəxs buraxılmış müddətin bərpası üçün səbəblər aradan qalxdıqdan sonra ən geci nə qədər müddətdə müraciət etməlidir?", "o": ["10 gün", "5 gün", "30 gün", "3 gün"], "a": 0, "r": "m. 50.2", "e": "Maddə 50.2; inzibati orqan ərizəyə 5 gün ərzində baxır (50.3)."},
+    {"l": 26, "q": "Müddətin bərpası haqqında ərizə verilərkən nə də edilməlidir?", "o": ["Müddəti buraxılmış hərəkət də eyni vaxtda edilməlidir", "Dövlət rüsumu ödənilməlidir", "Vəkil cəlb edilməlidir", "Heç nə"], "a": 0, "r": "m. 50.4", "e": "Maddə 50.4."},
+
+    {"l": 27, "q": "İnzibati orqan ərizənin qeydiyyatından ən geci nə qədər müddətdə qərar qəbul etməlidir (ümumi qayda)?", "o": ["30 gün", "15 gün", "60 gün", "90 gün"], "a": 0, "r": "m. 52.1", "e": "Maddə 52.1."},
+    {"l": 27, "q": "İnzibati icraatın ümumi müddəti hər bir halda ən çoxu nə qədər ola bilər?", "o": ["90 gün", "60 gün", "120 gün", "180 gün"], "a": 0, "r": "m. 52.5", "e": "Maddə 52.5."},
+    {"l": 27, "q": "İnzibati icraatın müddəti necə uzadıla bilər?", "o": ["Hər dəfə 30 gün olmaqla iki dəfə", "Bir dəfə 60 gün", "Hər dəfə 15 gün olmaqla dörd dəfə", "Uzadıla bilməz"], "a": 0, "r": "m. 52.3", "e": "Maddə 52.3."},
+
+    {"l": 28, "q": "Şifahi qəbul edilmiş əlverişsiz inzibati akt elan olunduğu vaxtdan nə qədər müddətdə yazılı formada təsbit olunmalıdır?", "o": ["5 gün", "3 gün", "10 gün", "1 gün"], "a": 0, "r": "m. 57.4", "e": "Maddə 57.4."},
+    {"l": 28, "q": "Qanunda başqa forma nəzərdə tutulmayıbsa, inzibati akt hansı formada qəbul edilir?", "o": ["Yazılı", "Şifahi", "Elektron", "İstənilən"], "a": 0, "r": "m. 57.1", "e": "Maddə 57.1."},
+
+    {"l": 29, "q": "Aşağıdakılardan hansı yazılı inzibati aktın məcburi rekvizitlərinə aid deyil?", "o": ["Aktı hazırlayan icraçının telefon nömrəsi", "Aktı qəbul etmiş orqanın adı", "Hüquqi müdafiə vasitələri və şikayət müddəti haqqında məlumat", "Orqanın möhürü"], "a": 0, "r": "m. 59.1", "e": "Maddə 59.1."},
+    {"l": 29, "q": "Texniki (avtomat) qurğularla qəbul edilmiş aktda imza və möhürün olmaması mümkündürmü?", "o": ["Bəli, mümkündür", "Xeyr", "Yalnız möhür olmaya bilər", "Yalnız imza olmaya bilər"], "a": 0, "r": "m. 59.2", "e": "Maddə 59.2."},
+
+    {"l": 30, "q": "İnzibati aktın əlavə müddəalarından necə şikayət verilə bilər?", "o": ["Yalnız inzibati aktla birlikdə", "Ayrıca, aktdan asılı olmayaraq", "Şikayət verilə bilməz", "Yalnız məhkəməyə ayrıca"], "a": 0, "r": "m. 60.3", "e": "Maddə 60.3."},
+    {"l": 30, "q": "Əlavə müddəalar nəyə uyğun olmalıdır?", "o": ["İnzibati aktın məqsədlərinə", "Maraqlı şəxsin istəyinə", "Orqanın daxili qaydalarına", "Heç bir tələb yoxdur"], "a": 0, "r": "m. 60.3", "e": "Maddə 60.3."},
+
+    {"l": 31, "q": "Hansı halda inzibati aktın əsaslandırılması tələb olunmur?", "o": ["Maraqlı şəxsin ərizəsi təmin olunduqda", "Akt əlverişsiz olduqda", "Akt diskresion səlahiyyətlə qəbul edildikdə", "Akt yazılı formada qəbul edildikdə"], "a": 0, "r": "m. 61.5.1", "e": "Maddə 61.5."},
+    {"l": 31, "q": "İnzibati orqan aktı nə ilə əsaslandırmağa borcludur?", "o": ["Yalnız icraat zamanı tədqiq olunmuş faktlar və sübutlarla", "İstənilən məlumatla", "Mediadakı məlumatlarla", "Rəhbərin şəxsi fikri ilə"], "a": 0, "r": "m. 61.4", "e": "Maddə 61.4."}
+  ]
+}

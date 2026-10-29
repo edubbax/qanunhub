@@ -3,9 +3,12 @@ import re
 
 from textutil import az_lower, join_lines
 
+# In letter-spaced headings ("M a d d ə 9 8 .") an unspaced run ending in 1 is a superscript: "981" is article 98-1.
+SUPERSCRIPT_REF = re.compile(r'^(\s*M a d d ə )(\d{2,3})1(\s*\.)')
 ART_HEAD = re.compile(r'^\s*M\s?a\s?d\s?d\s?[əe]\s+(\d[\d\s]*(?:-\s?\d+)?)\s?\.\s*(.*)$')
 CHAPTER = re.compile(r'^\s*([IVXL]+)\s*f\s?ə\s?s\s?i\s?l\b\.?\s*(.*)$', re.I)
 SECTION = re.compile(r'^(BİRİNCİ|İKİNCİ|ÜÇÜNCÜ|DÖRDÜNCÜ|BEŞİNCİ)\s+BÖLMƏ', re.I)
+FOOTNOTE = re.compile(r'\s?\[\d+\]')
 NOTE = re.compile(r'^\s*(Qeyd|Kod|Yadda saxla)\s*:', re.I)
 
 
@@ -32,13 +35,15 @@ def parse_articles(text: str):
         line = raw.strip()
         if not line:
             continue
+        line = SUPERSCRIPT_REF.sub(r'\1\2-1\3', line)
         m = ART_HEAD.match(line)
         ch = CHAPTER.match(line)
         if ch and len(line) < 80:
-            chapter = _title_case(ch.group(2)) if ch.group(2) else None
-            pending_chapter_title = not ch.group(2)
+            name = re.sub(r'\[\d+\]', '', ch.group(2)).strip()  # a bare footnote marker is not a title
+            chapter = _title_case(name) if name else None
+            pending_chapter_title = not name
             continue
-        if pending_chapter_title and line.isupper() and len(line) < 90:
+        if pending_chapter_title and len(line) < 90 and not m and not line[:1].isdigit():
             chapter = _title_case(line)
             pending_chapter_title = False
             continue
@@ -67,8 +72,10 @@ def parse_articles(text: str):
         if a['ref'] in seen:  # repeated article (editing error in one source file)
             continue
         seen.add(a['ref'])
-        body = join_lines(a['lines'])
-        out.append({'ref': a['ref'], 'title': a['title'].strip(' .'), 'chapter': a['chapter'], 'body': body,
+        # "[88]" markers point at amendment footnotes that are not part of the text.
+        body = FOOTNOTE.sub('', join_lines(a['lines']))
+        title = FOOTNOTE.sub('', a['title']).strip(' .')
+        out.append({'ref': a['ref'], 'title': title, 'chapter': a['chapter'], 'body': body,
                     'notes': [join_lines([n]) for n in a['notes']]})
     return out, join_lines(preamble)
 
