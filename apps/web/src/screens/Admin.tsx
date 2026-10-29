@@ -5,8 +5,9 @@ import { useApp } from '../app';
 import type { AdminLesson, AdminReport, AdminTopic, AdminUser, ItemFilter, ItemPatch } from '../api/types';
 import { ErrorBox, formatDate, formatTime, Modal, Spinner, toast, useLoad } from '../ui/components';
 import { IconBack } from '../ui/icons';
+import { CertificateModal } from './Competitions';
 
-type Tab = 'overview' | 'content' | 'reports' | 'users' | 'import' | 'mail' | 'audit' | 'payments';
+type Tab = 'overview' | 'content' | 'reports' | 'users' | 'competitions' | 'import' | 'mail' | 'audit' | 'payments';
 
 export const FLAG_LABELS: Record<string, string> = {
   no_key: 'Cavab açarı tapılmayıb',
@@ -33,6 +34,7 @@ export function Admin() {
   const tabs: [Tab, string][] = [
     ['overview', 'Ümumi'], ['content', 'Məzmun'], ['reports', 'Şikayətlər'],
     ...(me.role === 'admin' ? ([['users', 'İstifadəçilər']] as [Tab, string][]) : []),
+    ['competitions', 'Yarışlar'],
     ['import', 'İdxal'], ['mail', 'Poçt'], ['audit', 'Audit'], ['payments', 'Ödənişlər'],
   ];
   return (
@@ -49,6 +51,7 @@ export function Admin() {
       {tab === 'content' && <Content focusItem={focusItem} clearFocus={() => setFocusItem(null)} />}
       {tab === 'reports' && <Reports openItem={(id) => { setFocusItem(id); setTab('content'); }} />}
       {tab === 'users' && <Users />}
+      {tab === 'competitions' && <AdminCompetitions />}
       {tab === 'import' && <Import />}
       {tab === 'mail' && <Mail />}
       {tab === 'audit' && <Audit />}
@@ -548,6 +551,96 @@ function Audit() {
           {data.length === 0 && <tr><td colSpan={4} className="muted">Qeyd yoxdur.</td></tr>}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function toLocalInput(ts: number): string {
+  const d = new Date(ts + 4 * 3600_000);
+  return d.toISOString().slice(0, 16);
+}
+
+function fromLocalInput(v: string): number {
+  return new Date(v + ':00Z').getTime() - 4 * 3600_000;
+}
+
+/** Create competitions, end them early and download the winners' certificates. */
+function AdminCompetitions() {
+  const { api, me } = useApp();
+  const { data, error, loading, reload } = useLoad(() => api.admin.competitions(), []);
+  const now = Date.now();
+  const [form, setForm] = useState({
+    title: '', description: '', category: '' as '' | 'AC' | 'BA' | 'BB',
+    startsAt: toLocalInput(now), endsAt: toLocalInput(now + 7 * 86400_000), questionCount: 20, minutes: 20,
+  });
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [cert, setCert] = useState<string | null>(null);
+  const create = async () => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      await api.admin.createCompetition({
+        title: form.title, description: form.description, category: form.category || null,
+        startsAt: fromLocalInput(form.startsAt), endsAt: fromLocalInput(form.endsAt), questionCount: Number(form.questionCount), timeLimitSec: Number(form.minutes) * 60,
+      });
+      toast('Yarış yaradıldı.');
+      setForm({ ...form, title: '', description: '' });
+      reload();
+    } catch (e) {
+      setMsg(e instanceof Error ? e.message : 'Xəta baş verdi.');
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="admin-grid split">
+      <section className="card stack">
+        <h2>Yeni yarış</h2>
+        {me?.role !== 'admin' && <p className="small muted">Yarışı yalnız administrator yarada bilər.</p>}
+        <div className="field"><label htmlFor="ac-title">Ad</label><input id="ac-title" className="input" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Məsələn, Həftəlik yarış" /></div>
+        <div className="field"><label htmlFor="ac-desc">Təsvir</label><textarea id="ac-desc" className="input" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
+        <div className="field"><label htmlFor="ac-cat">Kateqoriya</label>
+          <select id="ac-cat" className="input" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value as typeof form.category })}>
+            <option value="">Hamısı (hər kəs öz kateqoriyası üzrə)</option><option value="AC">AC</option><option value="BA">BA</option><option value="BB">BB</option>
+          </select>
+        </div>
+        <div className="row wrap">
+          <div className="field grow"><label htmlFor="ac-start">Başlanğıc (Bakı vaxtı)</label><input id="ac-start" className="input" type="datetime-local" value={form.startsAt} onChange={(e) => setForm({ ...form, startsAt: e.target.value })} /></div>
+          <div className="field grow"><label htmlFor="ac-end">Bitmə</label><input id="ac-end" className="input" type="datetime-local" value={form.endsAt} onChange={(e) => setForm({ ...form, endsAt: e.target.value })} /></div>
+        </div>
+        <div className="row wrap">
+          <div className="field grow"><label htmlFor="ac-q">Sual sayı</label><input id="ac-q" className="input" type="number" min={5} max={60} value={form.questionCount} onChange={(e) => setForm({ ...form, questionCount: Number(e.target.value) })} /></div>
+          <div className="field grow"><label htmlFor="ac-min">Vaxt (dəqiqə)</label><input id="ac-min" className="input" type="number" min={1} max={180} value={form.minutes} onChange={(e) => setForm({ ...form, minutes: Number(e.target.value) })} /></div>
+        </div>
+        {msg && <div className="banner bad" role="alert">{msg}</div>}
+        <button className="btn primary" disabled={busy || me?.role !== 'admin' || form.title.trim().length < 3} onClick={create}>Yarışı yarat</button>
+        <p className="tiny muted">Suallar mənbə testləri və redaksiyanın sualları qarışığından seçilir; eyni kateqoriyada hamıya eyni suallar düşür. Yarış bitəndə ilk üç yerə sertifikat və təltif avtomatik verilir.</p>
+      </section>
+      <section className="stack">
+        <h2>Yarışlar</h2>
+        {loading && !data ? <Spinner /> : error ? <ErrorBox error={error} onRetry={reload} /> : (
+          <div className="table-wrap">
+            <table className="data">
+              <thead><tr><th>Yarış</th><th>Vaxt</th><th>İştirak</th><th>Qaliblər</th><th /></tr></thead>
+              <tbody>
+                {(data ?? []).map((c) => (
+                  <tr key={c.id}>
+                    <td><b>{c.title}</b><br /><span className="tiny muted">{c.category ?? 'Hamısı'} · {c.questionCount} sual · {Math.round(c.timeLimitSec / 60)} dəq · {c.status === 'active' ? 'davam edir' : c.status === 'upcoming' ? 'tezliklə' : 'bitib'}</span></td>
+                    <td className="tiny">{formatTime(c.startsAt)}<br />{formatTime(c.endsAt)}</td>
+                    <td className="num">{c.participants}</td>
+                    <td className="tiny">{c.winners.length ? c.winners.map((w) => (
+                      <div key={w.place}><button className="btn ghost small" style={{ paddingInline: 0, minHeight: 28 }} onClick={() => setCert(w.certificateCode)}>{w.place}. {w.name} · {w.pct}%</button></div>
+                    )) : '—'}</td>
+                    <td>{c.status !== 'finished' && me?.role === 'admin' && <button className="btn secondary small" onClick={async () => { await api.admin.finishCompetition(c.id); toast('Yarış bitirildi, sertifikatlar verildi.'); reload(); }}>İndi bitir</button>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+      {cert && <CertificateModal code={cert} admin onClose={() => setCert(null)} />}
     </div>
   );
 }

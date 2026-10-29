@@ -1,4 +1,5 @@
 // Data transfer objects shared by the server, the HTTP client and the in-browser demo.
+import type { RankTier } from './military';
 import type { CardKind, Category, ItemType, LeaderboardRow, Period, Role, Scope, SessionKind } from './types';
 
 export interface HeartsDto {
@@ -11,16 +12,37 @@ export interface HeartsDto {
 export interface RankDto {
   code: string;
   title: string;
-  nextTitle: string | null;
-  passedPct: number;
-  nextPassedPct: number | null;
-  nextXp: number | null;
+  tier: RankTier;
+  stars: number;
+  isGizir: boolean;           // free plan: every learner is Gizir
+  merit: number;
+  /** Merit of the current rank and of the next one, for the progress bar. */
+  floorMerit: number;
+  next: { code: string; title: string; merit: number; streak: number } | null;
+  inactiveDays: number;
+  decayPerDay: number;
+  /** The rank a free learner has earned and will wear on Premium. */
+  earned: { code: string; title: string } | null;
+}
+
+export interface AwardDto {
+  id: string;
+  title: string;
+  rule: string;               // what earns the next degree
+  tier: number;               // degrees earned, 0 = not yet
+  maxTier: number;
+  value: number;
+  next: number | null;        // threshold of the next degree
+  earnedAt: number | null;
+  shape: 'medal' | 'order' | 'badge';
+  color: 'gold' | 'silver' | 'bronze' | 'maroon';
 }
 
 export interface MeDto {
   id: string;
   email: string;
   nickname: string;
+  fullName: string | null;
   role: Role;
   category: Category | null;
   subgroup: string | null;
@@ -35,7 +57,8 @@ export interface MeDto {
   streak: number;
   longestStreak: number;
   freezesLeft: number;
-  rank: RankDto | null;       // null on the free plan
+  rank: RankDto;
+  awards: AwardDto[];
 }
 
 export interface HomeDto {
@@ -177,7 +200,8 @@ export interface CompleteDto {
   streakIncreased: boolean;
   heartEarned: boolean;
   hearts: HeartsDto | null;
-  rank: { title: string; changed: boolean } | null;
+  rank: { code: string; title: string; change: 'up' | 'down' | null; merit: number; meritDelta: number; isGizir: boolean };
+  awards: { id: string; title: string; tier: number }[];
   review: ReviewEntryDto[];
   leaderboardCounted: boolean;
   /** Why XP did or did not reach the leaderboard. */
@@ -206,6 +230,7 @@ export interface WeakTopicDto {
 }
 
 export interface ProfilePatch {
+  fullName?: string | null;
   category?: Category;
   subgroup?: string | null;
   examDate?: string | null;
@@ -218,6 +243,63 @@ export const SESSION_TITLES: Record<SessionKind, string> = {
   review: 'Təkrar',
   weak: 'Gücləndirmə',
   section: 'Bölmə testi',
+  competition: 'Yarış',
   final: 'Mövzu final testi',
   mock: 'Sınaq imtahanı',
 };
+
+export type CompetitionStatus = 'upcoming' | 'active' | 'finished';
+
+export interface CompetitionDto {
+  id: string;
+  title: string;
+  description: string;
+  category: Category | null;
+  startsAt: number;
+  endsAt: number;
+  status: CompetitionStatus;
+  questionCount: number;
+  timeLimitSec: number;
+  participants: number;
+  /** Can the learner start it now; otherwise `reason` says why. */
+  canStart: boolean;
+  reason: string | null;
+  my: { pct: number; points: number; maxPoints: number; durationMs: number; place: number | null; certificateCode: string | null } | null;
+  winners: { place: number; nickname: string; pct: number; durationMs: number; certificateCode?: string }[];
+}
+
+export interface StandingRowDto {
+  place: number;
+  nickname: string;
+  pct: number;
+  points: number;
+  maxPoints: number;
+  durationMs: number;
+  me: boolean;
+  rankCode?: string;
+}
+
+export interface CompetitionStandingsDto {
+  competition: CompetitionDto;
+  rows: StandingRowDto[];
+}
+
+export interface CertificateDto {
+  code: string;
+  name: string;
+  competitionTitle: string;
+  place: number;
+  pct: number;
+  category: Category | null;
+  issuedAt: number;
+}
+
+export interface CompetitionInput {
+  title: string;
+  description: string;
+  category: Category | null;
+  startsAt: number;
+  endsAt: number;
+  questionCount: number;
+  timeLimitSec: number;
+}

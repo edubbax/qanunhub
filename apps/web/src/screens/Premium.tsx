@@ -8,12 +8,13 @@ import type { Plan } from '../api/types';
 const FEATURES: [string, boolean, boolean][] = [
   ['Konstitusiya mövzusu (dərslər, təkrar, final testi)', true, true],
   ['Kateqoriyanın bütün mövzuları', false, true],
-  ['Gündə 3 can', true, false],
-  ['Limitsiz can', false, true],
+  ['Paqonda gündə 3 ulduz (səhvdə biri sönür)', true, false],
+  ['Ulduzlar tükənmir', false, true],
   ['Real formatda sınaq imtahanı (vaxtla)', false, true],
   ['Zəif mövzular üzrə gücləndirmə', false, true],
   ['Həftəlik və aylıq reytinqdə iştirak', false, true],
-  ['İxtisas dərəcəsi rütbələri', false, true],
+  ['Zabit rütbələri: Leytenantdan Ordu generalına qədər (pulsuz planda Gizir)', false, true],
+  ['Yarışlar, təltiflər və sertifikatlar', true, true],
   ['Ayda 2 seriya dondurma', false, true],
   ['Final testinə 24 saat gözləmədən təkrar cəhd', false, true],
 ];
@@ -46,7 +47,7 @@ export function Premium() {
     <main className="page stack loose">
       <section className="stack tight">
         <h1>Premium</h1>
-        <p className="muted">Bütün proqram, limitsiz can və real formatda sınaq imtahanı. İmtahana qədər lazım olan hər şey.</p>
+        <p className="muted">Bütün proqram, tükənməyən ulduzlar, zabit rütbələri və real formatda sınaq imtahanı. İmtahana qədər lazım olan hər şey.</p>
       </section>
 
       {me?.premium && (

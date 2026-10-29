@@ -12,6 +12,8 @@ import type { Category, ContentBundle, EngineCtx, Period, Scope, UserRecord } fr
 import {
   AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
   grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
+  adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
+  startCompetition,
 } from '@qanunhub/core';
 import {
   SESSION_COOKIE, SESSION_DAYS, consumeToken, createSession, createUser, destroySession, issueToken, login, sessionUser, setPassword,
@@ -39,6 +41,7 @@ export const PLANS = [
 
 const answerSchema = z.object({ qid: z.number().int().min(0).max(500), answer: z.array(z.number().int().min(0).max(20)).max(20), ms: z.number().min(0).max(3_600_000) });
 const profileSchema = z.object({
+  fullName: z.string().max(80).nullable().optional(),
   category: z.enum(['AB', 'AC', 'BA', 'BB']).optional(),
   subgroup: z.string().max(5).nullable().optional(),
   examDate: z.string().max(10).nullable().optional(),
@@ -199,12 +202,16 @@ export function createApp(deps: AppDeps) {
 
   // ------------------------------------------------------------------ learner
 
-  app.get('/api/meta', (c) => c.json({
-    categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES,
-    subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS,
-    contentVersion: content.current.bundle.version,
-    topics: content.current.topics.map((t) => ({ id: t.id, programNo: t.programNo, shortTitle: t.shortTitle, categories: t.categories, free: t.free })),
-  }));
+  // Test formats and programme sizes are shown only after sign-in.
+  app.get('/api/meta', (c) => {
+    const signedIn = !!c.get('user');
+    return c.json({
+      categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES,
+      subgroups: SUBGROUPS, plans: PLANS, contentVersion: content.current.bundle.version, signedIn,
+      formats: signedIn ? EXAM_FORMATS : null,
+      topics: signedIn ? content.current.topics.map((t) => ({ id: t.id, programNo: t.programNo, shortTitle: t.shortTitle, categories: t.categories, free: t.free })) : [],
+    });
+  });
 
   app.get('/api/me', async (c) => c.json(await run(c, (ctx, id) => getMe(ctx, id))));
   app.patch('/api/me', async (c) => {
@@ -220,7 +227,7 @@ export function createApp(deps: AppDeps) {
   app.get('/api/path', async (c) => c.json(await run(c, (ctx, id) => getPath(ctx, id))));
 
   app.post('/api/sessions', async (c) => {
-    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'section', 'final', 'mock']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional(), sectionId: z.string().max(80).optional() }));
+    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'section', 'final', 'mock', 'competition']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional(), sectionId: z.string().max(80).optional(), competitionId: z.string().max(80).optional() }));
     const u = requireUser(c);
     rateLimit(`session:${u.id}`, 60, 60 * 60_000, now());
     return c.json(await run(c, (ctx, id) => {
@@ -229,10 +236,20 @@ export function createApp(deps: AppDeps) {
         case 'review': return startReview(ctx, id);
         case 'weak': return startWeak(ctx, id, b.topicId ?? '');
         case 'section': return startSection(ctx, id, b.sectionId ?? '');
+        case 'competition': return startCompetition(ctx, id, b.competitionId ?? '');
         case 'final': return startFinal(ctx, id, b.topicId ?? '');
         default: return startMock(ctx, id);
       }
     }));
+  });
+
+  app.get('/api/competitions', async (c) => c.json(await run(c, (ctx, id) => listCompetitions(ctx, id))));
+  app.get('/api/competitions/:id', async (c) => c.json(await run(c, (ctx, id) => getStandings(ctx, id, c.req.param('id') ?? ''))));
+  // Public: anyone holding a certificate code can check it.
+  app.get('/api/certificates/:code', async (c) => {
+    rateLimit(`cert:${clientIp(c)}`, 60, 60_000, now());
+    const code = c.req.param('code') ?? '';
+    return c.json(await sql.begin(async (tx) => getCertificate({ store: new PgStore(tx), content: content.current, now: now(), random: Math.random, newId: randomUUID }, code)));
   });
 
   app.post('/api/sessions/:id/answer', async (c) => {
@@ -413,6 +430,7 @@ export function createApp(deps: AppDeps) {
         // Thank the reporter: XP that does not count on the leaderboard.
         await tx`insert into xp_events (user_id, source, amount, leaderboard, created_at) values (${r.user_id}, 'report', 20, false, now())`;
         await tx`update users set xp_total = xp_total + 20 where id = ${r.user_id}`;
+        await recordConfirmedReport({ store: new PgStore(tx), content: content.current, now: now(), random: Math.random, newId: randomUUID }, r.user_id);
       }
       await audit(tx, actor.id, 'report.' + b.status, 'report', id, null, b);
     });
@@ -478,6 +496,39 @@ export function createApp(deps: AppDeps) {
     requireRole(c, ['admin']);
     const rows = await sql`select a.*, u.nickname from audit_log a left join users u on u.id = a.actor order by a.id desc limit 100`;
     return c.json(rows.map((r) => ({ id: String(r.id), actor: r.nickname, action: r.action, entity: r.entity, entityId: r.entity_id, createdAt: new Date(r.created_at).getTime() })));
+  });
+
+  const competitionSchema = z.object({
+    title: z.string().max(120), description: z.string().max(600).default(''), category: z.enum(['AC', 'BA', 'BB']).nullable(),
+    startsAt: z.number(), endsAt: z.number(), questionCount: z.number().int(), timeLimitSec: z.number().int(),
+  });
+  const adminCtx = (tx: Tx): EngineCtx => ({ store: new PgStore(tx), content: content.current, now: now(), random: Math.random, newId: randomUUID });
+
+  app.get('/api/admin/competitions', async (c) => {
+    requireRole(c, ['admin', 'editor']);
+    return c.json(await sql.begin((tx) => adminCompetitions(adminCtx(tx))));
+  });
+  app.post('/api/admin/competitions', async (c) => {
+    const actor = requireRole(c, ['admin']);
+    const b = await body(c, competitionSchema);
+    return c.json(await sql.begin(async (tx) => {
+      const comp = await createCompetition(adminCtx(tx), { ...b, description: b.description ?? '' });
+      await audit(tx, actor.id, 'competition.create', 'competition', comp.id, null, b);
+      return comp;
+    }));
+  });
+  app.post('/api/admin/competitions/:id/finish', async (c) => {
+    const actor = requireRole(c, ['admin']);
+    const id = c.req.param('id') ?? '';
+    return c.json(await sql.begin(async (tx) => {
+      const comp = await finishCompetitionNow(adminCtx(tx), id);
+      await audit(tx, actor.id, 'competition.finish', 'competition', id, null, null);
+      return comp;
+    }));
+  });
+  app.get('/api/admin/certificates/:code', async (c) => {
+    requireRole(c, ['admin', 'editor']);
+    return c.json(await sql.begin((tx) => getCertificate(adminCtx(tx), c.req.param('code') ?? '')));
   });
 
   app.get('/api/admin/payments', (c) => {

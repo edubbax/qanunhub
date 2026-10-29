@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   AppError, ContentIndex, DAY, HOUR, MemoryStore, answer, complete, getHome, getLeaderboard, getPath, getWeakTopics,
-  grantPremium, newUser, seededRandom, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
+  createCompetition, finishCompetitionNow, getCertificate, getMe, getStandings, grantPremium, listCompetitions, newUser,
+  seededRandom, startCompetition, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
   type EngineCtx, type SessionDto,
 } from '../src';
 import { fixtureBundle, sectionedBundle } from './fixtures';
@@ -240,5 +241,49 @@ describe('sections and question pools', () => {
     // All twelve source units are used; formative units only fill the remaining slots of twenty.
     expect(stored.questions.filter((q) => !q.unitId.startsWith('k1f'))).toHaveLength(12);
     expect(stored.questions).toHaveLength(15);
+  });
+});
+
+describe('ranks, awards and competitions', () => {
+  it('reports merit, the shown rank and new awards after a lesson', async () => {
+    const s = await startLesson(ctx(), 'u1', 'k1');
+    await answerAll(s);
+    const r = await complete(ctx(), 'u1', s.id);
+    expect(r.rank.isGizir).toBe(true);
+    expect(r.rank.title).toBe('Gizir');
+    expect(r.rank.meritDelta).toBeGreaterThan(0);
+    expect(r.awards.map((a) => a.id)).toEqual(expect.arrayContaining(['lesson', 'perfect']));
+    await grantPremium(ctx(), 'u1', T0 + 30 * DAY);
+    const me = await getMe(ctx(), 'u1');
+    expect(me.rank.title).toBe('Leytenant');
+    expect(me.awards.find((a) => a.id === 'lesson')?.tier).toBe(1);
+  });
+
+  it('runs a competition with one attempt, standings, winners and a verifiable certificate', async () => {
+    await updateProfile(ctx(), 'u1', { fullName: 'Aynur Məmmədova' });
+    const c = await createCompetition(ctx(), {
+      title: 'Həftəlik yarış', description: 'Sınaq', category: 'BB', startsAt: T0 - HOUR, endsAt: T0 + DAY, questionCount: 5, timeLimitSec: 600,
+    });
+    const list = await listCompetitions(ctx(), 'u1');
+    expect(list[0]).toMatchObject({ id: c.id, status: 'active', canStart: true });
+    const s = await startCompetition(ctx(), 'u1', c.id);
+    expect(s.kind).toBe('competition');
+    expect(s.examMode).toBe(true);
+    expect(s.questions).toHaveLength(5);
+    await answerAll(s);
+    await complete(ctx(), 'u1', s.id);
+    expect((await errorOf(startCompetition(ctx(), 'u1', c.id))).code).toBe('COMPETITION_CLOSED');
+    const st = await getStandings(ctx(), 'u1', c.id);
+    expect(st.rows[0]).toMatchObject({ place: 1, me: true, pct: 100 });
+
+    now += HOUR;
+    const done = await finishCompetitionNow(ctx(), c.id);
+    expect(done.winners[0]).toMatchObject({ place: 1, userId: 'u1', name: 'Aynur Məmmədova' });
+    const cert = await getCertificate(ctx(), done.winners[0].certificateCode);
+    expect(cert).toMatchObject({ name: 'Aynur Məmmədova', place: 1, competitionTitle: 'Həftəlik yarış' });
+    const after = await listCompetitions(ctx(), 'u1');
+    expect(after[0].my?.certificateCode).toBe(done.winners[0].certificateCode);
+    const me = await getMe(ctx(), 'u1');
+    expect(me.awards.find((a) => a.id === 'champion')?.tier).toBe(1);
   });
 });

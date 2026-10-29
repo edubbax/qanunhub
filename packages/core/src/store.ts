@@ -1,6 +1,7 @@
 // Persistence port used by the engine. The server implements it on Postgres, the demo in memory.
 import type {
-  LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session, SrsState, TopicFinal, UserRecord, XpEvent,
+  Certificate, Competition, CompetitionEntry, LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session,
+  SrsState, TopicFinal, UserRecord, XpEvent,
 } from './types';
 
 export interface Store {
@@ -31,4 +32,15 @@ export interface Store {
   sumXp(userId: string, since: number): Promise<number>;
 
   addReport(r: Report): Promise<void>;
+
+  listCompetitions(): Promise<Competition[]>;
+  getCompetition(id: string): Promise<Competition | null>;
+  saveCompetition(c: Competition): Promise<void>;
+  getEntry(competitionId: string, userId: string): Promise<CompetitionEntry | null>;
+  saveEntry(e: CompetitionEntry): Promise<void>;
+  /** Finished entries of a competition. */
+  listEntries(competitionId: string): Promise<CompetitionEntry[]>;
+  countEntries(competitionId: string): Promise<number>;
+  getCertificate(code: string): Promise<Certificate | null>;
+  saveCertificate(c: Certificate): Promise<void>;
 }

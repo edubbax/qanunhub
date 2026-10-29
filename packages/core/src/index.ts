@@ -5,6 +5,7 @@ export * from './exam';
 export * from './time';
 export * from './srs';
 export * from './gamification';
+export * from './military';
 export * from './content';
 export * from './store';
 export * from './memoryStore';

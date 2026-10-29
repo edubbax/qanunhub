@@ -1,6 +1,6 @@
 // Minimal service worker: caches the app shell so the PWA opens offline; API calls always go to the network.
 const CACHE = 'qanunhub-shell-v1';
-const SHELL = ['/', '/manifest.webmanifest', '/icon.svg'];
+const SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/favicon.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

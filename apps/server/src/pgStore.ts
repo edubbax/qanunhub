@@ -1,8 +1,9 @@
 // Store implementation on Postgres. One instance per request, bound to that request's transaction.
 import type {
-  LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session, SrsState, Store, TopicFinal, UserRecord, XpEvent,
+  Certificate, Competition, CompetitionEntry, LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session,
+  SrsState, Store, TopicFinal, UserRecord, XpEvent,
 } from '@qanunhub/core';
-import { periodStartKey } from '@qanunhub/core';
+import { displayRankCode, freshGame, periodStartKey } from '@qanunhub/core';
 import type { Db } from './db';
 
 type Row = Record<string, any>;
@@ -18,6 +19,28 @@ export function rowToUser(r: Row): UserRecord {
     examDate: isoDay(r.exam_date), dailyGoal: r.daily_goal, premiumUntil: ts(r.premium_until), emailVerified: r.email_verified,
     leaderboardBanned: r.leaderboard_banned, createdAt: ts(r.created_at)!, xpTotal: r.xp_total, hearts: r.hearts,
     streak: r.streak, today: r.today, categoryChangedAt: ts(r.category_changed_at),
+    fullName: r.full_name ?? null, game: r.game ?? freshGame(ts(r.created_at)!),
+  };
+}
+
+function rowToBoard(r: Row, now: number): LeaderboardRow {
+  return {
+    userId: r.user_id, nickname: r.nickname, xp: r.xp, correct: r.correct, answered: r.answered, reachedAt: ts(r.reached_at)!,
+    rank: Number(r.rank), rankCode: displayRankCode({ premiumUntil: ts(r.premium_until), game: r.game }, now),
+  };
+}
+
+function rowToCompetition(r: Row): Competition {
+  return {
+    id: r.id, title: r.title, description: r.description, category: r.category, startsAt: ts(r.starts_at)!, endsAt: ts(r.ends_at)!,
+    questionCount: r.question_count, timeLimitSec: r.time_limit_sec, createdAt: ts(r.created_at)!, finishedAt: ts(r.finished_at), winners: r.winners,
+  };
+}
+
+function rowToEntry(r: Row): CompetitionEntry {
+  return {
+    competitionId: r.competition_id, userId: r.user_id, nickname: r.nickname, category: r.category, sessionId: r.session_id,
+    startedAt: ts(r.started_at)!, finishedAt: ts(r.finished_at), points: r.points, maxPoints: r.max_points, pct: r.pct, durationMs: r.duration_ms,
   };
 }
 
@@ -44,7 +67,7 @@ export class PgStore implements Store {
         exam_date = ${u.examDate}, daily_goal = ${u.dailyGoal}, premium_until = ${dt(u.premiumUntil)},
         email_verified = ${u.emailVerified}, leaderboard_banned = ${u.leaderboardBanned}, xp_total = ${u.xpTotal},
         hearts = ${this.sql.json(u.hearts as any)}, streak = ${this.sql.json(u.streak as any)}, today = ${this.sql.json(u.today as any)},
-        category_changed_at = ${dt(u.categoryChangedAt)}
+        category_changed_at = ${dt(u.categoryChangedAt)}, full_name = ${u.fullName}, game = ${this.sql.json(u.game as any)}
       where id = ${u.id}`;
   }
 
@@ -137,23 +160,24 @@ export class PgStore implements Store {
 
   async getLeaderboard(period: Period, start: string, scope: Scope, limit: number): Promise<LeaderboardRow[]> {
     const rows = await this.sql`
-      select l.user_id, u.nickname, l.xp, l.correct, l.answered, l.reached_at,
+      select l.user_id, u.nickname, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
         row_number() over (order by l.xp desc, (case when l.answered > 0 then l.correct::float / l.answered else 0 end) desc, l.reached_at asc) as rank
       from leaderboard_scores l join users u on u.id = l.user_id
       where l.period = ${period} and l.period_start = ${start} and l.scope = ${scope} and l.xp > 0 and not u.leaderboard_banned
       order by rank limit ${limit}`;
-    return rows.map((r) => ({ userId: r.user_id, nickname: r.nickname, xp: r.xp, correct: r.correct, answered: r.answered, reachedAt: ts(r.reached_at)!, rank: Number(r.rank) }));
+    const now = Date.now();
+    return rows.map((r) => rowToBoard(r, now));
   }
 
   async getLeaderboardEntry(period: Period, start: string, scope: Scope, userId: string): Promise<LeaderboardRow | null> {
     const [r] = await this.sql`
       select * from (
-        select l.user_id, u.nickname, l.xp, l.correct, l.answered, l.reached_at,
+        select l.user_id, u.nickname, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
           row_number() over (order by l.xp desc, (case when l.answered > 0 then l.correct::float / l.answered else 0 end) desc, l.reached_at asc) as rank
         from leaderboard_scores l join users u on u.id = l.user_id
         where l.period = ${period} and l.period_start = ${start} and l.scope = ${scope} and l.xp > 0 and not u.leaderboard_banned
       ) b where user_id = ${userId}`;
-    return r ? { userId: r.user_id, nickname: r.nickname, xp: r.xp, correct: r.correct, answered: r.answered, reachedAt: ts(r.reached_at)!, rank: Number(r.rank) } : null;
+    return r ? rowToBoard(r, Date.now()) : null;
   }
 
   async rankForXp(period: Period, start: string, scope: Scope, xp: number) {
@@ -170,5 +194,62 @@ export class PgStore implements Store {
 
   async addReport(r: Report) {
     await this.sql`insert into reports (user_id, item_id, reason, body, created_at) values (${r.userId}, ${r.itemId}, ${r.reason}, ${r.body}, ${dt(r.at)})`;
+  }
+
+  async listCompetitions() {
+    return (await this.sql`select * from competitions order by starts_at desc limit 200`).map(rowToCompetition);
+  }
+
+  async getCompetition(id: string) {
+    if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+    const [r] = await this.sql`select * from competitions where id = ${id}`;
+    return r ? rowToCompetition(r) : null;
+  }
+
+  async saveCompetition(c: Competition) {
+    await this.sql`
+      insert into competitions (id, title, description, category, starts_at, ends_at, question_count, time_limit_sec, created_at, finished_at, winners)
+      values (${c.id}, ${c.title}, ${c.description}, ${c.category}, ${dt(c.startsAt)}, ${dt(c.endsAt)}, ${c.questionCount}, ${c.timeLimitSec},
+        ${dt(c.createdAt)}, ${dt(c.finishedAt)}, ${this.sql.json(c.winners as any)})
+      on conflict (id) do update set title = excluded.title, description = excluded.description, category = excluded.category,
+        starts_at = excluded.starts_at, ends_at = excluded.ends_at, question_count = excluded.question_count,
+        time_limit_sec = excluded.time_limit_sec, finished_at = excluded.finished_at, winners = excluded.winners`;
+  }
+
+  async getEntry(competitionId: string, userId: string) {
+    const [r] = await this.sql`select * from competition_entries where competition_id = ${competitionId} and user_id = ${userId}`;
+    return r ? rowToEntry(r) : null;
+  }
+
+  async saveEntry(e: CompetitionEntry) {
+    await this.sql`
+      insert into competition_entries (competition_id, user_id, nickname, category, session_id, started_at, finished_at, points, max_points, pct, duration_ms)
+      values (${e.competitionId}, ${e.userId}, ${e.nickname}, ${e.category}, ${e.sessionId}, ${dt(e.startedAt)}, ${dt(e.finishedAt)},
+        ${e.points}, ${e.maxPoints}, ${e.pct}, ${Math.round(e.durationMs)})
+      on conflict (competition_id, user_id) do update set finished_at = excluded.finished_at, points = excluded.points,
+        max_points = excluded.max_points, pct = excluded.pct, duration_ms = excluded.duration_ms`;
+  }
+
+  async listEntries(competitionId: string) {
+    return (await this.sql`select * from competition_entries where competition_id = ${competitionId} and finished_at is not null`).map(rowToEntry);
+  }
+
+  async countEntries(competitionId: string) {
+    const [r] = await this.sql`select count(*)::int as n from competition_entries where competition_id = ${competitionId}`;
+    return r.n;
+  }
+
+  async getCertificate(code: string): Promise<Certificate | null> {
+    const [r] = await this.sql`select * from certificates where code = ${code}`;
+    return r ? {
+      code: r.code, competitionId: r.competition_id, competitionTitle: r.competition_title, userId: r.user_id, name: r.name,
+      place: r.place, pct: r.pct, category: r.category, issuedAt: ts(r.issued_at)!,
+    } : null;
+  }
+
+  async saveCertificate(c: Certificate) {
+    await this.sql`
+      insert into certificates (code, competition_id, competition_title, user_id, name, place, pct, category, issued_at)
+      values (${c.code}, ${c.competitionId}, ${c.competitionTitle}, ${c.userId}, ${c.name}, ${c.place}, ${c.pct}, ${c.category}, ${dt(c.issuedAt)})`;
   }
 }

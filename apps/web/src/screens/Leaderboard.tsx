@@ -1,6 +1,8 @@
 import type { Period, Scope } from '@qanunhub/core';
 import { useState } from 'react';
+import { rankByCode } from '@qanunhub/core';
 import { useApp } from '../app';
+import { Epaulette } from '../ui/insignia';
 import { ErrorBox, Spinner, untilText, useLoad } from '../ui/components';
 import { IconLock, IconTrophy } from '../ui/icons';
 
@@ -62,9 +64,10 @@ export function Leaderboard() {
               return (
                 <div key={r.userId} className={`lb-row ${r.rank <= 3 ? 'top' : ''} ${r.userId === me?.id ? 'me' : ''}`}>
                   <span className="rank">{r.rank}</span>
+                  <Epaulette code={r.rankCode ?? 'gizir'} size={30} />
                   <span className="stack" style={{ gap: 0, minWidth: 0 }}>
                     <span className="name">{r.nickname}{r.userId === me?.id ? ' (sən)' : ''}</span>
-                    <span className="tiny muted">dəqiqlik {acc}%{r.sample ? ' · nümunə istifadəçi' : ''}</span>
+                    <span className="tiny muted">{rankByCode(r.rankCode ?? 'gizir')?.title} · dəqiqlik {acc}%{r.sample ? ' · nümunə' : ''}</span>
                   </span>
                   <span className="num"><b>{r.xp}</b> <span className="tiny muted">XP</span></span>
                 </div>

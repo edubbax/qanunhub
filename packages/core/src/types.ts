@@ -120,10 +120,20 @@ export interface StreakState {
   freezeMonth: string;        // YYYY-MM the freezes were granted for
 }
 
+/** Military rank, counters and awards (see military.ts). */
+export interface GameState {
+  merit: number;
+  level: number;              // index into MILITARY_RANKS
+  decayedThrough: string;     // Baku day key up to which inactivity decay was applied
+  counters: Partial<Record<string, number>>;
+  awards: Record<string, { tier: number; at: number }>;
+}
+
 export interface UserRecord {
   id: string;
   email: string;
   nickname: string;
+  fullName: string | null;    // printed on certificates
   role: Role;
   category: Category | null;
   subgroup: string | null;
@@ -138,6 +148,7 @@ export interface UserRecord {
   streak: StreakState;
   today: { day: string; xp: number; lbXp: number };
   categoryChangedAt: number | null;
+  game: GameState;
 }
 
 export type SrsPhase = 'learn' | 'relearn' | 'review';
@@ -187,7 +198,7 @@ export interface ReviewLog {
   at: number;
 }
 
-export type SessionKind = 'lesson' | 'review' | 'weak' | 'section' | 'final' | 'mock';
+export type SessionKind = 'lesson' | 'review' | 'weak' | 'section' | 'final' | 'mock' | 'competition';
 
 export interface SessionQuestion {
   qid: number;
@@ -206,6 +217,7 @@ export interface Session {
   lessonId: string | null;
   topicId: string | null;
   sectionId?: string | null;
+  competitionId?: string | null;
   createdAt: number;
   expiresAt: number;
   timeLimitSec: number | null;
@@ -241,6 +253,61 @@ export interface LeaderboardRow {
   reachedAt: number;
   rank: number;
   sample?: boolean;
+  rankCode?: string;          // military rank of the learner (premium boards only list premium learners)
+}
+
+// ---------------------------------------------------------------- competitions
+
+export interface Competition {
+  id: string;
+  title: string;
+  description: string;
+  category: Category | null;  // null = every category answers its own programme
+  startsAt: number;
+  endsAt: number;
+  questionCount: number;
+  timeLimitSec: number;
+  createdAt: number;
+  finishedAt: number | null;
+  winners: CompetitionWinner[];
+}
+
+export interface CompetitionWinner {
+  place: number;
+  userId: string;
+  nickname: string;
+  name: string;
+  points: number;
+  maxPoints: number;
+  pct: number;
+  durationMs: number;
+  certificateCode: string;
+}
+
+export interface CompetitionEntry {
+  competitionId: string;
+  userId: string;
+  nickname: string;
+  category: Category;
+  sessionId: string;
+  startedAt: number;
+  finishedAt: number | null;
+  points: number;
+  maxPoints: number;
+  pct: number;
+  durationMs: number;
+}
+
+export interface Certificate {
+  code: string;
+  competitionId: string;
+  competitionTitle: string;
+  userId: string;
+  name: string;
+  place: number;
+  pct: number;
+  category: Category | null;
+  issuedAt: number;
 }
 
 export interface Report {

@@ -5,7 +5,9 @@ import type { Route } from '../app';
 import { useApp } from '../app';
 import { ApiError } from '../api/types';
 import { Modal, Progress, Spinner, toast, untilText } from '../ui/components';
-import { IconAlert, IconBolt, IconCheck, IconClock, IconFlag, IconFlame, IconHeart, IconStar, IconX } from '../ui/icons';
+import { AWARDS, ROMAN } from '@qanunhub/core';
+import { IconAlert, IconBolt, IconCheck, IconClock, IconFlag, IconFlame, IconShield, IconStar, IconX } from '../ui/icons';
+import { Epaulette, LifeStars, Medal } from '../ui/insignia';
 
 type SessionRoute = Extract<Route, { name: 'session' }>;
 const LETTERS = 'ABCDEFGH';
@@ -28,7 +30,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
 
   useEffect(() => {
     let alive = true;
-    api.startSession(route.kind, { lessonId: route.lessonId, topicId: route.topicId, sectionId: route.sectionId }).then(
+    api.startSession(route.kind, { lessonId: route.lessonId, topicId: route.topicId, sectionId: route.sectionId, competitionId: route.competitionId }).then(
       (s) => {
         if (!alive) return;
         setSession(s);
@@ -71,7 +73,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
           <button className="icon-btn" aria-label="Çıx" onClick={() => setConfirmExit(true)}><IconX /></button>
           <div className="grow"><Progress value={progress} /></div>
           {session.timeLimitSec && <Timer deadline={deadline.current!} onExpire={finish} />}
-          {hearts && <span className="stat hearts"><IconHeart />{hearts.current}</span>}
+          {hearts && <span className="stat hearts"><LifeStars current={hearts.current} max={hearts.max} size={24} /></span>}
         </div>
       )}
 
@@ -111,10 +113,10 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
 
       {heartsOut && phase === 'quiz' && (
         <Modal>
-          <div className="row" style={{ color: 'var(--heart)' }}><IconHeart /><h2>Canların bitdi</h2></div>
-          <p>Yeni dərslər 4 saat sonra açılacaq. Təkrar can xərcləmir: 10 sualdan 8-ni düz cavablasan, 1 can qazanırsan.</p>
+          <div className="row"><LifeStars current={0} size={30} /><h2>Paqonda ulduz qalmadı</h2></div>
+          <p>Yeni dərslər 4 saat sonra açılacaq. Təkrar ulduz xərcləmir: 10 sualdan 8-ni düz cavablasan, 1 ulduz qaytarırsan.</p>
           <button className="btn primary block" onClick={() => { setHeartsOut(false); finish(); }}>Dərsi bitir</button>
-          <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium: limitsiz can</button>
+          <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium: ulduzlar tükənmir</button>
         </Modal>
       )}
 
@@ -159,14 +161,14 @@ function SessionError({ error, back }: { error: ApiError; back: Route }) {
   const next = typeof error.data?.nextAttemptAt === 'number' ? (error.data.nextAttemptAt as number) : null;
   return (
     <main className="page no-tabs stack loose" style={{ paddingTop: 48 }}>
-        <div className="row" style={{ color: error.code === 'HEARTS_LOCKED' ? 'var(--heart)' : 'var(--xp)' }}>
-          {error.code === 'HEARTS_LOCKED' ? <IconHeart /> : <IconAlert />}
-          <h1>{error.code === 'HEARTS_LOCKED' ? 'Canların bitib' : error.code === 'PREMIUM_REQUIRED' ? 'Premium tələb olunur' : 'Başlamaq olmadı'}</h1>
+        <div className="row" style={{ color: 'var(--xp)' }}>
+          {error.code === 'HEARTS_LOCKED' ? <LifeStars current={0} size={30} /> : <IconAlert />}
+          <h1>{error.code === 'HEARTS_LOCKED' ? 'Ulduzların bitib' : error.code === 'PREMIUM_REQUIRED' ? 'Premium tələb olunur' : 'Başlamaq olmadı'}</h1>
         </div>
         <p>{error.message}</p>
-        {lockedUntil && <p className="muted">Canlar {untilText(lockedUntil)} sonra bərpa olunacaq.</p>}
+        {lockedUntil && <p className="muted">Ulduzlar {untilText(lockedUntil)} sonra bərpa olunacaq.</p>}
         {next && <p className="muted">Növbəti cəhd {untilText(next)} sonra mümkündür.</p>}
-        {error.code === 'HEARTS_LOCKED' && <button className="btn primary block" onClick={() => nav({ name: 'session', kind: 'review', back })}>Təkrar et və can qazan</button>}
+        {error.code === 'HEARTS_LOCKED' && <button className="btn primary block" onClick={() => nav({ name: 'session', kind: 'review', back })}>Təkrar et və ulduz qaytar</button>}
         {(error.code === 'PREMIUM_REQUIRED' || error.code === 'HEARTS_LOCKED') && <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium planlara bax</button>}
         <button className="btn ghost" onClick={() => nav(back)}>Geri qayıt</button>
     </main>
@@ -377,20 +379,20 @@ const LB_NOTES: Partial<Record<CompleteDto['leaderboard'], string>> = {
 
 function Result({ r, back }: { r: CompleteDto; back: Route }) {
   const { nav } = useApp();
-  const exam = r.kind === 'final' || r.kind === 'mock' || r.kind === 'section';
+  const exam = r.kind === 'final' || r.kind === 'mock' || r.kind === 'section' || r.kind === 'competition';
   const mistakes = r.review.filter((x) => !x.correct);
-  const title = !r.completed ? 'Dərs dayandı' : exam ? (r.passed ? 'Keçdin!' : 'Hələ keçid balı yoxdur') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
+  const title = !r.completed ? 'Dərs dayandı' : r.kind === 'competition' ? 'Yarış cəhdin qeydə alındı' : exam ? (r.passed ? 'Keçdin!' : 'Hələ keçid balı yoxdur') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
   return (
     <main className="page no-tabs stack loose">
       <section className="result-hero">
-        <span style={{ width: 56, height: 56, color: !r.completed ? 'var(--heart)' : r.passed === false ? 'var(--xp)' : 'var(--ok)' }}>
-          {!r.completed ? <IconHeart /> : r.passed === false ? <IconAlert /> : <IconStar />}
+        <span style={{ width: 56, height: 56, color: !r.completed ? 'var(--bad)' : r.passed === false ? 'var(--xp)' : 'var(--ok)' }}>
+          {!r.completed ? <IconAlert /> : r.passed === false ? <IconAlert /> : <IconStar />}
         </span>
         <h1>{title}</h1>
         {exam ? (
           <>
             <span className="big">{r.pct}%</span>
-            <p className="muted">{r.points} / {r.maxPoints} bal · hədəf {r.targetPercent}%{r.kind === 'mock' ? ' (alt qrupunun keçid faizi)' : ''}</p>
+            <p className="muted">{r.points} / {r.maxPoints} bal{r.targetPercent != null ? ` · hədəf ${r.targetPercent}%${r.kind === 'mock' ? ' (alt qrupunun keçid faizi)' : ''}` : ''}</p>
           </>
         ) : (
           <p className="muted">{r.correct} / {r.total} sual ilk cəhddə düz</p>
@@ -399,13 +401,28 @@ function Result({ r, back }: { r: CompleteDto; back: Route }) {
 
       <section className="kpi">
         <div className="card"><b className="row" style={{ gap: 4, color: 'var(--primary)' }}><span style={{ width: 20, display: 'inline-flex' }}><IconBolt /></span>{r.xp}</b><span>XP{r.leaderboardCounted ? ' · reytinqə' : ''}</span></div>
-        <div className="card"><b className="row" style={{ gap: 4, color: 'var(--xp)' }}><span style={{ width: 20, display: 'inline-flex' }}><IconFlame /></span>{r.streak}</b><span>{r.streakIncreased ? 'ardıcıllıq artdı' : 'ardıcıl gün'}</span></div>
-        <div className="card"><b>{r.total ? Math.round((r.correct / r.total) * 100) : 0}%</b><span>dəqiqlik</span></div>
+        <div className="card"><b className="row" style={{ gap: 4, color: 'var(--gold)' }}><span style={{ width: 20, display: 'inline-flex' }}><IconShield /></span>{r.rank.meritDelta > 0 ? '+' : ''}{r.rank.meritDelta}</b><span>xidmət balı</span></div>
+        <div className="card"><b className="row" style={{ gap: 4, color: 'var(--xp)' }}><span style={{ width: 20, display: 'inline-flex' }}><IconFlame /></span>{r.streak}</b><span>{r.streakIncreased ? 'seriya artdı' : 'ardıcıl gün'}</span></div>
       </section>
 
-      {r.heartEarned && <div className="banner"><IconHeart />+1 can qazandın.</div>}
-      {r.rank?.changed && <div className="banner"><IconStar />Yeni rütbə: <b>{r.rank.title}</b></div>}
-      {!r.completed && <div className="banner bad"><IconHeart />Canlar bitdiyi üçün dərs bitmiş sayılmadı. Cavabların təkrar cədvəlinə düşüb.</div>}
+      {r.rank.change === 'up' && (
+        <div className="gain">
+          <Epaulette code={r.rank.code} size={56} />
+          <div className="grow stack tight"><b>Təbrik! Yeni rütbə</b><span className="rank-title">{r.rank.title}</span></div>
+        </div>
+      )}
+      {r.rank.change === 'down' && <div className="banner bad"><IconAlert />Rütbən endi: {r.rank.title}. Hər gün məşq edərək geri qaytar.</div>}
+      {r.awards.map((a) => {
+        const def = AWARD_LOOK[a.id] ?? { shape: 'medal' as const, color: 'gold' };
+        return (
+          <div key={a.id} className="gain">
+            <Medal shape={def.shape} color={def.color} tier={a.tier} earned title={a.title} size={56} />
+            <div className="grow stack tight"><b>Yeni təltif</b><span>{a.title} · {ROMAN[a.tier - 1]} dərəcə</span></div>
+          </div>
+        );
+      })}
+      {r.heartEarned && <div className="banner"><IconStar />Paqonuna 1 ulduz qayıtdı.</div>}
+      {!r.completed && <div className="banner bad"><IconAlert />Ulduzlar bitdiyi üçün dərs bitmiş sayılmadı. Cavabların təkrar cədvəlinə düşüb.</div>}
       {LB_NOTES[r.leaderboard] && <div className="banner warn"><IconAlert />{LB_NOTES[r.leaderboard]}</div>}
       {r.kind === 'mock' && <p className="small muted">Sınaq yalnız qanunvericilik bölməsini (40 tapşırıq) ölçür. Real imtahanda keçid balı dörd fənnin cəmi üzrə hesablanır.</p>}
 
@@ -417,13 +434,17 @@ function Result({ r, back }: { r: CompleteDto; back: Route }) {
       )}
 
       <div className="stack">
-        {!r.completed && <button className="btn primary block" onClick={() => nav({ name: 'session', kind: 'review', back })}>Təkrar et və can qazan</button>}
+        {!r.completed && <button className="btn primary block" onClick={() => nav({ name: 'session', kind: 'review', back })}>Təkrar et və ulduz qaytar</button>}
         <button className={`btn ${r.completed ? 'primary' : 'secondary'} block`} onClick={() => nav(back)}>Davam et</button>
         {r.kind === 'lesson' && back.name !== 'path' && <button className="btn ghost" onClick={() => nav({ name: 'path' })}>Öyrənmə yoluna bax</button>}
       </div>
     </main>
   );
 }
+
+const AWARD_LOOK: Record<string, { shape: 'medal' | 'order' | 'badge'; color: string }> = Object.fromEntries(
+  AWARDS.map((a) => [a.id, { shape: a.shape, color: a.color }]),
+);
 
 function ReviewItem({ x }: { x: ReviewEntryDto }) {
   return (

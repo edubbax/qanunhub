@@ -3,6 +3,13 @@ import { useState } from 'react';
 import { useApp } from '../app';
 import { ordinal } from '../ui/components';
 
+const KIND: Record<Category, string> = {
+  AB: 'İnzibati rəhbər vəzifələr',
+  AC: 'İnzibati rəhbər vəzifələr',
+  BA: 'İnzibati icraçı vəzifələr',
+  BB: 'İnzibati icraçı vəzifələr',
+};
+
 const CAT_TEXT: Record<Category, string> = {
   AB: 'İnzibati rəhbər vəzifələr: şöbə və sektor müdirləri, müavinlər, regional bölmə rəhbərləri.',
   AC: 'İnzibati rəhbər vəzifələr: yerli bölmə rəhbərləri, tabe orqanların rəhbərləri və müavinləri.',
@@ -44,22 +51,16 @@ export function Onboarding() {
         <section className="stack">
           <div className="stack tight">
             <h1>Hansı kateqoriyaya hazırlaşırsan?</h1>
-            <p className="muted">İmtahanda yalnız öz kateqoriyanın proqramı soruşulur. Dərslər buna görə seçiləcək.</p>
+            <p className="muted">Dərslər, testlər və yarışlar seçdiyin kateqoriyanın proqramına uyğun qurulacaq.</p>
           </div>
           {meta.categories.map((c) => {
-            const f = meta.formats[c];
-            const topics = meta.topics.filter((t) => t.categories.includes(c)).length;
             const soon = meta.comingSoonCategories.includes(c);
             return (
               <button key={c} className={`choice ${category === c ? 'on' : ''}`} disabled={soon} onClick={() => { setCategory(c); if (subgroup && !subgroup.startsWith(c)) setSubgroup(null); }} aria-pressed={category === c}>
                 <span className="code">{c}</span>
                 <span className="stack tight grow">
-                  <b>{f.kindTitle}</b>
+                  <span className="row between"><b>{KIND[c]}</b>{soon && <span className="chip xp">Tezliklə</span>}</span>
                   <span className="small muted">{CAT_TEXT[c]}</span>
-                  <span className="row wrap">
-                    {soon ? <span className="chip xp">Tezliklə</span> : <span className="chip primary">{topics} mövzu</span>}
-                    <span className="chip">{f.lawClosed} qapalı{f.lawOpen ? ` + ${f.lawOpen} açıq` : ''} sual</span>
-                  </span>
                 </span>
               </button>
             );
@@ -105,7 +106,7 @@ export function Onboarding() {
             <div className="seg" role="group" aria-label="Gündəlik hədəf">
               {[10, 15, 20, 30].map((m) => <button key={m} type="button" className={dailyGoal === m ? 'on' : ''} onClick={() => setDailyGoal(m)}>{m} dəq</button>)}
             </div>
-            <span className="hint">Gündə 15 dəqiqə ilə BB proqramı təxminən 3, AC proqramı 5 ayda bitir.</span>
+            <span className="hint">Hədəfi istənilən vaxt profildə dəyişə bilərsən.</span>
           </div>
           {error && <div className="banner bad" role="alert">{error}</div>}
           <div className="row">

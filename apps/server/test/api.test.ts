@@ -128,6 +128,31 @@ describe('learning flow', () => {
     expect(home.json.examDaysLeft).toBe(43);
   });
 
+  it('runs a competition: admin creates it, the learner takes it once, the admin closes it and a certificate is issued', async () => {
+    const a = client();
+    await a.post('/api/auth/login', { email: 'admin@qanunhub.az', password: 'Admin-parol-2026' });
+    const created = await a.post('/api/admin/competitions', {
+      title: 'Noyabr yarışı', description: 'Test', category: 'BB', startsAt: clock - 60_000, endsAt: clock + 86_400_000, questionCount: 5, timeLimitSec: 600,
+    });
+    expect(created.status).toBe(200);
+    await c.patch('/api/me', { fullName: 'Aynur Əliyeva' });
+    const list = await c.get('/api/competitions');
+    expect(list.json[0]).toMatchObject({ id: created.json.id, status: 'active', canStart: true });
+    const s = await c.post('/api/sessions', { kind: 'competition', competitionId: created.json.id });
+    expect(s.json.questions).toHaveLength(5);
+    for (const q of await correctAnswers(s.json.id)) await c.post(`/api/sessions/${s.json.id}/answer`, { qid: q.qid, answer: q.answer, ms: 8000 });
+    await c.post(`/api/sessions/${s.json.id}/complete`);
+    expect((await c.post('/api/sessions', { kind: 'competition', competitionId: created.json.id })).json.error.code).toBe('COMPETITION_CLOSED');
+    const finished = await a.post(`/api/admin/competitions/${created.json.id}/finish`);
+    const code = finished.json.winners[0].certificateCode;
+    expect(finished.json.winners[0].name).toBe('Aynur Əliyeva');
+    const cert = await client().get(`/api/certificates/${code}`);
+    expect(cert.json).toMatchObject({ code, name: 'Aynur Əliyeva', place: 1, competitionTitle: 'Noyabr yarışı' });
+    const me = await c.get('/api/me');
+    expect(me.json.awards.find((x: { id: string }) => x.id === 'champion').tier).toBe(1);
+    expect(me.json.rank.title).toBe('Gizir');
+  });
+
   it('refuses a second answer to the same question', async () => {
     const s = await c.post('/api/sessions', { kind: 'lesson', lessonId: 'k2' });
     const [q] = await correctAnswers(s.json.id);
@@ -167,7 +192,7 @@ describe('admin', () => {
     await learner.post('/api/auth/login', { email: 'aynur@example.az', password: 'yeni-gizli-parol' });
     const path = await learner.get('/api/path');
     expect(path.json.topics[1].locked).toBe(false);
-    expect((await learner.get('/api/me')).json.rank.title).toBe('7-ci dərəcəli');
+    expect((await learner.get('/api/me')).json.rank.title).toBe('Leytenant');
   });
 
   it('edits an item, records the change and serves the new text', async () => {
@@ -214,6 +239,7 @@ describe('content storage', () => {
     const c = client();
     const meta = await c.get('/api/meta');
     expect(meta.json.comingSoonCategories).toEqual(['AB']);
+    expect(meta.json.formats).toBeNull(); // test formats are shown only after sign-in
     await c.post('/api/auth/register', { email: 'ab@example.az', password: 'Parol-uzun-2026', nickname: 'abuser', accept: true });
     const res = await c.patch('/api/me', { category: 'AB' });
     expect(res.status).toBe(400);

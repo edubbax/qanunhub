@@ -6,10 +6,12 @@ import {
   AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, ContentIndex, EXAM_FORMATS, MemoryStore, SAMPLE_EMAIL_SUFFIX, SUBGROUPS, answer, complete, emptyMemoryData,
   getHome, getLeaderboard, getMe, getPath, getWeakTopics, grantPremium, isAppError, newUser, periodStartKey, dayStart, randomId,
   reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
+  adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
+  startCompetition, type Competition,
   type Card, type Category, type ContentBundle, type EngineCtx, type Item, type MemoryData, type SessionKind,
 } from '@qanunhub/core';
 
-const KEY = 'qanunhub-demo-v3';
+const KEY = 'qanunhub-demo-v4';
 const DEMO_EMAIL = 'demo@qanunhub.az';
 const DEMO_PASSWORD = 'demo-hesab-2026';
 
@@ -146,8 +148,52 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
   }
   await seedSamples();
 
+  /** Demo competitions: one running with sample participants, one finished with winners, one upcoming. */
+  async function seedCompetitions() {
+    if (state.seeded.includes('competitions')) return;
+    const now = Date.now();
+    const day = 86400_000;
+    const c = { store, content: index, now, random: Math.random, newId: randomId, categoryChangeLimit: false } as EngineCtx;
+    const samples = Object.values(store.data.users).filter((u) => u.email.endsWith(SAMPLE_EMAIL_SUFFIX));
+    if (samples.length === 0) return;
+    const live = await createCompetition(c, {
+      title: 'Həftəlik yarış: Konstitusiya və dövlət qulluğu', description: 'Hər kəs öz kateqoriyasının proqramından eyni 20 sualı cavablandırır. İlk üç yerə sertifikat verilir.',
+      category: null, startsAt: now - day, endsAt: now + 6 * day, questionCount: 20, timeLimitSec: 20 * 60,
+    });
+    let rnd = 11;
+    const r = () => ((rnd = (rnd * 1103515245 + 12345) % 2147483648) / 2147483648);
+    for (const u of samples.slice(0, 14)) {
+      const points = 9 + Math.floor(r() * 9);
+      await store.saveEntry({
+        competitionId: live.id, userId: u.id, nickname: u.nickname, category: (u.category ?? 'BB') as Category, sessionId: randomId(),
+        startedAt: now - Math.floor(r() * day), finishedAt: now - Math.floor(r() * day / 2), points, maxPoints: 20, pct: Math.round((points / 20) * 100),
+        durationMs: Math.round((7 + r() * 12) * 60_000),
+      });
+    }
+    const past = await createCompetition(c, {
+      title: 'Oktyabr yarışı', description: 'Ayın sonunda keçirilən açıq yarış.', category: null,
+      startsAt: now - 12 * day, endsAt: now - 5 * day, questionCount: 20, timeLimitSec: 20 * 60,
+    });
+    for (const u of samples.slice(4, 16)) {
+      const points = 10 + Math.floor(r() * 10);
+      await store.saveEntry({
+        competitionId: past.id, userId: u.id, nickname: u.nickname, category: (u.category ?? 'BB') as Category, sessionId: randomId(),
+        startedAt: now - 8 * day, finishedAt: now - 8 * day + 900_000, points, maxPoints: 20, pct: Math.round((points / 20) * 100),
+        durationMs: Math.round((8 + r() * 10) * 60_000),
+      });
+    }
+    await listCompetitions(c, samples[0].id); // settles the finished one: winners and certificates
+    await createCompetition(c, {
+      title: 'Noyabr çempionatı', description: 'Bütün mövzular üzrə 30 sual, 30 dəqiqə.', category: null,
+      startsAt: now + 3 * day, endsAt: now + 4 * day, questionCount: 30, timeLimitSec: 30 * 60,
+    });
+    state.seeded.push('competitions');
+    save();
+  }
+  await seedCompetitions();
+
   const meta: MetaDto = {
-    categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES, subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS, contentVersion: base.version,
+    categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES, subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS, contentVersion: base.version, signedIn: true,
     topics: base.topics.map((t) => ({ id: t.id, programNo: t.programNo, shortTitle: t.shortTitle, categories: t.categories, free: t.free })),
   };
 
@@ -166,6 +212,29 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
   const allItems = () => base.items.map((i) => (state.overrides.items[i.id] ? { ...i, ...state.overrides.items[i.id] } as Item : i));
 
   const admin: AdminApi = {
+    async competitions() {
+      requireStaff();
+      return adminCompetitions(ctx());
+    },
+    async createCompetition(input) {
+      const me = requireStaff();
+      if (me.role !== 'admin') throw new ApiError('FORBIDDEN', 'Bu əməliyyat yalnız admin üçündür.', 403);
+      const created: Competition = await run((c) => createCompetition(c, input));
+      audit('competition.create', 'competition', created.id);
+      save();
+      return created;
+    },
+    async finishCompetition(id) {
+      requireStaff();
+      const done: Competition = await run((c) => finishCompetitionNow(c, id));
+      audit('competition.finish', 'competition', id);
+      save();
+      return done;
+    },
+    async certificate(code) {
+      requireStaff();
+      return run((c) => getCertificate(c, code));
+    },
     async overview() {
       requireStaff();
       const users = Object.values(store.data.users).filter((u) => !u.email.endsWith(SAMPLE_EMAIL_SUFFIX));
@@ -250,7 +319,10 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       if (!r) throw new ApiError('NOT_FOUND', 'Şikayət tapılmadı və ya artıq baxılıb.', 404);
       r.status = status;
       r.resolution = resolution;
-      if (status === 'confirmed' && store.data.users[r.userId]) store.data.users[r.userId].xpTotal += 20;
+      if (status === 'confirmed' && store.data.users[r.userId]) {
+        store.data.users[r.userId].xpTotal += 20;
+        await recordConfirmedReport(ctx(), r.userId);
+      }
       audit('report.' + status, 'report', id);
       save();
     },
@@ -357,6 +429,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
         case 'review': return startReview(c, id);
         case 'weak': return startWeak(c, id, ref.topicId ?? '');
         case 'section': return startSection(c, id, ref.sectionId ?? '');
+        case 'competition': return startCompetition(c, id, ref.competitionId ?? '');
         case 'final': return startFinal(c, id, ref.topicId ?? '');
         default: return startMock(c, id);
       }
@@ -366,6 +439,9 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
     report: (sid, qid, reason, body) => run((c, id) => reportItem(c, id, sid, qid, reason, body)),
     leaderboard: (period, scope) => run((c, id) => getLeaderboard(c, id, period, scope)),
     weak: () => run((c, id) => getWeakTopics(c, id)),
+    competitions: () => run((c, id) => listCompetitions(c, id)),
+    standings: (cid) => run((c, id) => getStandings(c, id, cid)),
+    certificate: (code) => run((c) => getCertificate(c, code)),
     async checkout(planId) {
       const plan = PLANS.find((p) => p.id === planId);
       if (!plan) throw new ApiError('VALIDATION', 'Plan tapılmadı.', 400);

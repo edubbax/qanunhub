@@ -17,7 +17,8 @@ export type ErrorCode =
   | 'CATEGORY_CHANGE_LIMIT'
   | 'CONFLICT'
   | 'RATE_LIMITED'
-  | 'NOT_IMPLEMENTED';
+  | 'NOT_IMPLEMENTED'
+  | 'COMPETITION_CLOSED';
 
 const STATUS: Record<ErrorCode, number> = {
   UNAUTHORIZED: 401,
@@ -37,6 +38,7 @@ const STATUS: Record<ErrorCode, number> = {
   CONFLICT: 409,
   RATE_LIMITED: 429,
   NOT_IMPLEMENTED: 501,
+  COMPETITION_CLOSED: 409,
 };
 
 export class AppError extends Error {

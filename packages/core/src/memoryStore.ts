@@ -1,9 +1,11 @@
 // In-memory Store. Used by unit tests and by the browser demo (serialised to localStorage).
 import type { Store } from './store';
 import type {
-  LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session, SrsState, TopicFinal, UserRecord, XpEvent,
+  Certificate, Competition, CompetitionEntry, LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session,
+  SrsState, TopicFinal, UserRecord, XpEvent,
 } from './types';
 import { periodStartKey } from './time';
+import { GIZIR, MILITARY_RANKS } from './military';
 
 interface BoardEntry { xp: number; correct: number; answered: number; reachedAt: number }
 
@@ -17,10 +19,23 @@ export interface MemoryData {
   xp: XpEvent[];
   boards: Record<string, Record<string, BoardEntry>>;
   reports: (Report & { id: number; status: string; resolution: string })[];
+  competitions: Record<string, Competition>;
+  entries: Record<string, Record<string, CompetitionEntry>>;
+  certificates: Record<string, Certificate>;
 }
 
 export function emptyMemoryData(): MemoryData {
-  return { users: {}, lessons: {}, finals: {}, srs: {}, reviews: [], sessions: {}, xp: [], boards: {}, reports: [] };
+  return {
+    users: {}, lessons: {}, finals: {}, srs: {}, reviews: [], sessions: {}, xp: [], boards: {}, reports: [],
+    competitions: {}, entries: {}, certificates: {},
+  };
+}
+
+/** The rank shown next to a learner: the military rank on Premium, Gizir otherwise. */
+export function displayRankCode(u: Pick<UserRecord, 'premiumUntil' | 'game'>, now: number): string {
+  const premium = !!u.premiumUntil && u.premiumUntil > now;
+  if (!premium) return GIZIR.code;
+  return MILITARY_RANKS[Math.min(Math.max(u.game?.level ?? 1, 0), MILITARY_RANKS.length - 1)].code;
 }
 
 const boardKey = (period: Period, start: string, scope: Scope) => `${period}|${start}|${scope}`;
@@ -88,6 +103,7 @@ export class MemoryStore implements Store {
       .map(([uid, v]) => ({
         userId: uid, nickname: this.data.users[uid].nickname, xp: v.xp, correct: v.correct, answered: v.answered,
         reachedAt: v.reachedAt, rank: 0, sample: this.data.users[uid].email.endsWith(SAMPLE_EMAIL_SUFFIX) || undefined,
+        rankCode: displayRankCode(this.data.users[uid], Date.now()),
       }))
       .sort((a, b2) => b2.xp - a.xp || ratio(b2) - ratio(a) || a.reachedAt - b2.reachedAt);
     rows.forEach((r, i) => { r.rank = i + 1; });
@@ -110,6 +126,25 @@ export class MemoryStore implements Store {
   async addReport(r: Report) {
     this.data.reports.push({ ...r, id: this.data.reports.length + 1, status: 'open', resolution: '' });
   }
+
+  private get comp() {
+    // Demo data saved before competitions existed has no such keys.
+    this.data.competitions ??= {};
+    this.data.entries ??= {};
+    this.data.certificates ??= {};
+    return this.data;
+  }
+  async listCompetitions() { return Object.values(this.comp.competitions).map(clone).sort((a, b) => b.startsAt - a.startsAt); }
+  async getCompetition(id: string) { const c = this.comp.competitions[id]; return c ? clone(c) : null; }
+  async saveCompetition(c: Competition) { this.comp.competitions[c.id] = clone(c); }
+  async getEntry(competitionId: string, userId: string) { const e = this.comp.entries[competitionId]?.[userId]; return e ? clone(e) : null; }
+  async saveEntry(e: CompetitionEntry) { (this.comp.entries[e.competitionId] ??= {})[e.userId] = clone(e); }
+  async listEntries(competitionId: string) {
+    return Object.values(this.comp.entries[competitionId] ?? {}).filter((e) => e.finishedAt).map(clone);
+  }
+  async countEntries(competitionId: string) { return Object.keys(this.comp.entries[competitionId] ?? {}).length; }
+  async getCertificate(code: string) { const c = this.comp.certificates[code]; return c ? clone(c) : null; }
+  async saveCertificate(c: Certificate) { this.comp.certificates[c.code] = clone(c); }
 }
 
 function ratio(r: { correct: number; answered: number }) {

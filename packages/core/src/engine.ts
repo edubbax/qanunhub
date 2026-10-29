@@ -1,22 +1,28 @@
 // Application service: every learner-facing operation. Pure orchestration over Store + ContentIndex,
 // so the Postgres server and the in-browser demo behave identically.
 import type {
-  AnswerDto, CardDto, CompleteDto, HeartsDto, HomeDto, LeaderboardDto, MeDto, PathDto, PathSectionDto, PathTopicDto,
-  ProfilePatch, QuestionDto, RankDto, ReviewEntryDto, SessionDto, WeakTopicDto,
+  AnswerDto, AwardDto, CardDto, CertificateDto, CompetitionDto, CompetitionInput, CompetitionStandingsDto, CompleteDto, HeartsDto, HomeDto, LeaderboardDto, MeDto, PathDto, PathSectionDto,
+  PathTopicDto, ProfilePatch, QuestionDto, RankDto, ReviewEntryDto, SessionDto, WeakTopicDto,
 } from './api';
 import { SESSION_TITLES } from './api';
 import type { ContentIndex } from './content';
 import { AppError } from './errors';
 import { EXAM_FORMATS, MOCK_MINUTES, findSubgroup, targetPercent } from './exam';
 import {
-  HEARTS_EARN_MIN_CORRECT, HEARTS_MAX, XP, canEarnHeart, computeRank, earnHeart, finalXp, freshHearts, freshStreak,
+  HEARTS_EARN_MIN_CORRECT, HEARTS_MAX, XP, canEarnHeart, earnHeart, finalXp, freshHearts, freshStreak,
   isPremium, lessonXp, loseHeart, normalizeHearts, reviewXp, touchStreak, visibleStreak,
 } from './gamification';
+import {
+  AWARDS, GIZIR, MERIT_FLOOR, MILITARY_RANKS, PENALTY_OUT_OF_STARS, PENALTY_TOO_FAST, addMerit, applyDecay, bumpCounters,
+  decayPerDay, freshGame, inactiveDays, meritFor, type CounterKey,
+} from './military';
 import { isLearned, newSrsState, priority, readingMs, retrievability, schedule, toGrade } from './srs';
 import type { Store } from './store';
 import { DAY, HOUR, MINUTE, dayKey, dayStart, daysBetween, periodEnd, periodStartKey } from './time';
+import { displayRankCode } from './memoryStore';
+import { seededRandom } from './random';
 import type {
-  Category, Item, Lesson, LessonProgress, Period, ReviewLog, Scope, Session, SessionKind, SessionQuestion, SrsState,
+  Category, Certificate, Competition, CompetitionEntry, Item, Lesson, LessonProgress, Period, ReviewLog, Scope, Session, SessionKind, SessionQuestion, SrsState,
   TopicFinal, Unit, UserRecord,
 } from './types';
 import { AVAILABLE_CATEGORIES, CATEGORIES } from './types';
@@ -46,7 +52,10 @@ export const SUSPICION_LIMIT = 3;
 /** Section test results share the topic_finals table under this key. */
 export const sectionResultKey = (sectionId: string) => `sec:${sectionId}`;
 
-const isExamKind = (k: SessionKind) => k === 'final' || k === 'mock' || k === 'section';
+const isExamKind = (k: SessionKind) => k === 'final' || k === 'mock' || k === 'section' || k === 'competition';
+
+/** Share of editors' questions in tests built from both pools (section tests, finals, mock exams, competitions). */
+export const FORMATIVE_SHARE = 0.3;
 
 // ---------------------------------------------------------------- users
 
@@ -55,6 +64,7 @@ export function newUser(id: string, email: string, nickname: string, now: number
     id, email, nickname, role: 'user', category: null, subgroup: null, examDate: null, dailyGoal: 15,
     premiumUntil: null, emailVerified: false, leaderboardBanned: false, createdAt: now, xpTotal: 0,
     hearts: freshHearts(now), streak: freshStreak(now), today: { day: dayKey(now), xp: 0, lbXp: 0 }, categoryChangedAt: null,
+    fullName: null, game: freshGame(now),
   };
 }
 
@@ -64,6 +74,10 @@ async function loadUser(ctx: EngineCtx, userId: string): Promise<UserRecord> {
   u.hearts = normalizeHearts(u.hearts, ctx.now);
   const today = dayKey(ctx.now);
   if (u.today.day !== today) u.today = { day: today, xp: 0, lbXp: 0 };
+  // Accounts created before ranks existed get a fresh record; then inactivity is charged up to yesterday.
+  u.game = u.game ? { ...freshGame(ctx.now), ...u.game } : freshGame(ctx.now);
+  u.fullName ??= null;
+  u.game = applyDecay(u.game, u.streak, ctx.now);
   return u;
 }
 
@@ -107,36 +121,42 @@ function mastery(units: Unit[], srs: Map<string, SrsState>, now: number): number
   return den ? num / den : 0;
 }
 
-function passedPct(ctx: EngineCtx, cat: Category, finals: Map<string, TopicFinal>): number {
-  const topics = ctx.content.topicsFor(cat).filter((t) => ctx.content.unitsForTopic(t.id, cat).length > 0);
-  if (topics.length === 0) return 0;
-  const passed = topics.filter((t) => finals.get(t.id)?.passedAt).length;
-  return Math.round((passed / topics.length) * 100);
-}
-
-function retention30(srs: Map<string, SrsState>, now: number): number {
-  const recent = [...srs.values()].filter((s) => s.phase === 'review' && s.lastReviewAt && now - s.lastReviewAt < 30 * DAY);
-  if (recent.length === 0) return 0;
-  return recent.reduce((a, s) => a + retrievability(s, now), 0) / recent.length;
-}
-
-function rankDto(ctx: EngineCtx, u: UserRecord, p: Progress): RankDto | null {
-  if (!isPremium(u, ctx.now) || !u.category) return null;
-  const pp = passedPct(ctx, u.category, p.finals);
-  const r = computeRank(pp, u.xpTotal, retention30(p.srs, ctx.now));
-  return {
-    code: r.current.code, title: r.current.title, nextTitle: r.next?.title ?? null, passedPct: pp,
-    nextPassedPct: r.next?.minPassedPct ?? null, nextXp: r.next?.minXp ?? null,
+function rankDto(ctx: EngineCtx, u: UserRecord): RankDto {
+  const g = u.game;
+  const level = Math.min(Math.max(g.level, 0), MILITARY_RANKS.length - 1);
+  const r = MILITARY_RANKS[level];
+  const next = MILITARY_RANKS[level + 1] ?? null;
+  const base = {
+    merit: g.merit, floorMerit: level === 0 ? MERIT_FLOOR : r.minMerit,
+    next: next ? { code: next.code, title: next.title, merit: next.minMerit, streak: next.minStreak } : null,
+    inactiveDays: inactiveDays(u.streak, ctx.now), decayPerDay: decayPerDay(g),
   };
+  if (!isPremium(u, ctx.now)) {
+    return { code: GIZIR.code, title: GIZIR.title, tier: GIZIR.tier, stars: GIZIR.stars, isGizir: true, ...base, earned: { code: r.code, title: r.title } };
+  }
+  return { code: r.code, title: r.title, tier: r.tier, stars: r.stars, isGizir: false, ...base, earned: null };
 }
 
-function meDto(ctx: EngineCtx, u: UserRecord, p: Progress): MeDto {
+function awardsDto(u: UserRecord): AwardDto[] {
+  return AWARDS.map((a) => {
+    const value = u.game.counters[a.counter] ?? 0;
+    const got = u.game.awards[a.id];
+    const tier = got?.tier ?? 0;
+    const next = a.tiers[tier] ?? null;
+    return {
+      id: a.id, title: a.title, rule: a.rule.replace('{n}', String(next ?? a.tiers[a.tiers.length - 1])), tier, maxTier: a.tiers.length,
+      value, next, earnedAt: got?.at ?? null, shape: a.shape, color: a.color,
+    };
+  });
+}
+
+function meDto(ctx: EngineCtx, u: UserRecord, _p?: Progress): MeDto {
   const premium = isPremium(u, ctx.now);
   return {
-    id: u.id, email: u.email, nickname: u.nickname, role: u.role, category: u.category, subgroup: u.subgroup,
+    id: u.id, email: u.email, nickname: u.nickname, fullName: u.fullName, role: u.role, category: u.category, subgroup: u.subgroup,
     examDate: u.examDate, dailyGoal: u.dailyGoal, premium, premiumUntil: u.premiumUntil, emailVerified: u.emailVerified,
     xpTotal: u.xpTotal, todayXp: u.today.xp, hearts: heartsDto(u, ctx.now), streak: visibleStreak(u.streak, ctx.now, premium),
-    longestStreak: u.streak.longest, freezesLeft: premium ? u.streak.freezesLeft : 0, rank: rankDto(ctx, u, p),
+    longestStreak: u.streak.longest, freezesLeft: premium ? u.streak.freezesLeft : 0, rank: rankDto(ctx, u), awards: awardsDto(u),
   };
 }
 
@@ -279,6 +299,11 @@ export async function updateProfile(ctx: EngineCtx, userId: string, patch: Profi
     if (![10, 15, 20, 30, 45].includes(patch.dailyGoal)) throw new AppError('VALIDATION', 'Gündəlik hədəf 10, 15, 20, 30 və ya 45 dəqiqə ola bilər.');
     u.dailyGoal = patch.dailyGoal;
   }
+  if (patch.fullName !== undefined) {
+    const name = patch.fullName?.trim().replace(/\s+/g, ' ') ?? '';
+    if (name && !/^[\p{L}][\p{L}\s'.-]{2,59}$/u.test(name)) throw new AppError('VALIDATION', 'Ad və soyad 3–60 hərf olmalıdır.');
+    u.fullName = name || null;
+  }
   if (patch.nickname !== undefined) {
     if (!NICK_RE.test(patch.nickname)) throw new AppError('VALIDATION', 'Ləqəb 3–24 simvol olmalıdır: hərf, rəqəm, «_», «.», «-».');
     u.nickname = patch.nickname;
@@ -362,7 +387,7 @@ export async function startLesson(ctx: EngineCtx, userId: string, lessonId: stri
   if (!topicAccessible(ctx, lesson.topicId, u)) throw new AppError('PREMIUM_REQUIRED', 'Bu mövzu Premium planına daxildir.');
   const premium = isPremium(u, ctx.now);
   if (!premium && u.hearts.lockedUntil && u.hearts.lockedUntil > ctx.now) {
-    throw new AppError('HEARTS_LOCKED', 'Canların bitib. Bərpa olunana qədər təkrar edə bilərsən.', { lockedUntil: u.hearts.lockedUntil });
+    throw new AppError('HEARTS_LOCKED', 'Paqonundakı ulduzlar bitib. Bərpa olunana qədər təkrar edə bilərsən.', { lockedUntil: u.hearts.lockedUntil });
   }
   const p = await loadProgress(ctx, userId);
   const state = lessonStates(ctx, lesson.topicId, cat, p.lessons).find((s) => s.lesson.id === lessonId);
@@ -447,7 +472,7 @@ export async function startFinal(ctx: EngineCtx, userId: string, topicId: string
   if (!isPremium(u, ctx.now) && fin && ctx.now - fin.lastAttemptAt < FREE_FINAL_COOLDOWN) {
     throw new AppError('FINAL_COOLDOWN', 'Pulsuz planda final testinə 24 saatda bir dəfə girmək olar.', { nextAttemptAt: fin.lastAttemptAt + FREE_FINAL_COOLDOWN });
   }
-  const units = withFallback(ctx.content.unitsForTopic(topicId, cat, 'exam'), ctx.content.unitsForTopic(topicId, cat, 'formative'), FINAL_QUESTIONS, ctx.random);
+  const units = mixPools(ctx.content.unitsForTopic(topicId, cat, 'exam'), ctx.content.unitsForTopic(topicId, cat, 'formative'), FINAL_QUESTIONS, ctx.random);
   const s = newSession(ctx, u, 'final', { topicId });
   for (const unit of shuffle(units, ctx.random)) {
     const item = pickItem(ctx, unit.id, null);
@@ -467,10 +492,37 @@ function sectionPools(ctx: EngineCtx, lessons: Lesson[], cat: Category): { exam:
   return { exam: of('exam'), formative: of('formative') };
 }
 
-/** Up to `n` units, source questions first; editors' questions only fill what the sources cannot cover. */
-function withFallback(primary: Unit[], fallback: Unit[], n: number, random: () => number): Unit[] {
-  const picked = shuffle(primary, random).slice(0, n);
-  return picked.length >= n ? picked : [...picked, ...shuffle(fallback, random).slice(0, n - picked.length)];
+/** Up to `n` units spread across topics in proportion to their size, as the real test covers the whole programme. */
+function spread(units: Unit[], n: number, random: () => number): Unit[] {
+  if (n <= 0) return [];
+  const byTopic = new Map<string, Unit[]>();
+  for (const x of shuffle(units, random)) {
+    const a = byTopic.get(x.topicId) ?? [];
+    a.push(x);
+    byTopic.set(x.topicId, a);
+  }
+  const picked: Unit[] = [];
+  const used = new Set<string>();
+  for (const [, list] of byTopic) {
+    const share = Math.max(1, Math.round((list.length / (units.length || 1)) * n));
+    for (const x of list.slice(0, share)) if (picked.length < n) { picked.push(x); used.add(x.id); }
+  }
+  for (const x of shuffle(units, random)) {
+    if (picked.length >= n) break;
+    if (!used.has(x.id)) { picked.push(x); used.add(x.id); }
+  }
+  return picked;
+}
+
+/**
+ * `n` units mixing source questions with the editors' ones (FORMATIVE_SHARE of them); when one pool runs
+ * short the other fills in.
+ */
+function mixPools(exam: Unit[], formative: Unit[], n: number, random: () => number): Unit[] {
+  const wantFormative = Math.min(formative.length, Math.round(n * FORMATIVE_SHARE));
+  const fromExam = spread(exam, n - wantFormative, random);
+  const fromFormative = spread(formative, n - fromExam.length, random);
+  return shuffle([...fromExam, ...fromFormative], random);
 }
 
 export async function startSection(ctx: EngineCtx, userId: string, sectionId: string): Promise<SessionDto> {
@@ -485,7 +537,7 @@ export async function startSection(ctx: EngineCtx, userId: string, sectionId: st
     throw new AppError('FINAL_LOCKED', 'Bölmə testi bölmənin bütün dərsləri bitəndə açılır.');
   }
   const pools = sectionPools(ctx, lessons, cat);
-  const units = withFallback(pools.exam, pools.formative, SECTION_QUESTIONS, ctx.random);
+  const units = mixPools(pools.exam, pools.formative, SECTION_QUESTIONS, ctx.random);
   const s = newSession(ctx, u, 'section', { topicId: section.topicId, sectionId });
   for (const unit of shuffle(units, ctx.random)) {
     const item = pickItem(ctx, unit.id, null);
@@ -504,32 +556,16 @@ export async function startMock(ctx: EngineCtx, userId: string): Promise<Session
   const cat = requireCategory(u);
   if (!isPremium(u, ctx.now)) throw new AppError('PREMIUM_REQUIRED', 'Sınaq imtahanı Premium funksiyasıdır.');
   const fmt = EXAM_FORMATS[cat];
-  // The mock exam is built from the official sources; editors' questions only stand in when a category has too few.
-  const exam = ctx.content.unitsForCategory(cat, 'exam');
-  const units = exam.length >= fmt.lawClosed + fmt.lawOpen ? exam : ctx.content.unitsForCategory(cat);
-  const multiUnits = shuffle(units.filter((x) => ctx.content.itemsForUnit(x.id).some((i) => i.type === 'multi')), ctx.random);
-  const singleUnits = units.filter((x) => ctx.content.itemsForUnit(x.id).some((i) => i.type === 'single'));
-
-  // Spread closed questions across topics in proportion to their size, as the real test covers the whole programme.
-  const byTopic = new Map<string, Unit[]>();
-  for (const x of shuffle(singleUnits, ctx.random)) {
-    const a = byTopic.get(x.topicId) ?? [];
-    a.push(x);
-    byTopic.set(x.topicId, a);
-  }
-  const openPicked = multiUnits.slice(0, fmt.lawOpen);
+  const hasType = (type: Item['type']) => (x: Unit) => ctx.content.itemsForUnit(x.id).some((i) => i.type === type);
+  // Open tasks come from the sources only; closed questions mix sources with the editors' questions.
+  const openPicked = spread(ctx.content.unitsForCategory(cat, 'exam').filter(hasType('multi')), fmt.lawOpen, ctx.random);
   const closedNeeded = fmt.lawClosed + (fmt.lawOpen - openPicked.length);
-  const total = singleUnits.length || 1;
-  const picked: Unit[] = [];
   const used = new Set(openPicked.map((x) => x.id));
-  for (const [, list] of byTopic) {
-    const share = Math.max(1, Math.round((list.length / total) * closedNeeded));
-    for (const x of list.slice(0, share)) if (!used.has(x.id) && picked.length < closedNeeded) { picked.push(x); used.add(x.id); }
-  }
-  for (const x of shuffle(singleUnits, ctx.random)) {
-    if (picked.length >= closedNeeded) break;
-    if (!used.has(x.id)) { picked.push(x); used.add(x.id); }
-  }
+  const picked = mixPools(
+    ctx.content.unitsForCategory(cat, 'exam').filter(hasType('single')).filter((x) => !used.has(x.id)),
+    ctx.content.unitsForCategory(cat, 'formative').filter(hasType('single')),
+    closedNeeded, ctx.random,
+  );
   const s = newSession(ctx, u, 'mock', {});
   for (const x of shuffle(picked, ctx.random)) {
     const item = pickItem(ctx, x.id, null, 'single');
@@ -564,7 +600,7 @@ function sameSet(a: number[], b: number[]): boolean {
 export async function answer(ctx: EngineCtx, userId: string, sessionId: string, qid: number, given: number[], ms: number): Promise<AnswerDto> {
   const s = await loadOpenSession(ctx, userId, sessionId);
   if (ctx.now > s.expiresAt) throw new AppError('SESSION_CLOSED', 'Sessiyanın vaxtı bitib.');
-  if (s.heartsOut) throw new AppError('SESSION_CLOSED', 'Canların bitdiyi üçün dərs dayandı.');
+  if (s.heartsOut) throw new AppError('SESSION_CLOSED', 'Ulduzlar bitdiyi üçün dərs dayandı.');
   const q = s.questions.find((x) => x.qid === qid);
   if (!q) throw new AppError('NOT_FOUND', 'Sual tapılmadı.');
   if (q.answer) throw new AppError('ALREADY_ANSWERED', 'Bu suala artıq cavab verilib.');
@@ -646,7 +682,8 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   const cat = requireCategory(u);
   const premium = isPremium(u, ctx.now);
   const p = await loadProgress(ctx, userId);
-  const rankBefore = rankDto(ctx, u, p);
+  const levelBefore = u.game.level;
+  const counters: Partial<Record<CounterKey, number>> = {};
 
   const first = s.questions.filter((q) => !q.requeue);
   const firstCorrect = first.filter((q) => q.answer?.correct).length;
@@ -670,6 +707,8 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
       const recent = (prev?.recent ?? []).filter((t) => ctx.now - t < 7 * DAY);
       const newUnits = first.filter((q) => q.isNew).length;
       xp = lessonXp(firstCorrect, first.length, newUnits >= NEW_UNITS_FOR_FULL_XP ? 0 : recent.length);
+      counters.lessons = 1;
+      if (first.length > 0 && firstCorrect === first.length) counters.perfectLessons = 1;
       await ctx.store.saveLessonProgress(userId, {
         lessonId: s.lessonId!, completions: (prev?.completions ?? 0) + 1,
         bestCorrect: Math.max(prev?.bestCorrect ?? 0, firstCorrect), lastCompletedAt: ctx.now, recent: [...recent, ctx.now].slice(-5),
@@ -687,6 +726,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
     const key = sectionResultKey(s.sectionId!);
     const res = p.finals.get(key);
     xp = Math.round(finalXp(pct, passed && !res?.passedAt) / 2);
+    if (passed && !res?.passedAt) counters.sectionsPassed = 1;
     await ctx.store.saveTopicFinal(userId, {
       topicId: key, bestPct: Math.max(res?.bestPct ?? 0, pct), passedAt: res?.passedAt ?? (passed ? ctx.now : null),
       lastAttemptAt: ctx.now, attempts: (res?.attempts ?? 0) + 1,
@@ -697,16 +737,24 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
     const fin = p.finals.get(s.topicId!);
     const firstPass = passed && !fin?.passedAt;
     xp = finalXp(pct, firstPass);
+    if (firstPass) counters.finalsPassed = 1;
+    if (pct === 100) counters.finals100 = 1;
     await ctx.store.saveTopicFinal(userId, {
       topicId: s.topicId!, bestPct: Math.max(fin?.bestPct ?? 0, pct),
       passedAt: fin?.passedAt ?? (passed ? ctx.now : null),
       lastAttemptAt: fin?.lastAttemptAt ?? s.createdAt, attempts: fin?.attempts ?? 1,
     });
+  } else if (s.kind === 'competition') {
+    xp = finalXp(pct, true);
+    await finishEntry(ctx, s, u, points, maxPoints, pct);
   } else {
     target = targetPercent(cat, u.subgroup);
     passed = pct >= target;
     xp = finalXp(pct, true);
+    if (passed) counters.mocksPassed = 1;
+    if (pct >= 90) counters.mocks90 = 1;
   }
+  counters.correct = firstCorrect;
 
   // Leaderboard eligibility: premium, verified, not banned, plausible timing, under the daily cap.
   const fast = s.suspicion > SUSPICION_LIMIT;
@@ -729,17 +777,28 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   const before = visibleStreak(u.streak, ctx.now, premium);
   if (completed) u.streak = touchStreak(u.streak, ctx.now, premium);
   const after = visibleStreak(u.streak, ctx.now, premium);
+
+  // Rank: merit from XP (more with a longer streak), minus penalties for running out of stars or rushing.
+  let meritDelta = completed && xp > 0 ? meritFor(xp, after) : 0;
+  if (s.heartsOut) meritDelta -= PENALTY_OUT_OF_STARS;
+  if (fast) meritDelta -= PENALTY_TOO_FAST;
+  u.game = addMerit(u.game, meritDelta, after);
+  const bumped = bumpCounters(u.game, counters, ctx.now, { bestStreak: u.streak.longest });
+  u.game = bumped.game;
   await ctx.store.saveUser(u);
 
   s.completedAt = ctx.now;
   s.xp = xp;
-  const p2 = await loadProgress(ctx, userId);
-  const rankAfter = rankDto(ctx, u, p2);
+  const rankAfter = rankDto(ctx, u);
   const result: CompleteDto = {
     kind: s.kind, completed, xp, correct: firstCorrect, total: first.length, points, maxPoints, pct, passed,
     targetPercent: target, streak: after, streakIncreased: after > before, heartEarned,
     hearts: heartsDto(u, ctx.now),
-    rank: rankAfter ? { title: rankAfter.title, changed: !!rankBefore && rankBefore.code !== rankAfter.code } : null,
+    rank: {
+      code: rankAfter.code, title: rankAfter.title, merit: u.game.merit, meritDelta, isGizir: rankAfter.isGizir,
+      change: rankAfter.isGizir || u.game.level === levelBefore ? null : u.game.level > levelBefore ? 'up' : 'down',
+    },
+    awards: bumped.gained,
     review: s.kind === 'lesson' ? [] : reviewEntries(ctx, s),
     leaderboardCounted: lbXp > 0,
     leaderboard: lbStatus,
@@ -811,3 +870,194 @@ export async function grantPremium(ctx: EngineCtx, userId: string, until: number
   await ctx.store.saveUser(u);
 }
 
+
+// ---------------------------------------------------------------- competitions
+
+export const COMPETITION_DEFAULTS = { questionCount: 20, timeLimitSec: 20 * 60 };
+
+function hashSeed(text: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+
+export function competitionStatus(c: Competition, now: number): CompetitionDto['status'] {
+  if (c.finishedAt || now >= c.endsAt) return 'finished';
+  return now < c.startsAt ? 'upcoming' : 'active';
+}
+
+/** Best score first, then the faster attempt, then whoever finished earlier. */
+function standings(entries: CompetitionEntry[]): CompetitionEntry[] {
+  return [...entries].sort((a, b) => b.points - a.points || b.pct - a.pct || a.durationMs - b.durationMs || (a.finishedAt ?? 0) - (b.finishedAt ?? 0));
+}
+
+function certificateCode(random: () => number): string {
+  const abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for (let i = 0; i < 8; i++) out += abc[Math.floor(random() * abc.length)];
+  return `QH-${out.slice(0, 4)}-${out.slice(4)}`;
+}
+
+/** Closes a competition whose time is up: picks the top three, issues certificates and awards. */
+async function settleCompetition(ctx: EngineCtx, c: Competition): Promise<Competition> {
+  if (c.finishedAt || ctx.now < c.endsAt) return c;
+  const ranked = standings(await ctx.store.listEntries(c.id));
+  const winners: Competition['winners'] = [];
+  for (const [i, e] of ranked.slice(0, 3).entries()) {
+    const u = await ctx.store.getUser(e.userId);
+    const name = u?.fullName || e.nickname;
+    const code = certificateCode(ctx.random);
+    const cert: Certificate = {
+      code, competitionId: c.id, competitionTitle: c.title, userId: e.userId, name, place: i + 1, pct: e.pct,
+      category: c.category ?? e.category, issuedAt: ctx.now,
+    };
+    await ctx.store.saveCertificate(cert);
+    winners.push({ place: i + 1, userId: e.userId, nickname: e.nickname, name, points: e.points, maxPoints: e.maxPoints, pct: e.pct, durationMs: e.durationMs, certificateCode: code });
+    if (u) {
+      u.game = u.game ? { ...freshGame(ctx.now), ...u.game } : freshGame(ctx.now);
+      u.game = bumpCounters(u.game, { competitionPodiums: 1, ...(i === 0 ? { competitionsWon: 1 } : {}) }, ctx.now).game;
+      await ctx.store.saveUser(u);
+    }
+  }
+  const done = { ...c, finishedAt: Math.max(c.endsAt, ctx.now), winners };
+  await ctx.store.saveCompetition(done);
+  return done;
+}
+
+async function competitionDto(ctx: EngineCtx, c: Competition, u: UserRecord | null): Promise<CompetitionDto> {
+  const status = competitionStatus(c, ctx.now);
+  const entry = u ? await ctx.store.getEntry(c.id, u.id) : null;
+  let place: number | null = null;
+  if (entry?.finishedAt) place = standings(await ctx.store.listEntries(c.id)).findIndex((e) => e.userId === entry.userId) + 1 || null;
+  let reason: string | null = null;
+  if (status === 'upcoming') reason = 'Yarış hələ başlamayıb.';
+  else if (status === 'finished') reason = 'Yarış başa çatıb.';
+  else if (!u?.category) reason = 'Əvvəlcə kateqoriyanı seç.';
+  else if (c.category && c.category !== u.category) reason = `Bu yarış ${c.category} kateqoriyası üçündür.`;
+  else if (!u.emailVerified) reason = 'Yarışda iştirak üçün email ünvanını təsdiqlə.';
+  else if (entry) reason = 'Bu yarışda artıq iştirak etmisən.';
+  const mine = c.winners.find((w) => w.userId === u?.id);
+  return {
+    id: c.id, title: c.title, description: c.description, category: c.category, startsAt: c.startsAt, endsAt: c.endsAt, status,
+    questionCount: c.questionCount, timeLimitSec: c.timeLimitSec, participants: await ctx.store.countEntries(c.id),
+    canStart: reason === null, reason,
+    my: entry?.finishedAt ? { pct: entry.pct, points: entry.points, maxPoints: entry.maxPoints, durationMs: entry.durationMs, place, certificateCode: mine?.certificateCode ?? null } : null,
+    winners: c.winners.map((w) => ({ place: w.place, nickname: w.nickname, pct: w.pct, durationMs: w.durationMs, ...(w.userId === u?.id ? { certificateCode: w.certificateCode } : {}) })),
+  };
+}
+
+export async function listCompetitions(ctx: EngineCtx, userId: string): Promise<CompetitionDto[]> {
+  const u = await loadUser(ctx, userId);
+  const all = await ctx.store.listCompetitions();
+  const out: CompetitionDto[] = [];
+  for (const c of all) out.push(await competitionDto(ctx, await settleCompetition(ctx, c), u));
+  const order = { active: 0, upcoming: 1, finished: 2 };
+  return out.sort((a, b) => order[a.status] - order[b.status] || (a.status === 'finished' ? b.endsAt - a.endsAt : a.startsAt - b.startsAt));
+}
+
+export async function getStandings(ctx: EngineCtx, userId: string, competitionId: string): Promise<CompetitionStandingsDto> {
+  const u = await loadUser(ctx, userId);
+  const raw = await ctx.store.getCompetition(competitionId);
+  if (!raw) throw new AppError('NOT_FOUND', 'Yarış tapılmadı.');
+  const c = await settleCompetition(ctx, raw);
+  const ranked = standings(await ctx.store.listEntries(c.id));
+  const rows = [];
+  for (const [i, e] of ranked.entries()) {
+    if (i >= 100 && e.userId !== userId) continue;
+    const other = e.userId === userId ? u : await ctx.store.getUser(e.userId);
+    rows.push({
+      place: i + 1, nickname: e.nickname, pct: e.pct, points: e.points, maxPoints: e.maxPoints, durationMs: e.durationMs,
+      me: e.userId === userId, rankCode: other ? displayRankCode(other, ctx.now) : undefined,
+    });
+  }
+  return { competition: await competitionDto(ctx, c, u), rows };
+}
+
+export async function startCompetition(ctx: EngineCtx, userId: string, competitionId: string): Promise<SessionDto> {
+  const u = await loadUser(ctx, userId);
+  const raw = await ctx.store.getCompetition(competitionId);
+  if (!raw) throw new AppError('NOT_FOUND', 'Yarış tapılmadı.');
+  const c = await settleCompetition(ctx, raw);
+  const dto = await competitionDto(ctx, c, u);
+  if (!dto.canStart) throw new AppError('COMPETITION_CLOSED', dto.reason ?? 'Yarışa başlamaq olmur.');
+  const cat = requireCategory(u);
+  // Everyone in a category gets the same questions; only the order of questions and options differs.
+  const fair = seededRandom(hashSeed(`${c.id}|${cat}`));
+  const single = (x: Unit) => ctx.content.itemsForUnit(x.id).some((i) => i.type === 'single');
+  const units = mixPools(ctx.content.unitsForCategory(cat, 'exam').filter(single), ctx.content.unitsForCategory(cat, 'formative').filter(single), c.questionCount, fair);
+  const s = newSession(ctx, u, 'competition', { competitionId: c.id });
+  for (const unit of shuffle(units, ctx.random)) {
+    const items = ctx.content.itemsForUnit(unit.id).filter((i) => i.type === 'single');
+    const item = items[Math.floor(fair() * items.length)];
+    if (item) s.questions.push(makeQuestion(ctx, s.questions.length, item, false));
+  }
+  if (s.questions.length === 0) throw new AppError('NOT_FOUND', 'Yarış üçün sual tapılmadı.');
+  s.timeLimitSec = c.timeLimitSec;
+  s.expiresAt = ctx.now + c.timeLimitSec * 1000 + 2 * MINUTE;
+  await ctx.store.saveSession(s);
+  await ctx.store.saveEntry({
+    competitionId: c.id, userId, nickname: u.nickname, category: cat, sessionId: s.id, startedAt: ctx.now, finishedAt: null,
+    points: 0, maxPoints: 0, pct: 0, durationMs: 0,
+  });
+  return sessionDto(ctx, s, u, c.title, `${s.questions.length} sual · ${Math.round(c.timeLimitSec / 60)} dəq · bir cəhd`, []);
+}
+
+/** Records the result of a competition attempt; called from complete(). */
+async function finishEntry(ctx: EngineCtx, s: Session, u: UserRecord, points: number, maxPoints: number, pct: number) {
+  const e = await ctx.store.getEntry(s.competitionId!, u.id);
+  if (!e || e.finishedAt) return;
+  const limit = (s.timeLimitSec ?? 0) * 1000;
+  await ctx.store.saveEntry({ ...e, finishedAt: ctx.now, points, maxPoints, pct, durationMs: Math.min(ctx.now - s.createdAt, limit || Infinity) });
+}
+
+export async function getCertificate(ctx: EngineCtx, code: string): Promise<CertificateDto> {
+  const c = await ctx.store.getCertificate(code.trim().toUpperCase());
+  if (!c) throw new AppError('NOT_FOUND', 'Bu kodla sertifikat tapılmadı.');
+  return { code: c.code, name: c.name, competitionTitle: c.competitionTitle, place: c.place, pct: c.pct, category: c.category, issuedAt: c.issuedAt };
+}
+
+// Admin
+
+function validCompetition(input: CompetitionInput): CompetitionInput {
+  const title = input.title?.trim() ?? '';
+  if (title.length < 3 || title.length > 120) throw new AppError('VALIDATION', 'Yarışın adı 3–120 simvol olmalıdır.');
+  if (!(input.endsAt > input.startsAt)) throw new AppError('VALIDATION', 'Bitmə vaxtı başlanğıcdan sonra olmalıdır.');
+  if (!Number.isInteger(input.questionCount) || input.questionCount < 5 || input.questionCount > 60) throw new AppError('VALIDATION', 'Sual sayı 5–60 arasında olmalıdır.');
+  if (!Number.isInteger(input.timeLimitSec) || input.timeLimitSec < 60 || input.timeLimitSec > 3 * 3600) throw new AppError('VALIDATION', 'Vaxt limiti 1–180 dəqiqə olmalıdır.');
+  if (input.category !== null && !AVAILABLE_CATEGORIES.includes(input.category)) throw new AppError('VALIDATION', 'Kateqoriya yanlışdır.');
+  return { ...input, title, description: (input.description ?? '').trim().slice(0, 600) };
+}
+
+export async function createCompetition(ctx: EngineCtx, input: CompetitionInput): Promise<Competition> {
+  const v = validCompetition(input);
+  const c: Competition = { id: ctx.newId(), ...v, createdAt: ctx.now, finishedAt: null, winners: [] };
+  await ctx.store.saveCompetition(c);
+  return c;
+}
+
+/** Ends a competition now (admin), so winners and certificates are issued immediately. */
+export async function finishCompetitionNow(ctx: EngineCtx, competitionId: string): Promise<Competition> {
+  const c = await ctx.store.getCompetition(competitionId);
+  if (!c) throw new AppError('NOT_FOUND', 'Yarış tapılmadı.');
+  if (c.finishedAt) return c;
+  return settleCompetition(ctx, { ...c, endsAt: Math.min(c.endsAt, ctx.now), startsAt: Math.min(c.startsAt, ctx.now) });
+}
+
+/** Admin view: every competition with its winners and their certificate codes. */
+export async function adminCompetitions(ctx: EngineCtx): Promise<(Competition & { status: CompetitionDto['status']; participants: number })[]> {
+  const out = [];
+  for (const raw of await ctx.store.listCompetitions()) {
+    const c = await settleCompetition(ctx, raw);
+    out.push({ ...c, status: competitionStatus(c, ctx.now), participants: await ctx.store.countEntries(c.id) });
+  }
+  return out;
+}
+
+/** Counts a confirmed problem report towards the "Diqqətli göz" award. */
+export async function recordConfirmedReport(ctx: EngineCtx, userId: string): Promise<void> {
+  const u = await ctx.store.getUser(userId);
+  if (!u) return;
+  u.game = u.game ? { ...freshGame(ctx.now), ...u.game } : freshGame(ctx.now);
+  u.game = bumpCounters(u.game, { reportsConfirmed: 1 }, ctx.now).game;
+  await ctx.store.saveUser(u);
+}

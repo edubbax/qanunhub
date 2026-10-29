@@ -1,7 +1,8 @@
 // The contract between the UI and its backend: the HTTP server in production, the in-browser engine in the demo.
 import type {
-  AnswerDto, Card, Category, CompleteDto, ContentBundle, EXAM_FORMATS, HomeDto, Item, LeaderboardDto, MeDto, PathDto,
-  Period, ProfilePatch, Scope, SessionDto, SessionKind, Subgroup, WeakTopicDto,
+  AnswerDto, Card, Category, CertificateDto, Competition, CompetitionDto, CompetitionInput, CompetitionStandingsDto, CompleteDto,
+  ContentBundle, EXAM_FORMATS, HomeDto, Item, LeaderboardDto, MeDto, PathDto, Period, ProfilePatch, Scope, SessionDto,
+  SessionKind, Subgroup, WeakTopicDto,
 } from '@qanunhub/core';
 
 export interface Plan {
@@ -18,9 +19,11 @@ export interface MetaDto {
   availableCategories: Category[];
   comingSoonCategories: Category[];
   subgroups: Subgroup[];
-  formats: typeof EXAM_FORMATS;
+  /** Test formats and programme sizes: only after sign-in. */
+  formats: typeof EXAM_FORMATS | null;
   plans: Plan[];
   contentVersion: string;
+  signedIn: boolean;
   topics: { id: string; programNo: string; shortTitle: string; categories: Category[]; free: boolean }[];
 }
 
@@ -45,7 +48,13 @@ export interface AdminAudit { id: string; actor: string | null; action: string; 
 export interface ItemFilter { topicId?: string; lessonId?: string; status?: string; flag?: string; q?: string; page?: number }
 export type ItemPatch = Partial<Pick<Item, 'stem' | 'statements' | 'options' | 'answer' | 'explanation' | 'ref' | 'status' | 'flags'>>;
 
+export type AdminCompetition = Competition & { status: CompetitionDto['status']; participants: number };
+
 export interface AdminApi {
+  competitions(): Promise<AdminCompetition[]>;
+  createCompetition(input: CompetitionInput): Promise<Competition>;
+  finishCompetition(id: string): Promise<Competition>;
+  certificate(code: string): Promise<CertificateDto>;
   overview(): Promise<AdminOverview>;
   topics(): Promise<AdminTopic[]>;
   lessons(topicId: string): Promise<AdminLesson[]>;
@@ -77,7 +86,10 @@ export interface Api {
   updateProfile(p: ProfilePatch): Promise<MeDto>;
   home(): Promise<HomeDto>;
   path(): Promise<PathDto>;
-  startSession(kind: SessionKind, ref?: { lessonId?: string; topicId?: string; sectionId?: string }): Promise<SessionDto>;
+  startSession(kind: SessionKind, ref?: { lessonId?: string; topicId?: string; sectionId?: string; competitionId?: string }): Promise<SessionDto>;
+  competitions(): Promise<CompetitionDto[]>;
+  standings(id: string): Promise<CompetitionStandingsDto>;
+  certificate(code: string): Promise<CertificateDto>;
   answer(sessionId: string, qid: number, answer: number[], ms: number): Promise<AnswerDto>;
   complete(sessionId: string): Promise<CompleteDto>;
   report(sessionId: string, qid: number, reason: string, body: string): Promise<void>;

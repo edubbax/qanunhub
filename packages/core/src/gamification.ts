@@ -108,36 +108,6 @@ export function visibleStreak(s: StreakState, now: number, premium: boolean): nu
   return premium && missed <= s.freezesLeft ? s.current : 0;
 }
 
-// ---------------------------------------------------------------- ranks (premium)
-
-export interface RankDef {
-  code: string;
-  title: string;
-  minPassedPct: number;
-  minXp: number;
-  minRetention?: number;
-}
-
-/** Ranks follow the civil-service qualification grades ("ixtisas dərəcələri"), 7th up to "ali". */
-export const RANKS: RankDef[] = [
-  { code: 'd7', title: '7-ci dərəcəli', minPassedPct: 0, minXp: 0 },
-  { code: 'd6', title: '6-cı dərəcəli', minPassedPct: 5, minXp: 300 },
-  { code: 'd5', title: '5-ci dərəcəli', minPassedPct: 15, minXp: 1000 },
-  { code: 'd4', title: '4-cü dərəcəli', minPassedPct: 30, minXp: 2000 },
-  { code: 'd3', title: '3-cü dərəcəli', minPassedPct: 45, minXp: 3000 },
-  { code: 'd2', title: '2-ci dərəcəli', minPassedPct: 60, minXp: 4500 },
-  { code: 'd1', title: '1-ci dərəcəli', minPassedPct: 80, minXp: 6000 },
-  { code: 'ali', title: 'Ali dərəcəli', minPassedPct: 100, minXp: 7000, minRetention: 0.85 },
-];
-
-export function computeRank(passedPct: number, xpTotal: number, retention: number): { current: RankDef; next: RankDef | null; index: number } {
-  let index = 0;
-  RANKS.forEach((r, i) => {
-    if (passedPct >= r.minPassedPct && xpTotal >= r.minXp && (r.minRetention == null || retention >= r.minRetention)) index = i;
-  });
-  return { current: RANKS[index], next: RANKS[index + 1] ?? null, index };
-}
-
 export function isPremium(u: Pick<UserRecord, 'premiumUntil'>, now: number): boolean {
   return !!u.premiumUntil && u.premiumUntil > now;
 }

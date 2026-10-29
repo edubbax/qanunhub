@@ -1,35 +1,36 @@
 import { useEffect, useState } from 'react';
 import { useApp } from '../app';
 import { toast } from '../ui/components';
-import { IconBook, IconRepeat, IconTarget, IconTrophy } from '../ui/icons';
+import { IconBook, IconRepeat, IconShield, IconTrophy } from '../ui/icons';
+import { Epaulette } from '../ui/insignia';
+import logoUrl from '../assets/logo.png';
 
-function Brand() {
+function Brand({ big = false }: { big?: boolean }) {
   return (
-    <div className="brand">
-      <span className="mark">Q</span>
-      <span className="stack" style={{ gap: 2 }}>
-        <span>QanunHub</span>
-        <span className="tricolor" aria-hidden="true"><span /><span /><span /></span>
-      </span>
+    <div className={`brand ${big ? 'big' : ''}`} style={{ cursor: 'default' }}>
+      <img src={logoUrl} alt="QanunHub" />
     </div>
   );
 }
 
 export function Welcome() {
-  const { nav, api, meta, refreshMe } = useApp();
+  const { nav, api, refreshMe } = useApp();
   const demo = useSubmit();
   return (
     <main className="page no-tabs stack loose">
-      <Brand />
-      <section className="hero">
-        <h1>Qanunvericilik imtahanına gündə 15 dəqiqə ilə hazırlaş</h1>
-        <p className="lead">Dövlət qulluğu test imtahanının 40 qanunvericilik sualı üçün qısa dərslər, düşünülmüş təkrar və real formatda sınaq imtahanı.</p>
+      <Brand big />
+      <section className="welcome-hero">
+        <h1>Dövlət qulluğu imtahanının qanunvericilik bölməsinə hər gün az-az, amma ardıcıl hazırlaş</h1>
+        <p>Qısa dərslər, unutduğunu vaxtında qaytaran təkrar, real formatda sınaq və yarışlar. Hər uğur rütbəni yüksəldir.</p>
+        <div className="ranks" aria-hidden="true">
+          {['gizir', 'l', 'kapitan', 'polkovnik', 'gm', 'og'].map((c, i) => <Epaulette key={c} code={c} size={44 + i * 6} />)}
+        </div>
       </section>
       <div className="stack">
-        <div className="feature"><span className="ico"><IconBook /></span><div><b>Rəsmi mətnə əsaslanan dərslər</b><p className="muted small">{meta.topics.length} proqram mövzusu: Konstitusiyadan Kargüzarlıq Təlimatına qədər, kateqoriyana uyğun: AC, BA, BB (AB tezliklə).</p></div></div>
-        <div className="feature"><span className="ico"><IconRepeat /></span><div><b>Unutduğunu özü qaytaran təkrar</b><p className="muted small">Səhv etdiyin sual 10 dəqiqə sonra, sonra 1 və 3 gün sonra yenidən gəlir. İmtahan tarixinə uyğunlaşır.</p></div></div>
-        <div className="feature"><span className="ico"><IconTarget /></span><div><b>Keçid balına qarşı hazırlıq faizi</b><p className="muted small">Alt qrupunun keçid faizini (65–85%) seç və hazırlığını onunla müqayisə et.</p></div></div>
-        <div className="feature"><span className="ico"><IconTrophy /></span><div><b>Həftəlik və aylıq reytinq</b><p className="muted small">XP, ardıcıl günlər və dövlət qulluğu ixtisas dərəcələri adlı rütbələr.</p></div></div>
+        <div className="feature"><span className="ico"><IconBook /></span><div><b>Qanunun öz mətninə əsaslanan dərslər</b><p className="muted small">Konstitusiyadan Kargüzarlıq Təlimatına qədər, kateqoriyana uyğun mövzular. AC, BA və BB hazırdır, AB tezliklə.</p></div></div>
+        <div className="feature"><span className="ico"><IconRepeat /></span><div><b>Unutduğunu özü qaytaran təkrar</b><p className="muted small">Səhv etdiyin sual bir neçə dəqiqə, sonra bir neçə gün sonra yenidən gəlir. İmtahan tarixinə uyğunlaşır.</p></div></div>
+        <div className="feature"><span className="ico"><IconShield /></span><div><b>Rütbə, ulduz və təltiflər</b><p className="muted small">Gizirdən Ordu generalına qədər rütbələr, paqonda üç ulduz, uğurlu testlərə görə medal və ordenlər.</p></div></div>
+        <div className="feature"><span className="ico"><IconTrophy /></span><div><b>Reytinq və yarışlar</b><p className="muted small">Həftəlik və aylıq cədvəllər, qaliblərə PDF sertifikat verilən yarışlar.</p></div></div>
       </div>
       <div className="stack">
         {api.demo && (
@@ -42,6 +43,7 @@ export function Welcome() {
         {demo.error && <div className="banner bad" role="alert">{demo.error}</div>}
         <button className={`btn ${api.demo ? 'secondary' : 'primary'} block`} onClick={() => nav({ name: 'register' })}>Pulsuz başla</button>
         <button className="btn secondary block" onClick={() => nav({ name: 'login' })}>Hesabım var, daxil ol</button>
+        <button className="btn ghost" onClick={() => nav({ name: 'certificate' })}>Sertifikatı yoxla</button>
       </div>
       {api.mode === 'demo' && (
         <p className="tiny muted center">Bu, brauzerdə işləyən demo versiyadır: hesablar, ödəniş və email simulyasiya olunur, məlumatlar yalnız bu brauzerdə saxlanılır.</p>

@@ -54,9 +54,9 @@ export async function createUser(sql: Db, email: string, password: string, nickn
   u.emailVerified = !!opts.verified;
   u.role = opts.role ?? 'user';
   await sql`
-    insert into users (id, email, password_hash, nickname, role, daily_goal, email_verified, hearts, streak, today, created_at)
+    insert into users (id, email, password_hash, nickname, role, daily_goal, email_verified, hearts, streak, today, game, created_at)
     values (${u.id}, ${u.email}, ${await hashPassword(password)}, ${u.nickname}, ${u.role}, ${u.dailyGoal}, ${u.emailVerified},
-      ${sql.json(u.hearts as any)}, ${sql.json(u.streak as any)}, ${sql.json(u.today as any)}, ${new Date(now)})`;
+      ${sql.json(u.hearts as any)}, ${sql.json(u.streak as any)}, ${sql.json(u.today as any)}, ${sql.json(u.game as any)}, ${new Date(now)})`;
   return u;
 }
 
