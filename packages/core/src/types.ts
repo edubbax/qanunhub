@@ -178,6 +178,7 @@ export interface SessionQuestion {
   unitId: string;
   perm: number[];             // displayed index -> canonical option index
   requeue: boolean;           // re-ask of a missed unit inside the same session
+  isNew?: boolean;            // first time the learner sees this unit
   answer?: { correct: boolean; ms: number; at: number; points: number; given: number[] };
 }
 

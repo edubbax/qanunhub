@@ -60,6 +60,7 @@ export interface PathLessonDto {
   refs: string[];
   estMinutes: number;
   unitCount: number;
+  seen: number;               // units of this lesson the learner has already met
   state: LessonState;
 }
 

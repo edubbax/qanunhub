@@ -31,7 +31,9 @@ export interface EngineCtx {
   categoryChangeLimit?: boolean;
 }
 
-export const LESSON_QUESTIONS = 8;
+export const LESSON_QUESTIONS = 10;
+/** A rerun that introduces at least this many new units earns full XP (big lessons take several runs). */
+export const NEW_UNITS_FOR_FULL_XP = 3;
 export const LESSON_REVIEW_TAIL = 3;
 export const REVIEW_QUESTIONS = 10;
 export const FINAL_QUESTIONS = 20;
@@ -198,7 +200,9 @@ export async function getPath(ctx: EngineCtx, userId: string): Promise<PathDto> 
       id: t.id, programNo: t.programNo, title: t.title, shortTitle: t.shortTitle, note: t.note, free: t.free, locked,
       lessons: states.map(({ lesson, state }) => ({
         id: lesson.id, title: lesson.title, order: lesson.order, refs: lesson.refs, estMinutes: lesson.estMinutes,
-        unitCount: ctx.content.unitsForLesson(lesson.id).length, state: locked ? 'locked' as const : state,
+        unitCount: ctx.content.unitsForLesson(lesson.id).length,
+        seen: ctx.content.unitsForLesson(lesson.id).filter((x) => p.srs.has(x.id)).length,
+        state: locked ? 'locked' as const : state,
       })),
       doneLessons,
       mastery: Math.round(mastery(ctx.content.unitsForTopic(t.id, cat), p.srs, ctx.now) * 100),
@@ -346,7 +350,7 @@ export async function startLesson(ctx: EngineCtx, userId: string, lessonId: stri
   const s = newSession(ctx, u, 'lesson', { lessonId, topicId: lesson.topicId });
   for (const unit of [...shuffle(ordered, ctx.random), ...tail]) {
     const item = pickItem(ctx, unit.id, p.srs.get(unit.id)?.lastItemId ?? null);
-    if (item) s.questions.push(makeQuestion(ctx, s.questions.length, item, false));
+    if (item) s.questions.push({ ...makeQuestion(ctx, s.questions.length, item, false), isNew: !p.srs.has(unit.id) });
   }
   if (s.questions.length === 0) throw new AppError('NOT_FOUND', 'Bu dərsdə hələ sual yoxdur.');
   await ctx.store.saveSession(s);
@@ -597,7 +601,8 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
     } else {
       const prev = p.lessons.get(s.lessonId!);
       const recent = (prev?.recent ?? []).filter((t) => ctx.now - t < 7 * DAY);
-      xp = lessonXp(firstCorrect, first.length, recent.length);
+      const newUnits = first.filter((q) => q.isNew).length;
+      xp = lessonXp(firstCorrect, first.length, newUnits >= NEW_UNITS_FOR_FULL_XP ? 0 : recent.length);
       await ctx.store.saveLessonProgress(userId, {
         lessonId: s.lessonId!, completions: (prev?.completions ?? 0) + 1,
         bestCorrect: Math.max(prev?.bestCorrect ?? 0, firstCorrect), lastCompletedAt: ctx.now, recent: [...recent, ctx.now].slice(-5),
