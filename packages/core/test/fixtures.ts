@@ -48,3 +48,19 @@ export function fixtureBundle(): ContentBundle {
     units, items,
   };
 }
+
+/** The fixture with sub-topic sections and editors' formative questions in lesson k1. */
+export function sectionedBundle(): ContentBundle {
+  const b = fixtureBundle();
+  b.sections = [
+    { id: 'konst-s01', topicId: 'konst', order: 1, title: 'Xalq hakimiyyəti' },
+    { id: 'konst-s02', topicId: 'konst', order: 2, title: 'Dövlətin əsasları' },
+  ];
+  b.lessons = b.lessons.map((l) => (l.topicId === 'konst' ? { ...l, sectionId: l.id === 'k1' ? 'konst-s01' : 'konst-s02' } : l));
+  for (let i = 0; i < 3; i++) {
+    const uid = `k1f${i}`;
+    b.units.push({ id: uid, topicId: 'konst', lessonId: 'k1', categories: ALL, importance: 2, pool: 'formative' });
+    b.items.push({ ...single(`${uid}-v0`, uid, 'konst', 'k1'), pool: 'formative' });
+  }
+  return b;
+}

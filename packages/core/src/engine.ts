@@ -1,8 +1,8 @@
 // Application service: every learner-facing operation. Pure orchestration over Store + ContentIndex,
 // so the Postgres server and the in-browser demo behave identically.
 import type {
-  AnswerDto, CardDto, CompleteDto, HeartsDto, HomeDto, LeaderboardDto, MeDto, PathDto, PathTopicDto, ProfilePatch,
-  QuestionDto, RankDto, ReviewEntryDto, SessionDto, WeakTopicDto,
+  AnswerDto, CardDto, CompleteDto, HeartsDto, HomeDto, LeaderboardDto, MeDto, PathDto, PathSectionDto, PathTopicDto,
+  ProfilePatch, QuestionDto, RankDto, ReviewEntryDto, SessionDto, WeakTopicDto,
 } from './api';
 import { SESSION_TITLES } from './api';
 import type { ContentIndex } from './content';
@@ -16,10 +16,10 @@ import { isLearned, newSrsState, priority, readingMs, retrievability, schedule, 
 import type { Store } from './store';
 import { DAY, HOUR, MINUTE, dayKey, dayStart, daysBetween, periodEnd, periodStartKey } from './time';
 import type {
-  Category, Item, LessonProgress, Period, ReviewLog, Scope, Session, SessionKind, SessionQuestion, SrsState, TopicFinal,
-  Unit, UserRecord,
+  Category, Item, Lesson, LessonProgress, Period, ReviewLog, Scope, Session, SessionKind, SessionQuestion, SrsState,
+  TopicFinal, Unit, UserRecord,
 } from './types';
-import { CATEGORIES } from './types';
+import { AVAILABLE_CATEGORIES, CATEGORIES } from './types';
 
 export interface EngineCtx {
   store: Store;
@@ -37,10 +37,16 @@ export const NEW_UNITS_FOR_FULL_XP = 3;
 export const LESSON_REVIEW_TAIL = 3;
 export const REVIEW_QUESTIONS = 10;
 export const FINAL_QUESTIONS = 20;
+export const SECTION_QUESTIONS = 10;
 export const FINAL_PASS_PCT = 80;
 export const SESSION_TTL = 60 * MINUTE;
 export const FREE_FINAL_COOLDOWN = 24 * HOUR;
 export const SUSPICION_LIMIT = 3;
+
+/** Section test results share the topic_finals table under this key. */
+export const sectionResultKey = (sectionId: string) => `sec:${sectionId}`;
+
+const isExamKind = (k: SessionKind) => k === 'final' || k === 'mock' || k === 'section';
 
 // ---------------------------------------------------------------- users
 
@@ -193,17 +199,36 @@ export async function getPath(ctx: EngineCtx, userId: string): Promise<PathDto> 
     const locked = !topicAccessible(ctx, t.id, u);
     const states = lessonStates(ctx, t.id, cat, p.lessons);
     const doneLessons = states.filter((s) => s.state === 'done').length;
+    const done = new Set(states.filter((s) => s.state === 'done').map((s) => s.lesson.id));
     const fin = p.finals.get(t.id);
     const unitCount = ctx.content.unitsForTopic(t.id, cat).length;
     const cooldown = !isPremium(u, ctx.now) && fin ? fin.lastAttemptAt + FREE_FINAL_COOLDOWN : null;
+    const sections: PathSectionDto[] = ctx.content.sectionsFor(t.id, cat).map((sec) => {
+      const lessons = ctx.content.sectionLessons(sec.id, cat);
+      const res = p.finals.get(sectionResultKey(sec.id));
+      const sectionDone = lessons.filter((l) => done.has(l.id)).length;
+      return {
+        id: sec.id, title: sec.title, order: sec.order, lessonIds: lessons.map((l) => l.id), doneLessons: sectionDone,
+        test: {
+          available: !locked && sectionDone === lessons.length,
+          passed: !!res?.passedAt,
+          bestPct: res?.bestPct ?? 0,
+          questionCount: Math.min(SECTION_QUESTIONS, ((x) => x.exam.length + x.formative.length)(sectionPools(ctx, lessons, cat))),
+        },
+      };
+    });
     return {
       id: t.id, programNo: t.programNo, title: t.title, shortTitle: t.shortTitle, note: t.note, free: t.free, locked,
-      lessons: states.map(({ lesson, state }) => ({
-        id: lesson.id, title: lesson.title, order: lesson.order, refs: lesson.refs, estMinutes: lesson.estMinutes,
-        unitCount: ctx.content.unitsForLesson(lesson.id).length,
-        seen: ctx.content.unitsForLesson(lesson.id).filter((x) => p.srs.has(x.id)).length,
-        state: locked ? 'locked' as const : state,
-      })),
+      comingSoon: states.length === 0,
+      sections,
+      lessons: states.map(({ lesson, state }) => {
+        const units = ctx.content.lessonUnits(lesson.id);
+        return {
+          id: lesson.id, sectionId: ctx.content.sectionIdOf(lesson), title: lesson.title, order: lesson.order, refs: lesson.refs,
+          estMinutes: lesson.estMinutes, unitCount: units.length, seen: units.filter((x) => p.srs.has(x.id)).length,
+          state: locked ? 'locked' as const : state,
+        };
+      }),
       doneLessons,
       mastery: Math.round(mastery(ctx.content.unitsForTopic(t.id, cat), p.srs, ctx.now) * 100),
       final: {
@@ -226,6 +251,9 @@ export async function updateProfile(ctx: EngineCtx, userId: string, patch: Profi
   const u = await loadUser(ctx, userId);
   if (patch.category !== undefined) {
     if (!CATEGORIES.includes(patch.category)) throw new AppError('VALIDATION', 'Kateqoriya yanlışdır.');
+    if (!AVAILABLE_CATEGORIES.includes(patch.category)) {
+      throw new AppError('VALIDATION', `${patch.category} kateqoriyası üçün materiallar hazırlanır, tezliklə əlavə olunacaq.`);
+    }
     if (patch.category !== u.category) {
       if (ctx.categoryChangeLimit !== false && u.category && u.categoryChangedAt && ctx.now - u.categoryChangedAt < 30 * DAY) {
         throw new AppError('CATEGORY_CHANGE_LIMIT', 'Kateqoriyanı 30 gündə bir dəfə dəyişmək olar.', { nextChangeAt: u.categoryChangedAt + 30 * DAY });
@@ -296,7 +324,7 @@ function questionDto(ctx: EngineCtx, q: SessionQuestion): QuestionDto {
 }
 
 function sessionDto(ctx: EngineCtx, s: Session, u: UserRecord, title: string, subtitle: string, cards: CardDto[], notice?: string): SessionDto {
-  const exam = s.kind === 'final' || s.kind === 'mock';
+  const exam = isExamKind(s.kind);
   const maxPoints = s.questions.filter((q) => !q.requeue).reduce((a, q) => a + (ctx.content.itemById.get(q.itemId)?.points ?? 1), 0);
   return {
     id: s.id, kind: s.kind, title, subtitle, cards,
@@ -304,7 +332,7 @@ function sessionDto(ctx: EngineCtx, s: Session, u: UserRecord, title: string, su
     examMode: exam, timeLimitSec: s.timeLimitSec, expiresAt: s.expiresAt,
     hearts: s.kind === 'lesson' ? heartsDto(u, ctx.now) : null,
     maxPoints,
-    targetPercent: s.kind === 'final' ? FINAL_PASS_PCT : s.kind === 'mock' ? targetPercent(u.category, u.subgroup) : null,
+    targetPercent: s.kind === 'final' || s.kind === 'section' ? FINAL_PASS_PCT : s.kind === 'mock' ? targetPercent(u.category, u.subgroup) : null,
     notice,
   };
 }
@@ -340,7 +368,7 @@ export async function startLesson(ctx: EngineCtx, userId: string, lessonId: stri
   const state = lessonStates(ctx, lesson.topicId, cat, p.lessons).find((s) => s.lesson.id === lessonId);
   if (state?.state === 'locked') throw new AppError('LESSON_LOCKED', 'Əvvəlki dərsi bitir, sonra bu dərs açılacaq.');
 
-  const units = ctx.content.unitsForLesson(lessonId);
+  const units = ctx.content.lessonUnits(lessonId);
   const ordered = [
     ...shuffle(units.filter((x) => !p.srs.has(x.id)), ctx.random),
     ...units.filter((x) => p.srs.has(x.id)).sort((a, b) => retrievability(p.srs.get(a.id), ctx.now) - retrievability(p.srs.get(b.id), ctx.now)),
@@ -419,9 +447,9 @@ export async function startFinal(ctx: EngineCtx, userId: string, topicId: string
   if (!isPremium(u, ctx.now) && fin && ctx.now - fin.lastAttemptAt < FREE_FINAL_COOLDOWN) {
     throw new AppError('FINAL_COOLDOWN', 'Pulsuz planda final testinə 24 saatda bir dəfə girmək olar.', { nextAttemptAt: fin.lastAttemptAt + FREE_FINAL_COOLDOWN });
   }
-  const units = shuffle(ctx.content.unitsForTopic(topicId, cat), ctx.random).slice(0, FINAL_QUESTIONS);
+  const units = withFallback(ctx.content.unitsForTopic(topicId, cat, 'exam'), ctx.content.unitsForTopic(topicId, cat, 'formative'), FINAL_QUESTIONS, ctx.random);
   const s = newSession(ctx, u, 'final', { topicId });
-  for (const unit of units) {
+  for (const unit of shuffle(units, ctx.random)) {
     const item = pickItem(ctx, unit.id, null);
     if (item) s.questions.push(makeQuestion(ctx, s.questions.length, item, false));
   }
@@ -434,12 +462,51 @@ export async function startFinal(ctx: EngineCtx, userId: string, topicId: string
   return sessionDto(ctx, s, u, `Final testi: ${topic.shortTitle}`, `${s.questions.length} sual · keçid ${FINAL_PASS_PCT}%`, []);
 }
 
+function sectionPools(ctx: EngineCtx, lessons: Lesson[], cat: Category): { exam: Unit[]; formative: Unit[] } {
+  const of = (pool: 'exam' | 'formative') => lessons.flatMap((l) => ctx.content.unitsForLesson(l.id, pool)).filter((x) => x.categories.includes(cat));
+  return { exam: of('exam'), formative: of('formative') };
+}
+
+/** Up to `n` units, source questions first; editors' questions only fill what the sources cannot cover. */
+function withFallback(primary: Unit[], fallback: Unit[], n: number, random: () => number): Unit[] {
+  const picked = shuffle(primary, random).slice(0, n);
+  return picked.length >= n ? picked : [...picked, ...shuffle(fallback, random).slice(0, n - picked.length)];
+}
+
+export async function startSection(ctx: EngineCtx, userId: string, sectionId: string): Promise<SessionDto> {
+  const u = await loadUser(ctx, userId);
+  const cat = requireCategory(u);
+  const section = ctx.content.sectionById.get(sectionId);
+  const lessons = section ? ctx.content.sectionLessons(sectionId, cat) : [];
+  if (!section || lessons.length === 0) throw new AppError('NOT_FOUND', 'Bölmə tapılmadı.');
+  if (!topicAccessible(ctx, section.topicId, u)) throw new AppError('PREMIUM_REQUIRED', 'Bu mövzu Premium planına daxildir.');
+  const p = await loadProgress(ctx, userId);
+  if (lessons.some((l) => (p.lessons.get(l.id)?.completions ?? 0) === 0)) {
+    throw new AppError('FINAL_LOCKED', 'Bölmə testi bölmənin bütün dərsləri bitəndə açılır.');
+  }
+  const pools = sectionPools(ctx, lessons, cat);
+  const units = withFallback(pools.exam, pools.formative, SECTION_QUESTIONS, ctx.random);
+  const s = newSession(ctx, u, 'section', { topicId: section.topicId, sectionId });
+  for (const unit of shuffle(units, ctx.random)) {
+    const item = pickItem(ctx, unit.id, null);
+    if (item) s.questions.push(makeQuestion(ctx, s.questions.length, item, false));
+  }
+  if (s.questions.length === 0) throw new AppError('NOT_FOUND', 'Bu bölmədə hələ sual yoxdur.');
+  s.timeLimitSec = s.questions.length * 60;
+  s.expiresAt = ctx.now + s.timeLimitSec * 1000 + 5 * MINUTE;
+  await ctx.store.saveSession(s);
+  const topic = ctx.content.topicById.get(section.topicId)!;
+  return sessionDto(ctx, s, u, `Bölmə testi: ${section.title}`, `${topic.shortTitle} · ${s.questions.length} sual · keçid ${FINAL_PASS_PCT}%`, []);
+}
+
 export async function startMock(ctx: EngineCtx, userId: string): Promise<SessionDto> {
   const u = await loadUser(ctx, userId);
   const cat = requireCategory(u);
   if (!isPremium(u, ctx.now)) throw new AppError('PREMIUM_REQUIRED', 'Sınaq imtahanı Premium funksiyasıdır.');
   const fmt = EXAM_FORMATS[cat];
-  const units = ctx.content.unitsForCategory(cat);
+  // The mock exam is built from the official sources; editors' questions only stand in when a category has too few.
+  const exam = ctx.content.unitsForCategory(cat, 'exam');
+  const units = exam.length >= fmt.lawClosed + fmt.lawOpen ? exam : ctx.content.unitsForCategory(cat);
   const multiUnits = shuffle(units.filter((x) => ctx.content.itemsForUnit(x.id).some((i) => i.type === 'multi')), ctx.random);
   const singleUnits = units.filter((x) => ctx.content.itemsForUnit(x.id).some((i) => i.type === 'single'));
 
@@ -537,7 +604,7 @@ export async function answer(ctx: EngineCtx, userId: string, sessionId: string, 
     if (u.hearts.current === 0) s.heartsOut = true;
     await ctx.store.saveUser(u);
   }
-  const exam = s.kind === 'final' || s.kind === 'mock';
+  const exam = isExamKind(s.kind);
   if (!exam && !correct && !q.requeue && !s.heartsOut) {
     const again = pickItem(ctx, q.unitId, item.id) ?? item;
     const nq = makeQuestion(ctx, s.questions.length, again, true);
@@ -586,7 +653,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   const points = first.reduce((a, q) => a + (q.answer?.points ?? 0), 0);
   const maxPoints = first.reduce((a, q) => a + (ctx.content.itemById.get(q.itemId)?.points ?? 1), 0);
   const pct = maxPoints ? Math.round((points / maxPoints) * 100) : 0;
-  const exam = s.kind === 'final' || s.kind === 'mock';
+  const exam = isExamKind(s.kind);
   if (!exam && !s.heartsOut && first.some((q) => !q.answer)) throw new AppError('VALIDATION', 'Bütün suallara cavab verin.');
 
   let xp = 0;
@@ -614,6 +681,16 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
       u.hearts = earnHeart(u.hearts);
       heartEarned = true;
     }
+  } else if (s.kind === 'section') {
+    target = FINAL_PASS_PCT;
+    passed = pct >= FINAL_PASS_PCT;
+    const key = sectionResultKey(s.sectionId!);
+    const res = p.finals.get(key);
+    xp = Math.round(finalXp(pct, passed && !res?.passedAt) / 2);
+    await ctx.store.saveTopicFinal(userId, {
+      topicId: key, bestPct: Math.max(res?.bestPct ?? 0, pct), passedAt: res?.passedAt ?? (passed ? ctx.now : null),
+      lastAttemptAt: ctx.now, attempts: (res?.attempts ?? 0) + 1,
+    });
   } else if (s.kind === 'final') {
     target = FINAL_PASS_PCT;
     passed = pct >= FINAL_PASS_PCT;

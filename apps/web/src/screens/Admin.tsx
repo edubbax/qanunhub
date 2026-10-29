@@ -187,7 +187,7 @@ function Content({ focusItem, clearFocus }: { focusItem: string | null; clearFoc
                     <td>{i.type === 'multi' ? 'Açıq' : 'Qapalı'}</td>
                     <td><span className={`chip ${i.status === 'published' ? 'ok' : i.status === 'flagged' ? 'bad' : 'xp'}`}>{STATUS_LABELS[i.status]}</span></td>
                     <td className="tiny">{i.flags.map((f) => FLAG_LABELS[f] ?? f).join(', ')}</td>
-                    <td className="tiny muted">{i.source ? `${i.source.file}${i.source.no ? ` №${i.source.no}` : ''}` : ''}</td>
+                    <td className="tiny muted">{i.pool === 'formative' ? 'Formativ (redaktor)' : i.source ? `${i.source.file}${i.source.no ? ` №${i.source.no}` : ''}` : ''}</td>
                   </tr>
                 ))}
               </tbody>
@@ -256,6 +256,7 @@ function ItemEditor({ item, onClose, onSaved }: { item: Item; onClose: () => voi
       <p className="tiny muted">
         {item.type === 'multi' ? 'Açıq tapşırıq (2 bal, bir neçə düzgün cavab)' : 'Qapalı tapşırıq (1 düzgün cavab)'} · kateqoriyalar {item.categories.join(', ')}
         {item.source ? ` · mənbə: ${item.source.file}${item.source.no ? ` №${item.source.no}` : ''}` : ''}
+        {item.pool === 'formative' ? ' · formativ sual: yalnız dərslərdə soruşulur' : ' · bölmə testi, final və sınaqda soruşulur'}
       </p>
       {stats.data && (
         <p className="tiny muted">Statistika: {stats.data.answered} cavab, düzgün {stats.data.answered ? Math.round((stats.data.correct / stats.data.answered) * 100) : 0}%, orta vaxt {Math.round(stats.data.avg_ms / 1000)} san.</p>

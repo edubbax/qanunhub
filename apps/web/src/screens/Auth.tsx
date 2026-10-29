@@ -16,7 +16,8 @@ function Brand() {
 }
 
 export function Welcome() {
-  const { nav, api, meta } = useApp();
+  const { nav, api, meta, refreshMe } = useApp();
+  const demo = useSubmit();
   return (
     <main className="page no-tabs stack loose">
       <Brand />
@@ -25,13 +26,21 @@ export function Welcome() {
         <p className="lead">Dövlət qulluğu test imtahanının 40 qanunvericilik sualı üçün qısa dərslər, düşünülmüş təkrar və real formatda sınaq imtahanı.</p>
       </section>
       <div className="stack">
-        <div className="feature"><span className="ico"><IconBook /></span><div><b>Rəsmi mətnə əsaslanan dərslər</b><p className="muted small">{meta.topics.length} proqram mövzusu: Konstitusiyadan Kargüzarlıq Təlimatına qədər, kateqoriyana (AB, AC, BA, BB) uyğun.</p></div></div>
+        <div className="feature"><span className="ico"><IconBook /></span><div><b>Rəsmi mətnə əsaslanan dərslər</b><p className="muted small">{meta.topics.length} proqram mövzusu: Konstitusiyadan Kargüzarlıq Təlimatına qədər, kateqoriyana uyğun: AC, BA, BB (AB tezliklə).</p></div></div>
         <div className="feature"><span className="ico"><IconRepeat /></span><div><b>Unutduğunu özü qaytaran təkrar</b><p className="muted small">Səhv etdiyin sual 10 dəqiqə sonra, sonra 1 və 3 gün sonra yenidən gəlir. İmtahan tarixinə uyğunlaşır.</p></div></div>
         <div className="feature"><span className="ico"><IconTarget /></span><div><b>Keçid balına qarşı hazırlıq faizi</b><p className="muted small">Alt qrupunun keçid faizini (65–85%) seç və hazırlığını onunla müqayisə et.</p></div></div>
         <div className="feature"><span className="ico"><IconTrophy /></span><div><b>Həftəlik və aylıq reytinq</b><p className="muted small">XP, ardıcıl günlər və dövlət qulluğu ixtisas dərəcələri adlı rütbələr.</p></div></div>
       </div>
       <div className="stack">
-        <button className="btn primary block" onClick={() => nav({ name: 'register' })}>Pulsuz başla</button>
+        {api.demo && (
+          <button className="btn primary block" disabled={demo.busy} onClick={() => demo.run(async () => {
+            await api.demo!.quickStart();
+            const m = await refreshMe();
+            nav(m?.category ? { name: 'home' } : { name: 'onboarding' }, true);
+          })}>{demo.busy ? 'Açılır…' : 'Demo hesabla bax (Premium)'}</button>
+        )}
+        {demo.error && <div className="banner bad" role="alert">{demo.error}</div>}
+        <button className={`btn ${api.demo ? 'secondary' : 'primary'} block`} onClick={() => nav({ name: 'register' })}>Pulsuz başla</button>
         <button className="btn secondary block" onClick={() => nav({ name: 'login' })}>Hesabım var, daxil ol</button>
       </div>
       {api.mode === 'demo' && (

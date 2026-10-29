@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   AppError, ContentIndex, DAY, HOUR, MemoryStore, answer, complete, getHome, getLeaderboard, getPath, getWeakTopics,
-  grantPremium, newUser, seededRandom, startFinal, startLesson, startMock, startReview, updateProfile,
+  grantPremium, newUser, seededRandom, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
   type EngineCtx, type SessionDto,
 } from '../src';
-import { fixtureBundle } from './fixtures';
+import { fixtureBundle, sectionedBundle } from './fixtures';
 
 const T0 = Date.UTC(2026, 10, 2, 8);
 let store: MemoryStore;
@@ -162,7 +162,7 @@ describe('premium features', () => {
   });
 
   it('limits category changes to once per 30 days', async () => {
-    await updateProfile(ctx(), 'u1', { category: 'AB' });
+    await updateProfile(ctx(), 'u1', { category: 'AC' });
     const e = await errorOf(updateProfile(ctx(), 'u1', { category: 'BA' }));
     expect(e.code).toBe('CATEGORY_CHANGE_LIMIT');
     now += 31 * DAY;
@@ -181,5 +181,64 @@ describe('free plan leaderboard', () => {
     expect(lb.eligible).toBe(false);
     expect(lb.rows).toHaveLength(0);
     expect(lb.previewRank).toBe(1);
+  });
+});
+
+describe('sections and question pools', () => {
+  beforeEach(() => {
+    content = new ContentIndex(sectionedBundle());
+  });
+
+  it('keeps AB as coming soon', async () => {
+    const e = await errorOf(updateProfile({ ...ctx(), categoryChangeLimit: false }, 'u1', { category: 'AB' }));
+    expect(e.code).toBe('VALIDATION');
+  });
+
+  it('teaches lessons with formative questions and lists sections on the path', async () => {
+    const s = await startLesson(ctx(), 'u1', 'k1');
+    const stored = (await store.getSession(s.id))!;
+    expect(stored.questions.map((q) => q.unitId).sort()).toEqual(['k1f0', 'k1f1', 'k1f2']);
+    const path = await getPath(ctx(), 'u1');
+    const konst = path.topics.find((t) => t.id === 'konst')!;
+    expect(konst.sections.map((x) => x.id)).toEqual(['konst-s01', 'konst-s02']);
+    expect(konst.lessons.find((l) => l.id === 'k1')!.sectionId).toBe('konst-s01');
+    expect(konst.lessons.find((l) => l.id === 'k1')!.unitCount).toBe(3);
+    expect(konst.sections[0].test.available).toBe(false);
+  });
+
+  it('opens the section test after its lessons, asks source questions first and records the result', async () => {
+    expect((await errorOf(startSection(ctx(), 'u1', 'konst-s01'))).code).toBe('FINAL_LOCKED');
+    const lesson = await startLesson(ctx(), 'u1', 'k1');
+    await answerAll(lesson);
+    await complete(ctx(), 'u1', lesson.id);
+
+    const s = await startSection(ctx(), 'u1', 'konst-s01');
+    expect(s.examMode).toBe(true);
+    const stored = (await store.getSession(s.id))!;
+    const unitIds = stored.questions.map((q) => q.unitId);
+    // Four source units exist; the three formative units only fill the rest of the ten slots.
+    expect(unitIds.filter((x) => x.startsWith('k1u'))).toHaveLength(4);
+    expect(unitIds).toHaveLength(7);
+    await answerAll(s);
+    const r = await complete(ctx(), 'u1', s.id);
+    expect(r.kind).toBe('section');
+    expect(r.passed).toBe(true);
+    expect(r.review).toHaveLength(7);
+    const path = await getPath(ctx(), 'u1');
+    const sec = path.topics.find((t) => t.id === 'konst')!.sections[0];
+    expect(sec.test).toMatchObject({ available: true, passed: true, bestPct: 100 });
+  });
+
+  it('builds finals from source questions first', async () => {
+    for (const id of ['k1', 'k2']) {
+      const l = await startLesson(ctx(), 'u1', id);
+      await answerAll(l);
+      await complete(ctx(), 'u1', l.id);
+    }
+    const f = await startFinal(ctx(), 'u1', 'konst');
+    const stored = (await store.getSession(f.id))!;
+    // All twelve source units are used; formative units only fill the remaining slots of twenty.
+    expect(stored.questions.filter((q) => !q.unitId.startsWith('k1f'))).toHaveLength(12);
+    expect(stored.questions).toHaveLength(15);
   });
 });

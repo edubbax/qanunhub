@@ -1,11 +1,11 @@
 // End-to-end API tests against a real Postgres database (TEST_DATABASE_URL, see scripts/dev-db.sh).
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { connect, migrate, type Sql } from '../src/db';
-import { ContentCache, importBundle } from '../src/content';
+import { ContentCache, importBundle, loadBundle } from '../src/content';
 import { createApp } from '../src/app';
 import { createUser } from '../src/auth';
 import { resetRateLimits } from '../src/rateLimit';
-import { fixtureBundle } from '../../../packages/core/test/fixtures';
+import { fixtureBundle, sectionedBundle } from '../../../packages/core/test/fixtures';
 
 const URL = process.env.TEST_DATABASE_URL ?? 'postgres://postgres@localhost:55432/qanunhub_test';
 let sql: Sql;
@@ -196,5 +196,26 @@ describe('admin', () => {
   it('denies admin endpoints to learners', async () => {
     expect((await learner.get('/api/admin/users')).status).toBe(403);
     expect((await learner.get('/api/admin/overview')).status).toBe(403);
+  });
+});
+
+describe('content storage', () => {
+  it('round-trips sections and question pools through Postgres', async () => {
+    const b = sectionedBundle();
+    await importBundle(sql, b);
+    const back = await loadBundle(sql);
+    expect(back.sections?.map((x) => x.id)).toEqual(['konst-s01', 'konst-s02']);
+    expect(back.lessons.find((l) => l.id === 'k1')?.sectionId).toBe('konst-s01');
+    expect(back.units.find((u) => u.id === 'k1f0')?.pool).toBe('formative');
+    expect(back.items.find((i) => i.id === 'k1u0-v0')?.pool).toBe('exam');
+  });
+
+  it('lists AB as coming soon and refuses it as a category', async () => {
+    const c = client();
+    const meta = await c.get('/api/meta');
+    expect(meta.json.comingSoonCategories).toEqual(['AB']);
+    await c.post('/api/auth/register', { email: 'ab@example.az', password: 'Parol-uzun-2026', nickname: 'abuser', accept: true });
+    const res = await c.patch('/api/me', { category: 'AB' });
+    expect(res.status).toBe(400);
   });
 });

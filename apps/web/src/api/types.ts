@@ -15,6 +15,8 @@ export interface Plan {
 
 export interface MetaDto {
   categories: Category[];
+  availableCategories: Category[];
+  comingSoonCategories: Category[];
   subgroups: Subgroup[];
   formats: typeof EXAM_FORMATS;
   plans: Plan[];
@@ -75,7 +77,7 @@ export interface Api {
   updateProfile(p: ProfilePatch): Promise<MeDto>;
   home(): Promise<HomeDto>;
   path(): Promise<PathDto>;
-  startSession(kind: SessionKind, ref?: { lessonId?: string; topicId?: string }): Promise<SessionDto>;
+  startSession(kind: SessionKind, ref?: { lessonId?: string; topicId?: string; sectionId?: string }): Promise<SessionDto>;
   answer(sessionId: string, qid: number, answer: number[], ms: number): Promise<AnswerDto>;
   complete(sessionId: string): Promise<CompleteDto>;
   report(sessionId: string, qid: number, reason: string, body: string): Promise<void>;
@@ -84,7 +86,7 @@ export interface Api {
   checkout(planId: string): Promise<void>;
   admin: AdminApi;
   /** Demo-only helpers; undefined on the server build. */
-  demo?: { setAdmin(on: boolean): Promise<void>; reset(): void };
+  demo?: { setAdmin(on: boolean): Promise<void>; reset(): void; quickStart(): Promise<void> };
 }
 
 export class ApiError extends Error {

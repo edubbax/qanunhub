@@ -55,6 +55,7 @@ export type LessonState = 'locked' | 'available' | 'done';
 
 export interface PathLessonDto {
   id: string;
+  sectionId: string;
   title: string;
   order: number;
   refs: string[];
@@ -62,6 +63,22 @@ export interface PathLessonDto {
   unitCount: number;
   seen: number;               // units of this lesson the learner has already met
   state: LessonState;
+}
+
+export interface TestStateDto {
+  available: boolean;
+  passed: boolean;
+  bestPct: number;
+  questionCount: number;
+}
+
+export interface PathSectionDto {
+  id: string;
+  title: string;
+  order: number;
+  lessonIds: string[];
+  doneLessons: number;
+  test: TestStateDto;
 }
 
 export interface PathTopicDto {
@@ -72,10 +89,12 @@ export interface PathTopicDto {
   note?: string;
   free: boolean;
   locked: boolean;            // premium required
+  comingSoon: boolean;        // in the programme, material not ready yet
+  sections: PathSectionDto[];
   lessons: PathLessonDto[];
   doneLessons: number;
   mastery: number;            // 0..100
-  final: { available: boolean; passed: boolean; bestPct: number; nextAttemptAt: number | null; questionCount: number };
+  final: TestStateDto & { nextAttemptAt: number | null };
 }
 
 export interface PathDto {
@@ -109,7 +128,7 @@ export interface SessionDto {
   subtitle: string;
   cards: CardDto[];
   questions: QuestionDto[];
-  examMode: boolean;          // final and mock: no feedback until the end
+  examMode: boolean;          // section test, final and mock: no feedback until the end
   timeLimitSec: number | null;
   expiresAt: number;
   hearts: HeartsDto | null;
@@ -198,6 +217,7 @@ export const SESSION_TITLES: Record<SessionKind, string> = {
   lesson: 'Dərs',
   review: 'Təkrar',
   weak: 'Gücləndirmə',
+  section: 'Bölmə testi',
   final: 'Mövzu final testi',
   mock: 'Sınaq imtahanı',
 };

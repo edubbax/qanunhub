@@ -1,4 +1,4 @@
-import type { PathTopicDto } from '@qanunhub/core';
+import type { PathLessonDto, PathSectionDto, PathTopicDto } from '@qanunhub/core';
 import { useState } from 'react';
 import { useApp } from '../app';
 import { ErrorBox, Progress, Spinner, untilText, useLoad } from '../ui/components';
@@ -38,7 +38,7 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
         <span className="grow stack tight">
           <span className="row between">
             <b>{t.shortTitle}</b>
-            {t.locked ? <span className="chip"><IconLock />Premium</span> : t.free ? <span className="chip ok">Pulsuz</span> : null}
+            {t.comingSoon ? <span className="chip">Tezliklə</span> : t.locked ? <span className="chip"><IconLock />Premium</span> : t.free ? <span className="chip ok">Pulsuz</span> : null}
           </span>
           {empty ? (
             <span className="small muted">{t.note ?? 'Material hazırlanır.'}</span>
@@ -60,18 +60,8 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
               </div>
             </div>
           )}
-          {t.lessons.map((l) => (
-            <button key={l.id} className={`node ${l.state}`} disabled={l.state === 'locked'} onClick={() => nav({ name: 'session', kind: 'lesson', lessonId: l.id, back: { name: 'path', topicId: t.id } })}>
-              <span className="dot">{l.state === 'done' ? <IconCheck /> : l.state === 'available' ? <IconPlay /> : <IconLock />}</span>
-              <span className="grow stack" style={{ gap: 0 }}>
-                <b className="small">{l.title}</b>
-                <span className="tiny muted">
-                  {l.refs.slice(0, 3).join(', ')}{l.refs.length > 3 ? ` … ${l.refs[l.refs.length - 1]}` : ''} · {l.estMinutes} dəq
-                  {l.unitCount > 0 && ` · ${l.seen}/${l.unitCount} sual`}
-                </span>
-              </span>
-              {l.state === 'done' && l.seen < l.unitCount && <span className="chip primary">Davam</span>}
-            </button>
+          {t.sections.map((sec, i) => (
+            <SectionBlock key={sec.id} t={t} sec={sec} no={i + 1} single={t.sections.length === 1} />
           ))}
           <button className="node final" disabled={!t.final.available || !!t.final.nextAttemptAt} onClick={() => nav({ name: 'session', kind: 'final', topicId: t.id, back: { name: 'path', topicId: t.id } })}>
             <span className="dot" style={t.final.passed ? { background: 'var(--ok)', borderColor: 'var(--ok)', color: '#fff' } : t.final.available ? { borderColor: 'var(--xp)', color: 'var(--xp)' } : undefined}><IconExam /></span>
@@ -80,7 +70,7 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
               <span className="tiny muted">
                 {t.final.passed ? `Keçilib · ən yaxşı nəticə ${t.final.bestPct}%`
                   : t.final.nextAttemptAt ? `Növbəti cəhd ${untilText(t.final.nextAttemptAt)} sonra`
-                  : t.final.available ? `${t.final.questionCount} sual · keçid 80%`
+                  : t.final.available ? `${t.final.questionCount} sual mənbə testlərindən · keçid 80%${t.final.bestPct ? ` · ən yaxşı ${t.final.bestPct}%` : ''}`
                   : 'Bütün dərslər bitəndə açılır'}
               </span>
             </span>
@@ -89,5 +79,49 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
         </div>
       )}
     </section>
+  );
+}
+
+function SectionBlock({ t, sec, no, single }: { t: PathTopicDto; sec: PathSectionDto; no: number; single: boolean }) {
+  const { nav } = useApp();
+  const lessons = sec.lessonIds.map((id) => t.lessons.find((l) => l.id === id)).filter((l): l is PathLessonDto => !!l);
+  const back = { name: 'path' as const, topicId: t.id };
+  return (
+    <div className="section-block">
+      {!single && (
+        <div className="section-head">
+          <span className="section-no">{no}</span>
+          <b className="small grow">{sec.title}</b>
+          <span className="tiny muted num">{sec.doneLessons}/{sec.lessonIds.length}</span>
+        </div>
+      )}
+      {lessons.map((l) => (
+        <button key={l.id} className={`node ${l.state}`} disabled={l.state === 'locked'} onClick={() => nav({ name: 'session', kind: 'lesson', lessonId: l.id, back })}>
+          <span className="dot">{l.state === 'done' ? <IconCheck /> : l.state === 'available' ? <IconPlay /> : <IconLock />}</span>
+          <span className="grow stack" style={{ gap: 0 }}>
+            <b className="small">{l.title}</b>
+            <span className="tiny muted">
+              {l.refs.slice(0, 3).join(', ')}{l.refs.length > 3 ? ` … ${l.refs[l.refs.length - 1]}` : ''} · {l.estMinutes} dəq
+              {l.unitCount > 0 && ` · ${l.seen}/${l.unitCount} sual`}
+            </span>
+          </span>
+          {l.state === 'done' && l.seen < l.unitCount && <span className="chip primary">Davam</span>}
+        </button>
+      ))}
+      {/* One-section topics go straight to the topic final. */}
+      {!single && sec.test.questionCount > 0 && (
+        <button className="node final section-test" disabled={!sec.test.available} onClick={() => nav({ name: 'session', kind: 'section', sectionId: sec.id, back })}>
+          <span className="dot" style={sec.test.passed ? { background: 'var(--ok)', borderColor: 'var(--ok)', color: '#fff' } : sec.test.available ? { borderColor: 'var(--primary)', color: 'var(--primary)' } : undefined}><IconExam /></span>
+          <span className="grow stack" style={{ gap: 0 }}>
+            <b className="small">Bölmə testi</b>
+            <span className="tiny muted">
+              {sec.test.passed ? `Keçilib · ən yaxşı nəticə ${sec.test.bestPct}%`
+                : sec.test.available ? `${sec.test.questionCount} sual mənbə testlərindən · keçid 80%${sec.test.bestPct ? ` · ən yaxşı ${sec.test.bestPct}%` : ''}`
+                : 'Bölmənin dərsləri bitəndə açılır'}
+            </span>
+          </span>
+        </button>
+      )}
+    </div>
   );
 }

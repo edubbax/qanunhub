@@ -20,7 +20,7 @@ export type Route =
   | { name: 'welcome' } | { name: 'login' } | { name: 'register' } | { name: 'forgot' }
   | { name: 'reset'; token: string } | { name: 'verify'; token: string }
   | { name: 'onboarding' } | { name: 'home' } | { name: 'path'; topicId?: string }
-  | { name: 'session'; kind: SessionKind; lessonId?: string; topicId?: string; back?: Route }
+  | { name: 'session'; kind: SessionKind; lessonId?: string; topicId?: string; sectionId?: string; back?: Route }
   | { name: 'leaderboard' } | { name: 'weak' } | { name: 'profile' } | { name: 'premium' } | { name: 'admin' };
 
 const PATHS: Record<string, string> = {

@@ -3,13 +3,15 @@
 import type { AdminApi, AdminAudit, AdminMail, AdminUser, Api, ItemFilter, MetaDto } from './types';
 import { ApiError } from './types';
 import {
-  AppError, CATEGORIES, ContentIndex, EXAM_FORMATS, MemoryStore, SAMPLE_EMAIL_SUFFIX, SUBGROUPS, answer, complete, emptyMemoryData,
+  AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, ContentIndex, EXAM_FORMATS, MemoryStore, SAMPLE_EMAIL_SUFFIX, SUBGROUPS, answer, complete, emptyMemoryData,
   getHome, getLeaderboard, getMe, getPath, getWeakTopics, grantPremium, isAppError, newUser, periodStartKey, dayStart, randomId,
-  reportItem, startFinal, startLesson, startMock, startReview, startWeak, updateProfile,
+  reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
   type Card, type Category, type ContentBundle, type EngineCtx, type Item, type MemoryData, type SessionKind,
 } from '@qanunhub/core';
 
-const KEY = 'qanunhub-demo-v2';
+const KEY = 'qanunhub-demo-v3';
+const DEMO_EMAIL = 'demo@qanunhub.az';
+const DEMO_PASSWORD = 'demo-hesab-2026';
 
 interface DemoState {
   memory: MemoryData;
@@ -117,7 +119,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       const id = `sample-${i}`;
       if (!store.data.users[id]) {
         const u = newUser(id, `sample${i}${SAMPLE_EMAIL_SUFFIX}`, nick, now);
-        u.category = CATEGORIES[i % 4];
+        u.category = AVAILABLE_CATEGORIES[i % AVAILABLE_CATEGORIES.length];
         u.premiumUntil = now + 365 * 86400_000;
         u.emailVerified = true;
         store.data.users[id] = u;
@@ -145,7 +147,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
   await seedSamples();
 
   const meta: MetaDto = {
-    categories: CATEGORIES, subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS, contentVersion: base.version,
+    categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES, subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS, contentVersion: base.version,
     topics: base.topics.map((t) => ({ id: t.id, programNo: t.programNo, shortTitle: t.shortTitle, categories: t.categories, free: t.free })),
   };
 
@@ -292,7 +294,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
     },
   };
 
-  return {
+  const api: Api = {
     mode: 'demo',
     async me() {
       if (!state.current || !store.data.users[state.current]) return null;
@@ -354,6 +356,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
         case 'lesson': return startLesson(c, id, ref.lessonId ?? '');
         case 'review': return startReview(c, id);
         case 'weak': return startWeak(c, id, ref.topicId ?? '');
+        case 'section': return startSection(c, id, ref.sectionId ?? '');
         case 'final': return startFinal(c, id, ref.topicId ?? '');
         default: return startMock(c, id);
       }
@@ -379,6 +382,13 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
         u.role = on ? 'admin' : 'user';
         save();
       },
+      /** Signs in to a ready demo account with Premium, so every screen can be seen without registering. */
+      async quickStart() {
+        if (!state.accounts[DEMO_EMAIL]) await api.register(DEMO_EMAIL, DEMO_PASSWORD, 'demo.hesab');
+        await api.login(DEMO_EMAIL, DEMO_PASSWORD);
+        const u = store.data.users[currentId()];
+        if (!u.premiumUntil || u.premiumUntil < Date.now()) await run((c, id) => grantPremium(c, id, Date.now() + 365 * 86400_000));
+      },
       reset() {
         try {
           localStorage.removeItem(KEY);
@@ -390,4 +400,5 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       },
     },
   };
+  return api;
 }

@@ -49,14 +49,15 @@ export function Onboarding() {
           {meta.categories.map((c) => {
             const f = meta.formats[c];
             const topics = meta.topics.filter((t) => t.categories.includes(c)).length;
+            const soon = meta.comingSoonCategories.includes(c);
             return (
-              <button key={c} className={`choice ${category === c ? 'on' : ''}`} onClick={() => { setCategory(c); if (subgroup && !subgroup.startsWith(c)) setSubgroup(null); }} aria-pressed={category === c}>
+              <button key={c} className={`choice ${category === c ? 'on' : ''}`} disabled={soon} onClick={() => { setCategory(c); if (subgroup && !subgroup.startsWith(c)) setSubgroup(null); }} aria-pressed={category === c}>
                 <span className="code">{c}</span>
                 <span className="stack tight grow">
                   <b>{f.kindTitle}</b>
                   <span className="small muted">{CAT_TEXT[c]}</span>
                   <span className="row wrap">
-                    <span className="chip primary">{topics} mövzu</span>
+                    {soon ? <span className="chip xp">Tezliklə</span> : <span className="chip primary">{topics} mövzu</span>}
                     <span className="chip">{f.lawClosed} qapalı{f.lawOpen ? ` + ${f.lawOpen} açıq` : ''} sual</span>
                   </span>
                 </span>
@@ -104,7 +105,7 @@ export function Onboarding() {
             <div className="seg" role="group" aria-label="Gündəlik hədəf">
               {[10, 15, 20, 30].map((m) => <button key={m} type="button" className={dailyGoal === m ? 'on' : ''} onClick={() => setDailyGoal(m)}>{m} dəq</button>)}
             </div>
-            <span className="hint">Gündə 15 dəqiqə ilə BB proqramı təxminən 3, AB proqramı 5 ayda bitir.</span>
+            <span className="hint">Gündə 15 dəqiqə ilə BB proqramı təxminən 3, AC proqramı 5 ayda bitir.</span>
           </div>
           {error && <div className="banner bad" role="alert">{error}</div>}
           <div className="row">

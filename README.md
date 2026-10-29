@@ -1,6 +1,6 @@
 # QanunHub
 
-Dövlət qulluğu test imtahanının **«Qanunvericilik»** fənninə (AB, AC, BA, BB kateqoriyaları) Duolingo modelində hazırlıq: qısa dərslər, aralıqlı təkrar (SRS), canlar, XP, ardıcıl günlər, həftəlik/aylıq reytinq, mövzu final testləri və real formatda sınaq imtahanı. Abunə modeli: pulsuz plan (Konstitusiya mövzusu) + Premium.
+Dövlət qulluğu test imtahanının **«Qanunvericilik»** fənninə (AC, BA, BB kateqoriyaları; **AB tezliklə**) Duolingo modelində hazırlıq: alt mövzulara (bölmələrə) bölünmüş qısa dərslər, aralıqlı təkrar (SRS), canlar, XP, ardıcıl günlər, həftəlik/aylıq reytinq, bölmə testləri, mövzu final testləri və real formatda sınaq imtahanı. Abunə modeli: pulsuz plan (Konstitusiya mövzusu) + Premium.
 
 Bu repozitoriya işlək MVP-dir: istifadəçi tətbiqi, redaktor/admin paneli, server API, Postgres sxemi və PDF materiallardan məzmun yaradan pipeline. **Onlayn ödəniş hələ qoşulmayıb** (növbəti mərhələ, aşağıya bax).
 
@@ -62,7 +62,7 @@ npm run dev:web                  # Veb: http://localhost:5173 (/api serverə pro
 npm run build:demo               # apps/web/dist-demo/index.html
 ```
 
-Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir, hesablar və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
+Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir, hesablar və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Giriş səhifəsində «Demo hesabla bax (Premium)» bir kliklə hazır Premium hesaba daxil edir. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
 
 ### Testlər
 
@@ -99,7 +99,10 @@ npm run typecheck
 - **XP**: dərs 10 + ilk cəhddə hər düz cavab 1 (ən çox 8) + səhvsiz dərsə 5; 7 gün ərzində ikinci dəfə keçilən dərs yarım, üçüncü dəfə 0 XP (dərsdə ən azı 3 yeni sual varsa, tam XP); təkrar 5 + hər düz cavab 1. Reytinqə gündə ən çox 600 XP; çox sürətli cavablar (botvari) reytinqə sayılmır.
 - **Reytinq**: həftəlik və aylıq, ümumi və kateqoriya üzrə, Bakı vaxtı ilə. İştirak Premium + təsdiqlənmiş email ilə; pulsuz istifadəçi «Premium ilə neçənci olardın» görür.
 - **Rütbələr**: dövlət qulluğunun ixtisas dərəcələri (7-ci dərəcəli … Ali dərəcəli), final testi keçilmiş mövzuların faizi və XP ilə.
+- **İki sual hovuzu**: *formativ* suallar (`content/authored/`, redaksiyanın yazdığı) yalnız dərslərdə — hər dərsdə 2–4 qısa yoxlama, izahı qanundan sitatla. *Mənbə* sualları (test kitablarından) bölmə testlərində, final testində və sınaq imtahanında; formativ suallar yalnız mənbə sualı çatmadıqda boşluğu doldurur. Gündəlik təkrar hər ikisini əhatə edir.
+- **Bölmə testi**: bölmənin (alt mövzunun) bütün dərsləri bitəndə açılır, 10 sual, keçid 80%, nəticə yolda göstərilir (`topic_finals` cədvəlində `sec:<bölmə>` açarı ilə).
 - **Final testi**: 20 sual, keçid 80%, pulsuz planda 24 saatda bir cəhd. **Sınaq imtahanı**: kateqoriyanın formatında 40 tapşırıq, 50 dəqiqə.
+- **Kateqoriyalar**: AC, BA, BB seçilə bilər; AB onboardinqdə və profildə «Tezliklə» kimi görünür və server tərəfindən qəbul edilmir (`AVAILABLE_CATEGORIES`, `packages/core/src/types.ts`). AB materialı hazır olanda onu siyahıya əlavə etmək kifayətdir.
 
 ## Təhlükəsizlik
 
@@ -122,16 +125,31 @@ Mənbə qovluğu: `files.tsv` (`fayl-id<TAB>ölçü<TAB>başlıq`) və `pdf/<fay
 3. Proqramın 21 mövzusu üzrə dərslər qurur (≤5 maddə, ~2200 simvol), sualları maddə istinadı və mətn oxşarlığı ilə dərslərə bağlayır, eyni suala aid variantları bir «vahid»də birləşdirir.
 4. Keyfiyyət bayraqları qoyur. `no_key`, `key_conflict`, `dup_options`, `garbled` və s. olan suallar **qaralama** kimi qalır və hüquqşünas təsdiqləyənə qədər istifadəçiyə göstərilmir.
 
+5. `content/authored/*.json` fayllarındakı formativ sualları və bölmələri birləşdirir (`tools/content/authored.py`): hər sual dərsə bağlanır, variantlar sabit qaydada qarışdırılır, ID sualın mətnindən hesablanır.
+
+Formativ sual faylının formatı (düzgün variant `a` indeksi ilə; adətən 0 yazılır, qarışdırma pipeline-dadır):
+
+```json
+{"sections": [{"from": 1, "title": "Ümumi müddəalar"}, {"from": 6, "title": "..."}],
+ "questions": [{"l": 3, "q": "Sual", "o": ["düzgün", "səhv 1", "səhv 2", "səhv 3"], "a": 0, "r": "m. 5.2", "e": "Qanun: «…»"}]}
+```
+
+Yoxlama və baxış: `python3 tools/content/authored.py status` (hər mövzuda neçə dərsin ən azı 2 sualı var, xətalar), `python3 tools/content/authored.py show <mövzu> 1 10` (dərslərin qanun mətni).
+
 Nəticə: `content/build/report.md`. Sual və dərs ID-ləri sabitdir (fayl + sual nömrəsi), ona görə yenidən idxal istifadəçilərin təkrar tarixçəsini pozmur; redaktorların admin panelində etdiyi düzəlişlər idxalda saxlanılır (`--overwrite-edited` ilə üstünə yazılır).
 
 **Hüquqşünaslar üçün iş axını**: Admin paneli → Məzmun → «Bayraq» filtri. Hər sualda düzgün cavabı, izahı, istinadı redaktə edib statusu «Dərc olunub» etmək olar. İstifadəçi şikayətləri «Şikayətlər» bölməsinə düşür; təsdiqlənən şikayətə görə istifadəçi +20 XP alır.
 
 ### Hazırkı məzmun (2026-10-29)
 
-21 mövzu, 384 dərs, 1872 izah kartı, 2734 sual (2682 dərc olunub, 52 qaralama). Diqqət tələb edənlər:
+21 mövzu, 71 bölmə, 384 dərs, 1873 izah kartı, 3812 sual:
+- **1078 formativ sual** — AC/BA/BB proqramına düşən 368 dərsin hər birində ən azı 2 sual (Konstitusiya 150, Dövlət qulluğu 116, Əmək Məcəlləsi 107, İnzibati icraat 104, Kargüzarlıq 91, Dövlət sirri 75, Elektron imza 69, Mülki Məcəllə 51, Müraciətlər 47, Korrupsiya 44, İnformasiya 38, Rəmzlər 37, Etik davranış 32, Ombudsman 32, NHA 30, Dövlət dili 27, Məlumat azadlığı 15, Məhkəmələr 13). **Hüquqşünasların yoxlaması tövsiyə olunur** — hər sualda maddə istinadı və qanundan sitat var.
+- **2734 mənbə sualı** (2682 dərc olunub, 52 qaralama).
 
-- **Material yoxdur**: Təsnifat, Dövlət satınalmaları, Büdcə sistemi. Bu mövzular yolda «Material hazırlanır» kimi görünür.
-- **Sual azdır**: Mülki Məcəllə (33 dərs, 30 sual), Əmək Məcəlləsi (40 dərs, 29 sual), Dövlət sirri (26 dərs, 25 sual).
+Diqqət tələb edənlər:
+
+- **Material yoxdur**: Təsnifat, Dövlət satınalmaları, Büdcə sistemi. Bu mövzular yolda «Tezliklə» kimi görünür.
+- **Mənbə sualı azdır**: Mülki Məcəllə (30), Əmək Məcəlləsi (29), Dövlət sirri (25). Bu mövzuların bölmə testlərində formativ suallar da istifadə olunur; İnzibati icraat 4-cü, Əmək Məcəlləsi 4–5-ci bölmələrində mənbə sualı ümumiyyətlə yoxdur.
 - **Qaralamalar**: 33 sualın cavab açarı tapılmayıb (o cümlədən Kargüzarlıq «Test 2» faylı tam), 10 sualda fərqli fayllarda fərqli açar var.
 
 ## Növbəti mərhələ: ödəniş

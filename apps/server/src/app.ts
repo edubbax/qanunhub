@@ -10,8 +10,8 @@ import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { z } from 'zod';
 import type { Category, ContentBundle, EngineCtx, Period, Scope, UserRecord } from '@qanunhub/core';
 import {
-  AppError, CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
-  grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startReview, startWeak, updateProfile,
+  AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
+  grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
 } from '@qanunhub/core';
 import {
   SESSION_COOKIE, SESSION_DAYS, consumeToken, createSession, createUser, destroySession, issueToken, login, sessionUser, setPassword,
@@ -200,7 +200,8 @@ export function createApp(deps: AppDeps) {
   // ------------------------------------------------------------------ learner
 
   app.get('/api/meta', (c) => c.json({
-    categories: CATEGORIES, subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS,
+    categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES,
+    subgroups: SUBGROUPS, formats: EXAM_FORMATS, plans: PLANS,
     contentVersion: content.current.bundle.version,
     topics: content.current.topics.map((t) => ({ id: t.id, programNo: t.programNo, shortTitle: t.shortTitle, categories: t.categories, free: t.free })),
   }));
@@ -219,7 +220,7 @@ export function createApp(deps: AppDeps) {
   app.get('/api/path', async (c) => c.json(await run(c, (ctx, id) => getPath(ctx, id))));
 
   app.post('/api/sessions', async (c) => {
-    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'final', 'mock']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional() }));
+    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'section', 'final', 'mock']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional(), sectionId: z.string().max(80).optional() }));
     const u = requireUser(c);
     rateLimit(`session:${u.id}`, 60, 60 * 60_000, now());
     return c.json(await run(c, (ctx, id) => {
@@ -227,6 +228,7 @@ export function createApp(deps: AppDeps) {
         case 'lesson': return startLesson(ctx, id, b.lessonId ?? '');
         case 'review': return startReview(ctx, id);
         case 'weak': return startWeak(ctx, id, b.topicId ?? '');
+        case 'section': return startSection(ctx, id, b.sectionId ?? '');
         case 'final': return startFinal(ctx, id, b.topicId ?? '');
         default: return startMock(ctx, id);
       }

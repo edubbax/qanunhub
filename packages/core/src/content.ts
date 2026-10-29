@@ -1,12 +1,19 @@
 // In-memory index over a content bundle. Both the server and the browser demo build one at startup.
-import type { Card, Category, ContentBundle, Item, Lesson, Topic, Unit } from './types';
+import type { Card, Category, ContentBundle, Item, ItemPool, Lesson, Section, Topic, Unit } from './types';
+
+export function poolOf(x: { pool?: ItemPool }): ItemPool {
+  return x.pool ?? 'exam';
+}
 
 export class ContentIndex {
   readonly bundle: ContentBundle;
   readonly topics: Topic[];
   readonly topicById = new Map<string, Topic>();
+  readonly sectionById = new Map<string, Section>();
+  readonly sectionsByTopic = new Map<string, Section[]>();
   readonly lessonById = new Map<string, Lesson>();
   readonly lessonsByTopic = new Map<string, Lesson[]>();
+  readonly lessonsBySection = new Map<string, Lesson[]>();
   readonly cardsByLesson = new Map<string, Card[]>();
   readonly unitById = new Map<string, Unit>();
   readonly unitsByLesson = new Map<string, Unit[]>();
@@ -18,9 +25,22 @@ export class ContentIndex {
     this.bundle = bundle;
     this.topics = [...bundle.topics].sort((a, b) => a.order - b.order);
     for (const t of this.topics) this.topicById.set(t.id, t);
+    for (const s of [...(bundle.sections ?? [])].sort((a, b) => a.order - b.order)) {
+      this.sectionById.set(s.id, s);
+      push(this.sectionsByTopic, s.topicId, s);
+    }
     for (const l of [...bundle.lessons].sort((a, b) => a.order - b.order)) {
       this.lessonById.set(l.id, l);
       push(this.lessonsByTopic, l.topicId, l);
+      push(this.lessonsBySection, this.sectionIdOf(l), l);
+    }
+    // Bundles built before sections existed get one section per topic.
+    for (const [topicId, lessons] of this.lessonsByTopic) {
+      if (lessons.some((l) => !l.sectionId || !this.sectionById.has(l.sectionId))) {
+        const s: Section = { id: `${topicId}-s00`, topicId, order: 0, title: 'Dərslər' };
+        this.sectionById.set(s.id, s);
+        this.sectionsByTopic.set(topicId, [s, ...(this.sectionsByTopic.get(topicId) ?? [])]);
+      }
     }
     for (const c of [...bundle.cards].sort((a, b) => a.order - b.order)) push(this.cardsByLesson, c.lessonId, c);
     const published = bundle.items.filter((i) => i.status === 'published');
@@ -36,6 +56,10 @@ export class ContentIndex {
     }
   }
 
+  sectionIdOf(l: Lesson): string {
+    return l.sectionId && this.sectionById.has(l.sectionId) ? l.sectionId : `${l.topicId}-s00`;
+  }
+
   topicsFor(cat: Category): Topic[] {
     return this.topics.filter((t) => t.categories.includes(cat));
   }
@@ -44,16 +68,32 @@ export class ContentIndex {
     return (this.lessonsByTopic.get(topicId) ?? []).filter((l) => l.categories.includes(cat));
   }
 
-  unitsForLesson(lessonId: string): Unit[] {
-    return this.unitsByLesson.get(lessonId) ?? [];
+  /** Sections of a topic that have at least one lesson in the category. */
+  sectionsFor(topicId: string, cat: Category): Section[] {
+    return (this.sectionsByTopic.get(topicId) ?? []).filter((s) => this.sectionLessons(s.id, cat).length > 0);
   }
 
-  unitsForTopic(topicId: string, cat: Category): Unit[] {
-    return (this.unitsByTopic.get(topicId) ?? []).filter((u) => u.categories.includes(cat));
+  sectionLessons(sectionId: string, cat: Category): Lesson[] {
+    return (this.lessonsBySection.get(sectionId) ?? []).filter((l) => l.categories.includes(cat));
   }
 
-  unitsForCategory(cat: Category): Unit[] {
-    return this.topicsFor(cat).flatMap((t) => this.unitsForTopic(t.id, cat));
+  unitsForLesson(lessonId: string, pool?: ItemPool): Unit[] {
+    const all = this.unitsByLesson.get(lessonId) ?? [];
+    return pool ? all.filter((u) => poolOf(u) === pool) : all;
+  }
+
+  /** Questions a lesson asks: the editors' formative checks, or every unit of the lesson when it has none. */
+  lessonUnits(lessonId: string): Unit[] {
+    const formative = this.unitsForLesson(lessonId, 'formative');
+    return formative.length > 0 ? formative : this.unitsForLesson(lessonId);
+  }
+
+  unitsForTopic(topicId: string, cat: Category, pool?: ItemPool): Unit[] {
+    return (this.unitsByTopic.get(topicId) ?? []).filter((u) => u.categories.includes(cat) && (!pool || poolOf(u) === pool));
+  }
+
+  unitsForCategory(cat: Category, pool?: ItemPool): Unit[] {
+    return this.topicsFor(cat).flatMap((t) => this.unitsForTopic(t.id, cat, pool));
   }
 
   itemsForUnit(unitId: string): Item[] {

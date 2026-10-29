@@ -188,7 +188,10 @@ function ExamEdit({ onClose }: { onClose: () => void }) {
       <div className="field">
         <label htmlFor="pe-cat">Kateqoriya</label>
         <select id="pe-cat" className="input" value={category} onChange={(e) => { const c = e.target.value as Category; setCategory(c); if (subgroup && !subgroup.startsWith(c)) setSubgroup(null); }}>
-          {meta.categories.map((c) => <option key={c} value={c}>{c} · {meta.formats[c].kindTitle}</option>)}
+          {meta.categories.map((c) => {
+            const soon = meta.comingSoonCategories.includes(c);
+            return <option key={c} value={c} disabled={soon}>{c} · {meta.formats[c].kindTitle}{soon ? ' (tezliklə)' : ''}</option>;
+          })}
         </select>
         {changed && <span className="hint">Kateqoriyanı 30 gündə bir dəfə dəyişmək olar. Öyrəndiyin ortaq mövzular saxlanılır.</span>}
       </div>

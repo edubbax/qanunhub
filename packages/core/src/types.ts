@@ -2,11 +2,16 @@
 
 export type Category = 'AB' | 'AC' | 'BA' | 'BB';
 export const CATEGORIES: Category[] = ['AB', 'AC', 'BA', 'BB'];
+/** Categories with prepared material. The rest are listed as coming soon and cannot be chosen yet. */
+export const AVAILABLE_CATEGORIES: Category[] = ['AC', 'BA', 'BB'];
+export const COMING_SOON_CATEGORIES: Category[] = CATEGORIES.filter((c) => !AVAILABLE_CATEGORIES.includes(c));
 
 // ---------------------------------------------------------------- content
 
 export type ItemType = 'single' | 'multi';
 export type ItemStatus = 'draft' | 'review' | 'published' | 'flagged';
+/** exam = questions from the official sources (section tests, finals, mock exams); formative = editors' lesson checks. */
+export type ItemPool = 'exam' | 'formative';
 
 export interface Topic {
   id: string;
@@ -20,9 +25,18 @@ export interface Topic {
   note?: string;              // scope note shown to the learner, e.g. "BA: yalnız I–II fəsil"
 }
 
+/** A sub-topic of a topic: a run of consecutive lessons that ends with a section test. */
+export interface Section {
+  id: string;
+  topicId: string;
+  order: number;
+  title: string;
+}
+
 export interface Lesson {
   id: string;
   topicId: string;
+  sectionId?: string;
   order: number;
   title: string;
   refs: string[];             // article refs, e.g. ["m.1", "m.2"]
@@ -48,6 +62,7 @@ export interface Unit {
   lessonId: string | null;    // null = topic pool (final tests, mock exams, reviews)
   categories: Category[];
   importance: 1 | 2 | 3;
+  pool?: ItemPool;            // missing = exam
 }
 
 export interface ItemSource {
@@ -72,12 +87,14 @@ export interface Item {
   source?: ItemSource;
   status: ItemStatus;
   flags: string[];            // QA flags from the content pipeline
+  pool?: ItemPool;            // missing = exam
 }
 
 export interface ContentBundle {
   version: string;
   generatedAt: string;
   topics: Topic[];
+  sections?: Section[];
   lessons: Lesson[];
   cards: Card[];
   units: Unit[];
@@ -170,7 +187,7 @@ export interface ReviewLog {
   at: number;
 }
 
-export type SessionKind = 'lesson' | 'review' | 'weak' | 'final' | 'mock';
+export type SessionKind = 'lesson' | 'review' | 'weak' | 'section' | 'final' | 'mock';
 
 export interface SessionQuestion {
   qid: number;
@@ -188,6 +205,7 @@ export interface Session {
   kind: SessionKind;
   lessonId: string | null;
   topicId: string | null;
+  sectionId?: string | null;
   createdAt: number;
   expiresAt: number;
   timeLimitSec: number | null;

@@ -1,4 +1,4 @@
-// Lesson / review / final / mock player: cards → questions with feedback (or exam mode) → result.
+// Lesson / review / section test / final / mock player: cards → questions with feedback (or exam mode) → result.
 import type { AnswerDto, CardDto, CompleteDto, HeartsDto, QuestionDto, ReviewEntryDto, SessionDto } from '@qanunhub/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Route } from '../app';
@@ -28,7 +28,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
 
   useEffect(() => {
     let alive = true;
-    api.startSession(route.kind, { lessonId: route.lessonId, topicId: route.topicId }).then(
+    api.startSession(route.kind, { lessonId: route.lessonId, topicId: route.topicId, sectionId: route.sectionId }).then(
       (s) => {
         if (!alive) return;
         setSession(s);
@@ -377,7 +377,7 @@ const LB_NOTES: Partial<Record<CompleteDto['leaderboard'], string>> = {
 
 function Result({ r, back }: { r: CompleteDto; back: Route }) {
   const { nav } = useApp();
-  const exam = r.kind === 'final' || r.kind === 'mock';
+  const exam = r.kind === 'final' || r.kind === 'mock' || r.kind === 'section';
   const mistakes = r.review.filter((x) => !x.correct);
   const title = !r.completed ? 'Dərs dayandı' : exam ? (r.passed ? 'Keçdin!' : 'Hələ keçid balı yoxdur') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
   return (
