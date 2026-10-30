@@ -1,0 +1,694 @@
+{
+ "_about": "Reviewed corrections of source questions: answer = canonical option indexes, expect = text of the correct option (guards against stale fixes), draft = take out of use, replace = [old, new] text pairs.",
+ "konstitusiya-0e3efc-229": {
+  "answer": [
+   2
+  ],
+  "publish": true,
+  "note": "C düzgündür: istefa ərizəsi Konstitusiya Məhkəməsinə verilir (m. 104)"
+ },
+ "konstitusiya-0e3efc-230": {
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "note": "A, B, C hamısı m. 104.III-ə uyğundur"
+ },
+ "konstitusiya-0e3efc-244": {
+  "options": [
+   "Referendum təyin edir.",
+   "Qanunları imzalayır və dərc edir.",
+   "Vətəndaşlıq məsələlərini həll edir.",
+   "Konstitusiya qanunlarını qəbul edir."
+  ],
+  "answer": [
+   3
+  ],
+  "note": "Mənbədə D variantı A ilə eyni idi (referendum təyin edilməsi); Konstitusiya qanunlarını Milli Məclis qəbul edir (m. 94-95)"
+ },
+ "konstitusiya-0e3efc-305": {
+  "replace": [
+   [
+    "qanunlarına uyğunluğu",
+    "qanunlarına"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-18": {
+  "answer": [
+   3
+  ],
+  "expect": "1,2,3,4",
+  "note": "Konstitusiyanın qəbulu/dəyişdirilməsi və sərhədlərin dəyişdirilməsi də referendumla həll edilir (m. 3.II), ona görə tam cavab 1,2,3,4-dür"
+ },
+ "konstitusiya-0e3efc-378": {
+  "options": [
+   "qanunla",
+   "Konstitusiya ilə",
+   "Konstitusiya qanunu ilə",
+   "fərmanla"
+  ],
+  "expect": "Konstitusiya qanunu ilə"
+ },
+ "konstitusiya-b61376-57": {
+  "options": [
+   "Konstitusiya ilə müəyyən olunmuş qaydada",
+   "Qanunla müəyyən olunmuş hallarda",
+   "Məhkəmənin qərarı olduqda",
+   "Heç bir halda"
+  ],
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "note": "Mənbədə A və C eyni idi; m. 25.IV"
+ },
+ "konstitusiya-b61376-65": {
+  "options": [
+   "1,2",
+   "1,3",
+   "2,3",
+   "1,2,3"
+  ],
+  "expect": "2,3"
+ },
+ "konstitusiya-b61376-67": {
+  "draft": true,
+  "note": "Dörd variantın hamısı Konstitusiyada var (C m. 13.III-dür), yanlış variant yoxdur"
+ },
+ "konstitusiya-b61376-79": {
+  "options": [
+   "Öz razılığı olduqda",
+   "Qanunla müəyyən olunmuş hallarda",
+   "Konstitusiya qanunu ilə müəyyən olunmuş hallarda",
+   "Öz razılığı olduqda, habelə qanunla nəzərdə tutulmuş hallarda"
+  ],
+  "answer": [
+   3
+  ],
+  "note": "m. 32.III: həm razılıq, həm qanunla nəzərdə tutulmuş hallar; mənbədə tək A idi"
+ },
+ "konstitusiya-b61376-118": {
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "note": "m. 46.II: heç bir şey ləyaqətin alçaldılmasına əsas ola bilməz"
+ },
+ "konstitusiya-b61376-119": {
+  "statements": [
+   "Heç kəsə işgəncə və əzab verilə bilməz.",
+   "Heç kəs insan ləyaqətini alçaldan rəftara və ya cəzaya məruz qala bilməz.",
+   "Özünün könüllü razılığı olmadan heç kəsin üzərində tibbi, elmi və başqa təcrübələr aparıla bilməz."
+  ],
+  "options": [
+   "Şəxsi toxunulmazlıq hüququ",
+   "Şərəf və ləyaqətin müdafiəsi hüququ",
+   "Birləşmək hüququ",
+   "Heç biri"
+  ],
+  "expect": "Şərəf və ləyaqətin müdafiəsi hüququ"
+ },
+ "konstitusiya-b61376-123": {
+  "answer": [
+   2
+  ],
+  "publish": true,
+  "note": "m. 50.III-də hüququna təminat verilir, azadlığına yox"
+ },
+ "konstitusiya-b61376-137": {
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "note": "m. 56: seçkilərdə iştirak hüququ məhdudlaşdırılmır, III hissə yalnız seçilmək hüququnu məhdudlaşdırır"
+ },
+ "konstitusiya-b61376-138": {
+  "answer": [
+   1
+  ],
+  "publish": true,
+  "note": "m. 56.III"
+ },
+ "konstitusiya-b61376-174": {
+  "replace": [
+   [
+    "Hər bir kəsin",
+    "Hər kəsin"
+   ]
+  ],
+  "expect": "Hər kəsin"
+ },
+ "konstitusiya-b61376-176": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq nə müqəddəsdir?"
+ },
+ "konstitusiya-b61376-194": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisi nə zaman səlahiyyətli sayılır?"
+ },
+ "konstitusiya-b61376-195": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisi .......... sessiyalarına yığılır:"
+ },
+ "konstitusiya-b61376-215": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisinin iş qaydasını hansı orqan müəyyən edir?"
+ },
+ "konstitusiya-b61376-202": {
+  "options": [
+   "Yalnız açıq",
+   "Yalnız qapalı",
+   "Açıq, müstəsna hallarda qapalı",
+   "Heç biri"
+  ],
+  "answer": [
+   2
+  ],
+  "note": "Mənbədə D variantı C-yə yapışmışdı"
+ },
+ "konstitusiya-b61376-217": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisi öz səlahiyyətlərinə aid məsələlər üzrə hansı aktları qəbul edir?"
+ },
+ "konstitusiya-b61376-218": {
+  "replace": [
+   [
+    "Konstitusiya ilə nəzərdə tutulmuş",
+    "Konstitusiya ilə nəzərdə tutulmuş qaydada"
+   ],
+   [
+    "Konstittusiya qanunu",
+    "Konstitusiya qanunu"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-222": {
+  "replace": [
+   [
+    "uyğun olaraq Respublikasının hərbi",
+    "uyğun olaraq Azərbaycan Respublikasının hərbi"
+   ],
+   [
+    "qərarlarının icrası Azərbaycan",
+    "qərarlarının icrası"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-230": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisi ümumi qaydalar müəyyən edərkən nə qəbul edir?"
+ },
+ "konstitusiya-b61376-232": {
+  "replace": [
+   [
+    "proqramlarını təsdiqi",
+    "proqramlarının təsdiqi"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-233": {
+  "replace": [
+   [
+    "Kabinetinin üzvlərini vəzifəyə",
+    "Kabinetinin üzvlərinin vəzifəyə"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-234": {
+  "replace": [
+   [
+    "aktlarını ləğv edilməsi",
+    "aktlarının ləğv edilməsi"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-235": {
+  "replace": [
+   [
+    "hakimlərini vəzifəyə təyin edilməsi",
+    "hakimlərinin vəzifəyə təyin edilməsi"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-258": {
+  "replace": [
+   [
+    "təqdim etmək hüquq",
+    "təqdim etmək hüququ"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-259": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Milli Məclisində qanunvericilik təşəbbüsü hüququ kimlərə məxsusdur?",
+  "statements": [
+   "Azərbaycan Respublikası Milli Məclisinin deputatlarına",
+   "Azərbaycan Respublikasının Prezidentinə",
+   "Azərbaycan Respublikasının Nazirlər Kabinetinə",
+   "Azərbaycan Respublikasının Ali Məhkəməsinə",
+   "Naxçıvan Muxtar Respublikasının Ali Məhkəməsinə",
+   "Azərbaycan Respublikasının seçki hüququ olan 40 min vətəndaşına",
+   "Azərbaycan Respublikasının Prokurorluğuna",
+   "Naxçıvan Muxtar Respublikasının Ali Məclisinə"
+  ]
+ },
+ "konstitusiya-b61376-269": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq kim Azərbaycan Respublikasının Prezidenti seçilə bilər?"
+ },
+ "konstitusiya-b61376-270": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Prezidenti necə seçilir?"
+ },
+ "konstitusiya-b61376-320": {
+  "options": [
+   "1,2,3,4,6",
+   "2,3,4,6",
+   "1,3,4,6",
+   "1,2,3,4,5,6"
+  ],
+  "answer": [
+   2
+  ],
+  "publish": true,
+  "note": "Mənbədə A və D eyni idi; qanunları şərh etmək KM-in, amnistiya MM-in səlahiyyətidir"
+ },
+ "konstitusiya-b61376-327": {
+  "draft": true,
+  "note": "Konstitusiyanın hazırkı mətnində Prezidentin təcili qanunları imzalama müddəti yoxdur (m. 110: 56 gün)"
+ },
+ "konstitusiya-b61376-341": {
+  "statements": [
+   "Azərbaycan Respublikası dövlət büdcəsinin layihəsini hazırlayıb Azərbaycan Respublikasının Prezidentinə təqdim edir.",
+   "Ali hərbi və ali xüsusi rütbələr verir.",
+   "Azərbaycan Respublikası dövlət büdcəsinin icrasını təmin edir.",
+   "Maliyyə-kredit və pul siyasətinin həyata keçirilməsini təmin edir.",
+   "Siyasi sığınacaq verilməsi məsələlərini həll edir."
+  ]
+ },
+ "konstitusiya-b61376-365": {
+  "answer": [
+   1
+  ],
+  "publish": true,
+  "note": "m. 127.VII: məhkəmə icraatının istənilən mərhələsində müdafiə hüququ təmin olunur"
+ },
+ "konstitusiya-b61376-375": {
+  "replace": [
+   [
+    "Məhkəməsi Azərbaycan Respublikası Prezidenti",
+    "Azərbaycan Respublikası Prezidenti"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-377": {
+  "options": [
+   "Azərbaycan Respublikasının qüvvəyə minməmiş dövlətlərarası müqavilələrinin Azərbaycan Respublikası Konstitusiyasına uyğunluğunu müəyyən etmək",
+   "Azərbaycan Respublikasının hökumətlərarası müqavilələrinin Azərbaycan Respublikası Konstitusiyasına, qanunlarına və Prezidentin fərmanlarına uyğunluğunu müəyyən etmək",
+   "Naxçıvan Muxtar Respublikası Konstitusiyasının, qanunlarının, Naxçıvan Muxtar Respublikası Ali Məclisinin qərarlarının və Nazirlər Kabinetinin qərarlarının Azərbaycan Respublikası Konstitusiyasına uyğunluğunu müəyyən etmək",
+   "Naxçıvan Muxtar Respublikası qanunlarının, Naxçıvan Muxtar Respublikası Nazirlər Kabinetinin qərarlarının Azərbaycan Respublikası qanunlarına uyğunluğunu; Naxçıvan Muxtar Respublikası Nazirlər Kabinetinin qərarlarının Azərbaycan Respublikası Prezidentinin fərmanlarına və Azərbaycan Respublikası Nazirlər Kabinetinin qərarlarına uyğunluğunu müəyyən etmək"
+  ],
+  "answer": [
+   1
+  ],
+  "note": "Mənbədə iki sual bir-birinə qarışmışdı; hökumətlərarası müqavilələr yalnız Konstitusiyaya və qanunlara uyğunluq baxımından yoxlanılır (m. 130.III.6)"
+ },
+ "konstitusiya-b61376-396": {
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "note": "A, B, C m. 133-ə uyğundur"
+ },
+ "konstitusiya-b61376-420": {
+  "draft": true,
+  "note": "Mənbədə sual və variantlar qonşu sualla qarışıb"
+ },
+ "konstitusiya-b61376-421": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının qanunvericilik sisteminin əsası nədir?"
+ },
+ "konstitusiya-b61376-426": {
+  "replace": [
+   [
+    "olunmasınA)məcbur",
+    "olunmasına) məcbur"
+   ],
+   [
+    "olunmamasınA)uyğun olaraq",
+    "olunmamasına) görə"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-428": {
+  "replace": [
+   [
+    "Kabinetinin qərarları Azərbaycan Respublikasının tərəfdar",
+    "Kabinetinin qərarları ilə Azərbaycan Respublikasının tərəfdar"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-466": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?",
+  "note": "Bütün variantlar Konstitusiyada qadağa kimi verilib; sual məhz “qadağandır” sözünün işləndiyi müddəanı soruşur"
+ },
+ "konstitusiya-b61376-467": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?",
+  "replace": [
+   [
+    "Qanunla müəyyən edilmiş hallar istisna olmaqla, heç kəs onun xəbəri olmadan və ya etirazına baxmadan izlənilə bilməz, video və foto çəkilişinə, səs yazısına və digər bu cür hərəkətlərə məruz qoyulması",
+    "Qanunla müəyyən edilmiş hallar istisna olmaqla, şəxsin onun xəbəri olmadan və ya etirazına baxmayaraq izlənilməsi, video və foto çəkilişinə, səs yazısına və digər bu cür hərəkətlərə məruz qoyulması"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-468": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?",
+  "replace": [
+   [
+    "iradəsi ziddinə heç kəs mənzilə daxil olunması",
+    "iradəsi ziddinə mənzilə daxil olunması"
+   ],
+   [
+    "hərbi qulluqçular və mülki şəxslər tətil edilməsi",
+    "hərbi qulluqçuların və mülki şəxslərin tətil etməsi"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-469": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?"
+ },
+ "konstitusiya-b61376-470": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?",
+  "replace": [
+   [
+    "Azərbaycan Respublikasından qovula və ya",
+    "Azərbaycan Respublikasından qovulması və ya"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-471": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?"
+ },
+ "konstitusiya-b61376-472": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?",
+  "replace": [
+   [
+    "təminat verilir. Kütləvi informasiya",
+    "Kütləvi informasiya"
+   ]
+  ]
+ },
+ "konstitusiya-b61376-473": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasında hansı hal barədə məhz “qadağandır” ifadəsi işlədilir?"
+ },
+ "konstitusiya-b61376-460": {
+  "answer": [
+   0
+  ],
+  "publish": true,
+  "note": "Keçid müddəaları, 11-ci bənd: bir il müddətində"
+ },
+ "konstitusiya-b61376-476": {
+  "answer": [
+   2
+  ],
+  "publish": true,
+  "note": "m. 144.II"
+ },
+ "konstitusiya-b61376-465": {
+  "statements": [
+   "Təhsil almaq hüququ",
+   "Cəmiyyətin və dövlətin siyasi həyatında maneəsiz iştirak etmək hüququ",
+   "Dövlətə qarşı qiyama və ya dövlət çevrilişinə müstəqil müqavimət göstərmək hüququ",
+   "Təkbaşına və ya başqaları ilə birlikdə tətil etmək hüququ",
+   "Dövlətin idarə olunmasında iştirak etmək hüququ",
+   "Dövlət orqanlarına seçmək və seçilmək, habelə referendumda iştirak etmək hüququ",
+   "Mülkiyyət hüququ",
+   "Dövlət orqanlarına şəxsən müraciət etmək, habelə fərdi və kollektiv yazılı müraciətlər göndərmək hüququ",
+   "Dövlət orqanlarının ona münasibətdə özbaşınalığı istisna edən vicdanlı davranışına hüququ"
+  ]
+ },
+ "konstitusiya-b61376-475": {
+  "statements": [
+   "Yerli iqtisadi inkişaf proqramlarının qəbul və icra edilməsi",
+   "Yerli vergilərin və ödənişlərin müəyyən edilməsi",
+   "Yerli ədalət mühakiməsinin həyata keçirilməsi",
+   "Yerli icra hakimiyyəti orqanlarının səlahiyyətlərinin müəyyən edilməsi",
+   "Yerli büdcənin və onun icrası haqqında hesabatların təsdiq edilməsi"
+  ]
+ },
+ "konstitusiya-b61376-486": {
+  "stem": "Azərbaycan Respublikası Milli Məclisi hansı məsələlərə dair qanunlar qəbul etmir?",
+  "statements": [
+   "Azərbaycan Respublikası Prezidentinin təqdimatına əsasən Azərbaycan Respublikası Baş nazirinin vəzifəyə təyin edilməsinə razılıq verilməsi",
+   "Amnistiya",
+   "Konstitusiyada nəzərdə tutulmuş hallarda Azərbaycan Respublikası Prezidentinin fərmanlarının təsdiqi",
+   "Azərbaycan Respublikası Prezidentinin təqdimatına əsasən Azərbaycan Respublikası dövlət büdcəsinin təsdiq edilməsi və onun icrasına nəzarət",
+   "Dövlətlərarası və Azərbaycan Respublikası qanunlarından fərqli qaydalar nəzərdə tutan hökumətlərarası müqavilələrin təsdiq və ləğv edilməsi"
+  ]
+ },
+ "konstitusiya-bb196a-4": {
+  "answer": [
+   3
+  ],
+  "publish": true,
+  "replace": [
+   [
+    "fərman qəbul edlr",
+    "fərman qəbul edir"
+   ],
+   [
+    "İnzibati qaydada",
+    "inzibati qaydada"
+   ],
+   [
+    "azadıqlarının",
+    "azadlıqlarının"
+   ]
+  ],
+  "note": "m. 71.III"
+ },
+ "konstitusiya-bb196a-5": {
+  "stem": "Göstərilənlərdən hansı Konstitusiyanın “Dövlətçiliyin əsasları” fəslinə aiddir?"
+ },
+ "konstitusiya-bb196a-6": {
+  "stem": "Uyğunluğu müəyyən edin: a) növbədənkənar Prezident seçkiləri; b) seçkilərin nəticələri açıqlandıqdan sonra andiçmə müddəti; c) Milli Məclisin Baş nazir vəzifəsinə namizədlik haqqında qərar qəbul etməsi.",
+  "statements": [
+   "3 gün",
+   "60 gün",
+   "1 həftə"
+  ],
+  "options": [
+   "1-a, 2-b, 3-c",
+   "1-b, 2-a, 3-c",
+   "1-c, 2-b, 3-a",
+   "1-b, 2-c, 3-a"
+  ],
+  "answer": [
+   1
+  ],
+  "note": "Mənbədə variantlar qarışmışdı; m. 103, 105, 118"
+ },
+ "konstitusiya-bb196a-7": {
+  "answer": [
+   0
+  ],
+  "expect": "1,2,3,4",
+  "note": "Konstitusiyaya dəyişikliklər və sərhədlərin dəyişdirilməsi də referendumla həll edilir (m. 3.II)"
+ },
+ "konstitusiya-bb196a-21": {
+  "draft": true,
+  "note": "Dörd variantın hamısı doğrudur (m. 7.I: demokratik, hüquqi, dünyəvi, unitar)"
+ },
+ "konstitusiya-bb196a-33": {
+  "stem": "Sosial inkişaf və dövlətlə bağlı fikirlərdən hansı doğrudur?",
+  "note": "Açar yeganə doğru variantdır, sual yanlış variantı soruşurdu"
+ },
+ "konstitusiya-b61376-45": {
+  "replace": [
+   [
+    "Uşaqlara qayğı göstərmək və onları tərbiyə etmək valideynlərin həm hüququ həm də borcudur. Bu hüququn və borcun yerinə yetirilməsinə dövlət nəzarət edir.",
+    "Uşaqların qayğısına qalmaq və onları tərbiyə etmək valideynlərin borcudur. Bu borcun yerinə yetirilməsinə dövlət nəzarət edir."
+   ]
+  ],
+  "note": "[2] m. 17.II-nin dəqiq mətninə gətirildi"
+ },
+ "konstitusiya-bb196a-59": {
+  "stem": "Hansı fikir “Bərabərlik hüququ” maddəsinə aid deyil?",
+  "note": "C doğru fikirdir, amma m. 34-ə (Nikah hüququ) aiddir"
+ },
+ "konstitusiya-bb196a-75": {
+  "stem": "AR Konstitusiyasına əsasən uyğunluğu müəyyən edin: a) Uşaqları onların həyatına, sağlamlığına və ya mənəviyyatına təhlükə törədə bilən fəaliyyətə cəlb etmək qadağandır; b) 18 yaşına çatmış əmək qabiliyyətli uşaqlar əmək qabiliyyəti olmayan valideynlərini saxlamağa borcludurlar; c) Uşaqlara qayğı göstərmək, onları tərbiyə etmək valideynlərin həm hüququ, həm də borcudur; d) Fərdi və kollektiv əmək mübahisələri qanunla müəyyənləşdirilmiş qaydada həll edilir; e) Heç kəs zorla işlədilə bilməz.",
+  "statements": [
+   "Əmək hüququ",
+   "Nikah hüququ",
+   "Ailə, uşaqlar və dövlət"
+  ],
+  "options": [
+   "1-a; 2-b, e; 3-c",
+   "1-b, d; 2-c, e; 3-a",
+   "1-e; 2-b, c; 3-a",
+   "1-d, e; 2-b, c; 3-a"
+  ],
+  "answer": [
+   2
+  ],
+  "note": "Mənbədə uyğunluq variantları cavab variantları ilə qarışmışdı; d) m. 36-ya (Tətil hüququ) aiddir"
+ },
+ "konstitusiya-bb196a-78": {
+  "stem": "AR Konstitusiyasına əsasən uyğunluğu müəyyən edin: a) AR vətəndaşı heç bir halda AR-dan qovula və ya xarici dövlətə verilə bilməz; b) Heç bir halda heç kəs din, vicdan, fikir və əqidəsini açıqlamağa məcbur edilə bilməz və bunlara görə təqsirləndirilə bilməz; c) Hər kəs qanunla qadağan olunmayan hərəkətləri edə bilər və heç kəs qanunla nəzərdə tutulmayan hərəkətləri etməyə məcbur edilə bilməz; d) Hər kəsin qanunla qadağan olunmayan üsul və vasitələrlə öz hüquqlarını və azadlıqlarını müdafiə etmək hüququ vardır; e) AR vətəndaşı AR vətəndaşlığından (onun qanunla müəyyən edilmiş itirilmə halları istisna olmaqla) məhrum edilə bilməz.",
+  "statements": [
+   "İnsan və vətəndaş hüquqlarının və azadlıqlarının təminatı",
+   "Vətəndaşlıq hüququnun təminatı",
+   "İnsan və vətəndaş hüquqlarının və azadlıqlarının müdafiəsi"
+  ],
+  "options": [
+   "1-a; 2-b, c; 3-d, e",
+   "1-b, c; 2-a, e; 3-d",
+   "1-b; 2-c, e; 3-a, d",
+   "1-c; 2-a, d; 3-b, e"
+  ],
+  "answer": [
+   1
+  ],
+  "note": "Mənbədə uyğunluq variantları cavab variantları ilə qarışmışdı"
+ },
+ "konstitusiya-bb196a-102": {
+  "draft": true,
+  "note": "B variantı mənaca doğrudur (m. 19.II: “mənsubdur”), fərq yalnız sinonim sözdədir"
+ },
+ "konstitusiya-bb196a-106": {
+  "stem": "Sıranı məntiqi davam etdirin: şəxsi toxunulmazlıq hüququ, mənzil toxunulmazlığı hüququ, ...",
+  "statements": []
+ },
+ "konstitusiya-bb196a-133": {
+  "replace": [
+   [
+    "Həyata keçirilməsi məhdudlaşdırılan məhdudlaşdırıldığı andan məlumat verilir. hüquq və azadlıqlar haqqında əhaliyə",
+    "Həyata keçirilməsi məhdudlaşdırılan hüquq və azadlıqlar haqqında əhaliyə məhdudlaşdırıldığı andan məlumat verilir."
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-143": {
+  "draft": true,
+  "note": "Konstitusiyada cavab yoxdur; sualda mənbənin reklam qeydi var"
+ },
+ "konstitusiya-bb196a-146": {
+  "draft": true,
+  "note": "Sual qeyri-dəqiqdir: Milli Məclis sədr müavinlərini seçir (m. 91), aktın qəbul qaydası soruşulur"
+ },
+ "konstitusiya-bb196a-159": {
+  "stem": "Milli Məclisin növbəti sessiyasının çağırılmasını kim tələb edə bilər?",
+  "note": "Növbəti sessiyalar Konstitusiyaya görə öz-özünə çağırılır; Prezident və 42 deputat yalnız növbədənkənar sessiyanı tələb edir"
+ },
+ "konstitusiya-bb196a-180": {
+  "stem": "AR Konstitusiyasına uyğun olaraq səlahiyyət müddəti ərzində AR Milli Məclisi deputatının nəyi toxunulmazdır?"
+ },
+ "konstitusiya-bb196a-184": {
+  "replace": [
+   [
+    "seçir, və komissiyalar təşkil edir, hesablama palatası yaradır",
+    "seçir, komitələr və komissiyalar təşkil edir, Hesablama Palatası yaradır"
+   ]
+  ],
+  "note": "Açar variantdan “komitələr” sözü düşmüşdü (m. 91)"
+ },
+ "konstitusiya-bb196a-189": {
+  "replace": [
+   [
+    "dövlət təminat;",
+    "dövlət təminatı;"
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-196": {
+  "replace": [
+   [
+    "AR Konstitusiyasına uyğun AR Milli",
+    "AR Konstitusiyasına uyğun olaraq AR Milli"
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-199": {
+  "options": [
+   "AR Konstitusiyasının 94-cü maddəsinin (AR Milli Məclisinin müəyyən etdiyi ümumi qaydalar) I hissəsinə Konstitusiya qanunu ilə əlavələr edilə bilər.",
+   "AR Konstitusiyasının 94-cü maddəsinin (AR Milli Məclisinin müəyyən etdiyi ümumi qaydalar) II hissəsinə Konstitusiya qanunu ilə əlavələr edilə bilər.",
+   "AR Konstitusiyasının 94-cü maddəsinin (AR Milli Məclisinin müəyyən etdiyi ümumi qaydalar) bütün hissələrinə Konstitusiya qanunu ilə əlavələr edilə bilər.",
+   "AR Konstitusiyasının 94-cü maddəsinin (AR Milli Məclisinin müəyyən etdiyi ümumi qaydalar) III hissəsinə Konstitusiya qanunu ilə əlavələr edilə bilər."
+  ],
+  "answer": [
+   0
+  ],
+  "publish": true,
+  "note": "Mənbədə A və D eyni idi; m. 94.III"
+ },
+ "konstitusiya-bb196a-204": {
+  "options": [
+   "1,3,7,8",
+   "2,4,6,7",
+   "2,3,6,8",
+   "2,3,4,6,8"
+  ],
+  "answer": [
+   2
+  ],
+  "publish": true,
+  "note": "Mənbədə A və D eyni idi"
+ },
+ "konstitusiya-bb196a-213": {
+  "replace": [
+   [
+    "hakimlərin vəzifədən kənarlaşdırılması azadlıqların dövlət təminatı",
+    "hakimlərin vəzifədən kənarlaşdırılması"
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-220": {
+  "stem": "Hansı fikir Konstitusiyaya uyğun deyil?"
+ },
+ "konstitusiya-bb196a-221": {
+  "replace": [
+   [
+    "AR-nın seçki hüququ olan 40 min seçki hüququ olan",
+    "AR-ın seçki hüququ olan 40 min"
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-227": {
+  "replace": [
+   [
+    "AR Milli Məclisinin eyni çağırışı bir il ərzində iki dəfə AR Konstitusiya Məhkəməsinin",
+    "AR Milli Məclisi AR Konstitusiya Məhkəməsinin"
+   ],
+   [
+    "97ci maddə-sində",
+    "97-ci maddəsində"
+   ]
+  ]
+ },
+ "konstitusiya-bb196a-238": {
+  "stem": "AR Nazirlər Kabinetinin üzvlərinə qoyulan məhdudiyyətləri müəyyən edin.",
+  "replace": [
+   [
+    "pedaqoji və yaradıcılıq fəaliyyətindən başqa heç bir sahibkarlıq",
+    "elmi, pedaqoji və yaradıcılıq fəaliyyətindən başqa heç bir sahibkarlıq"
+   ]
+  ],
+  "note": "2, 4, 6 namizədlərə tələblərdir (m. 121), 1, 3, 5 üzvlərə məhdudiyyətlərdir (m. 122)"
+ },
+ "konstitusiya-bb196a-265": {
+  "answer": [
+   3
+  ],
+  "expect": "1-2-4-3-6-7-5",
+  "note": "m. 151: beynəlxalq müqavilələr Konstitusiya və referendum aktlarından sonra, qanunlardan əvvəl gəlir"
+ },
+ "konstitusiya-bb196a-295": {
+  "replace": [
+   [
+    "ikinci səsvermədən sonra da bu konstitusiyada",
+    "yalnız ikinci səsvermədən sonra bu konstitusiyada"
+   ]
+  ],
+  "note": "m. 156: həm birinci, həm də ikinci səsvermədən sonra təqdim olunur; “da” ilə bənd doğru olurdu"
+ },
+ "konstitusiya-bb196a-296": {
+  "options": [
+   "1,2,3,4,5,6",
+   "2,3,4,5",
+   "1,2,3,4,5",
+   "1,2,5,6"
+  ]
+ }
+}

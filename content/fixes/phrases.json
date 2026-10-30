@@ -1,0 +1,581 @@
+{
+  "_about": "Exact text replacements applied to every question stem, option and statement (typos of the source files).",
+  "replace": [
+    [
+      "oluunub",
+      "olunub"
+    ],
+    [
+      "tətəfindən",
+      "tərəfindən"
+    ],
+    [
+      "Aşağadıkalardan",
+      "Aşağıdakılardan"
+    ],
+    [
+      "“vətənə müdafiə”",
+      "“Vətəni müdafiə”"
+    ],
+    [
+      "Mili Məclis",
+      "Milli Məclis"
+    ],
+    [
+      "hüququ akt",
+      "hüquqi akt"
+    ],
+    [
+      "razılğı",
+      "razılığı"
+    ],
+    [
+      "dərc edilidiyi",
+      "dərc edildiyi"
+    ],
+    [
+      "dördüncüilinin",
+      "dördüncü ilinin"
+    ],
+    [
+      "vitseprezidenti",
+      "vitse-prezidenti"
+    ],
+    [
+      " ərzində tutduğu və tutduğu və tutduğu və",
+      " ərzində"
+    ],
+    [
+      "Prezidenti vəzifəsini səlahiyyətlərini icra etməyə",
+      "Prezidenti vəzifəsini tutduğu və səlahiyyətlərini icra etməyə"
+    ],
+    [
+      "qanunla zidd təsir",
+      "qanuna zidd təsir"
+    ],
+    [
+      "zərurətini mövcudluğunu",
+      "zərurətinin mövcudluğunu"
+    ],
+    [
+      "aparıldığı _______ dili",
+      "aparıldığı dili"
+    ],
+    [
+      "heçbiri",
+      "heç biri"
+    ],
+    [
+      "Azərbaycan Respublikasının müqavilələri hansı aktlara uyğun olamlıdır? (Tam və doğru cavabı müəyyən edin) qüvvəyə minməmiş dövlətlərarası",
+      "Azərbaycan Respublikasının qüvvəyə minməmiş dövlətlərarası müqavilələri hansı aktlara uyğun olmalıdır? (Tam və doğru cavabı müəyyən edin)"
+    ],
+    [
+      "olamlıdır",
+      "olmalıdır"
+    ],
+    [
+      "tövsiyyələr",
+      "tövsiyələr"
+    ],
+    [
+      "hakimlərini hansı qaydada vəzifəyə təyin edilir",
+      "hakimləri hansı qaydada vəzifəyə təyin edilir"
+    ],
+    [
+      "hakimlərini hansı qaydada təyin edilirlər",
+      "hakimləri hansı qaydada təyin edilir"
+    ],
+    [
+      "Baş prokurorunu hansı qaydada",
+      "Baş prokuroru hansı qaydada"
+    ],
+    [
+      "(tam və dolğun cavabı seçin)",
+      "(Tam və dolğun cavabı seçin)"
+    ],
+    [
+      "Milli Məclisinin razılığı fövqəladə",
+      "Milli Məclisinin razılığı ilə fövqəladə"
+    ],
+    [
+      "Azərbaycan Respublikasının referendumla həll edilə bilər? Konstitusiyasına uyğun olaraq hansı məsələlər",
+      "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq hansı məsələlər referendumla həll edilə bilər?"
+    ],
+    [
+      "Azərbaycan Respublikasının Konstitusiyasına Konstitusiya qanunları nə vaxt qüvvəyə minir? əlavələr haqqında",
+      "Azərbaycan Respublikasının Konstitusiyasına əlavələr haqqında Konstitusiya qanunları nə vaxt qüvvəyə minir?"
+    ],
+    [
+      "Konstiusiya",
+      "Konstitusiya"
+    ],
+    [
+      "Konstiyusiya",
+      "Konstitusiya"
+    ],
+    [
+      "Konstitutsiyası",
+      "Konstitusiyası"
+    ],
+    [
+      "tərkibini hansı qaydada təsdiq olunur",
+      "tərkibi hansı qaydada təsdiq olunur"
+    ],
+    [
+      "büdcəsinin təsdiq edir",
+      "büdcəsini təsdiq edir"
+    ],
+    [
+      "proqramlarının təsdiq edir",
+      "proqramlarını təsdiq edir"
+    ],
+    [
+      "başçılarını hansı qaydada vəzifəyə təyin edilir",
+      "başçıları hansı qaydada vəzifəyə təyin edilir"
+    ],
+    [
+      "maddəsinə ilə bağlı",
+      "maddəsi ilə bağlı"
+    ],
+    [
+      "hökümətlərarası",
+      "hökumətlərarası"
+    ],
+    [
+      "mü -qavilələr",
+      "müqavilələr"
+    ],
+    [
+      "məxusdur",
+      "məxsusdur"
+    ],
+    [
+      " KEÇİD MÜDDƏALARI",
+      ""
+    ],
+    [
+      " “Konstitusiya – 400 Cavablar”",
+      ""
+    ],
+    [
+      "1995-cil il",
+      "1995-ci il"
+    ],
+    [
+      "aslı olmayaraq",
+      "asılı olmayaraq"
+    ],
+    [
+      "dostkuq",
+      "dostluq"
+    ],
+    [
+      "Respublikasıının",
+      "Respublikasının"
+    ],
+    [
+      "(və ya)icra",
+      "(və ya) icra"
+    ],
+    [
+      "Sərxəd",
+      "Sərhəd"
+    ],
+    [
+      "fərnmanı",
+      "fərmanı"
+    ],
+    [
+      "əmin amanlıq",
+      "əmin-amanlıq"
+    ],
+    [
+      "əminamanlıq",
+      "əmin-amanlıq"
+    ],
+    [
+      "Respublikasının Ali Məclisin sədri",
+      "Respublikasının Ali Məclisinin sədri"
+    ],
+    [
+      "İnsan və vətəndaşları hüquq",
+      "İnsan və vətəndaş hüquq"
+    ],
+    [
+      "səviyəsini",
+      "səviyyəsini"
+    ],
+    [
+      "Qeyri rəsmi",
+      "Qeyri-rəsmi"
+    ],
+    [
+      "Mimimum",
+      "Minimum"
+    ],
+    [
+      "Konstitusiaya",
+      "Konstitusiya"
+    ],
+    [
+      "texologiyalarından",
+      "texnologiyalarından"
+    ],
+    [
+      "Nigah hüququ",
+      "Nikah hüququ"
+    ],
+    [
+      "birlikə",
+      "birlikdə"
+    ],
+    [
+      "əvəlcədən",
+      "əvvəlcədən"
+    ],
+    [
+      "borcudur.18",
+      "borcudur. 18"
+    ],
+    [
+      "cəmiyyəti və dövlətin",
+      "cəmiyyətin və dövlətin"
+    ],
+    [
+      "Azərbaycan Respublikasının hər bir vətəndaşlarından",
+      "Azərbaycan Respublikasının vətəndaşlarından"
+    ],
+    [
+      "izibati",
+      "inzibati"
+    ],
+    [
+      "müəyyən olmuş qaydada",
+      "müəyyən olunmuş qaydada"
+    ],
+    [
+      "Ağır cinayə törədibsə",
+      "Ağır cinayət törədibsə"
+    ],
+    [
+      "cinayət, hakimiyyətdən sui-istifadə nəticəsində zərər çəkmiş şəxsin hüquqları qorunur: habelə",
+      "cinayət, habelə hakimiyyətdən sui-istifadə nəticəsində zərər çəkmiş şəxsin hüquqları nə ilə qorunur?"
+    ],
+    [
+      "uyğun olaraq . Kimlər",
+      "uyğun olaraq kimlər"
+    ],
+    [
+      "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq ",
+      "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq "
+    ],
+    [
+      "Kostitusiya",
+      "Konstitusiya"
+    ],
+    [
+      "120 iş günündən gündən",
+      "120 iş günündən"
+    ],
+    [
+      "uyğun olaraq hansı halda Azərbaycan Respublikası Milli Məclisinin sessiyasının qapalı iclası hansı halda",
+      "uyğun olaraq Azərbaycan Respublikası Milli Məclisinin sessiyasının qapalı iclası hansı halda"
+    ],
+    [
+      "deputatları səlahiyyətləri itirilir",
+      "deputatlarının səlahiyyətləri itirilir"
+    ],
+    [
+      "Konstitusiya Məkəməsinin",
+      "Konstitusiya Məhkəməsinin"
+    ],
+    [
+      "keçrildiyi",
+      "keçirildiyi"
+    ],
+    [
+      "Komisiyyasının",
+      "Komissiyasının"
+    ],
+    [
+      "Mübarizə üzrə Komissiyanın",
+      "Mübarizə üzrə Komissiyasının"
+    ],
+    [
+      "Apelyasiya",
+      "Apellyasiya"
+    ],
+    [
+      "dördüncübazar",
+      "dördüncü bazar"
+    ],
+    [
+      "keçilməsinin",
+      "keçirilməsinin"
+    ],
+    [
+      "nöbəti",
+      "növbəti"
+    ],
+    [
+      "Konstitusiya məhkəməsi",
+      "Konstitusiya Məhkəməsi"
+    ],
+    [
+      "Respublikası Milli Məclisin sədri",
+      "Respublikası Milli Məclisinin sədri"
+    ],
+    [
+      "Respublikasının Milli Məclisin sədri",
+      "Respublikasının Milli Məclisinin sədri"
+    ],
+    [
+      "Ali Məhkəməsini sədri",
+      "Ali Məhkəməsinin sədri"
+    ],
+    [
+      "Konstitisiya",
+      "Konstitusiya"
+    ],
+    [
+      "imzladığı",
+      "imzaladığı"
+    ],
+    [
+      "3 iş gün ərzində",
+      "3 iş günü ərzində"
+    ],
+    [
+      "elan etməyi barədə",
+      "elan edilməsi barədə"
+    ],
+    [
+      " müəyyən etdiyi gün tutduğu və",
+      " müəyyən etdiyi gün"
+    ],
+    [
+      "Prezidentiinin",
+      "Prezidentinin"
+    ],
+    [
+      "ola bilməzlər,.",
+      "ola bilməzlər."
+    ],
+    [
+      "ödənişi fəaliyyətlə",
+      "ödənişli fəaliyyətlə"
+    ],
+    [
+      "yaradacılıq",
+      "yaradıcılıq"
+    ],
+    [
+      "Respublikasının Milli Məclis (83",
+      "Respublikasının Milli Məclisi (83"
+    ],
+    [
+      "elmi pedoqoji",
+      "elmi, pedaqoji"
+    ],
+    [
+      "komersiya",
+      "kommersiya"
+    ],
+    [
+      "sahibarlıq",
+      "sahibkarlıq"
+    ],
+    [
+      "olamaq",
+      "olmaq"
+    ],
+    [
+      "hansı qayada",
+      "hansı qaydada"
+    ],
+    [
+      "hakimlərininin",
+      "hakimlərinin"
+    ],
+    [
+      "bölgüsüilə",
+      "bölgüsü ilə"
+    ],
+    [
+      "Konstitusiya Məhəməsi",
+      "Konstitusiya Məhkəməsi"
+    ],
+    [
+      "Konstitusiyasın uyğun",
+      "Konstitusiyasına uyğun"
+    ],
+    [
+      "edilməyədə",
+      "edilməyə də"
+    ],
+    [
+      "Nazirlər Kabinetin qərarında",
+      "Nazirlər Kabinetinin qərarında"
+    ],
+    [
+      "hakimlərini vəzifəyə kim təmin edir?",
+      "hakimlərini vəzifəyə kim təyin edir?"
+    ],
+    [
+      "Prezidentininin",
+      "Prezidentinin"
+    ],
+    [
+      "Hesaplama",
+      "Hesablama"
+    ],
+    [
+      "Konstitusiya qanun ilə",
+      "Konstitusiya qanunu ilə"
+    ],
+    [
+      "aid oaln",
+      "aid olan"
+    ],
+    [
+      "vətəndaşalara",
+      "vətəndaşlara"
+    ],
+    [
+      "Milli Məclisin azı 63",
+      "Milli Məclisinin azı 63"
+    ],
+    [
+      "hüquq və azadlıqlarının əminatı",
+      "hüquq və azadlıqlarının təminatı"
+    ],
+    [
+      "1997-cil il",
+      "1997-ci il"
+    ],
+    [
+      "Respublikasının Konstitusiyaya əsasən",
+      "Respublikasının Konstitusiyasına əsasən"
+    ],
+    [
+      "Konstitsuiya",
+      "Konstitusiya"
+    ],
+    [
+      "Qanunlara və Milli məclisin qəbul etdiyi qərarlarda",
+      "Qanunlarda və Milli Məclisin qəbul etdiyi qərarlarda"
+    ],
+    [
+      "əsasllarının",
+      "əsaslarının"
+    ],
+    [
+      "Dövlətlər arası müqavilələrin",
+      "Dövlətlərarası müqavilələrin"
+    ],
+    [
+      "Baş Proukrorun",
+      "Baş prokurorun"
+    ],
+    [
+      "qərar lahiyələrində",
+      "qərar layihələrində"
+    ],
+    [
+      "seçkpilərdə",
+      "seçkilərdə"
+    ],
+    [
+      "Azəbaycan",
+      "Azərbaycan"
+    ],
+    [
+      "Aministiya və əf etmə",
+      "Amnistiya və əfv etmə"
+    ],
+    [
+      "iqtisadiyatına",
+      "iqtisadiyyatına"
+    ],
+    [
+      "Məhkəmə youl ilə",
+      "Məhkəmə yolu ilə"
+    ],
+    [
+      "tərəfidən",
+      "tərəfindən"
+    ],
+    [
+      "məhdudlaşdırıla bilinməz",
+      "məhdudlaşdırıla bilməz"
+    ],
+    [
+      "orqanlarınından",
+      "orqanlarından"
+    ],
+    [
+      "hakiməri",
+      "hakimləri"
+    ],
+    [
+      "hər bir kəsin borcudur",
+      "hər kəsin borcudur"
+    ],
+    [
+      "qadağanlardan",
+      "qadağalardan"
+    ],
+    [
+      "1,47",
+      "1,4,7"
+    ],
+    [
+      "məsələlər dair",
+      "məsələlərə dair"
+    ],
+    [
+      "təqdimatı il AR",
+      "təqdimatı ilə AR"
+    ],
+    [
+      "Milli Məclisinin deputatlar ",
+      "Milli Məclisinin deputatları "
+    ],
+    [
+      "qaydada qaydada",
+      "qaydada"
+    ],
+    [
+      "kənarlaşdırması",
+      "kənarlaşdırılması"
+    ],
+    [
+      "AR Mərkəzi Bankının idarə Heyətinin",
+      "AR Mərkəzi Bankının İdarə Heyətinin"
+    ],
+    [
+      "deputanının",
+      "deputatının"
+    ],
+    [
+      "Komsisiyyasınm",
+      "Komissiyasının"
+    ],
+    [
+      "daimi vaşayan",
+      "daimi yaşayan"
+    ],
+    [
+      "Konstutsiya",
+      "Konstitusiya"
+    ],
+    [
+      "Appellyasiya",
+      "Apellyasiya"
+    ],
+    [
+      "AR Ali Məhkəməsin,",
+      "AR Ali Məhkəməsinin,"
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+ "_about": "Card text replacements: card id -> [[old, new], ...].",
+ "konstitusiya-015-c5": [
+  [
+   "Hərbi qulluqçuların, Hakimlərin, Dövlət məmurlarının, Din xadimlərinin, Məhkəmənin qanuni qüvvəyə minmiş hökmü ilə azadlıqdan Məhrum",
+   "Hərbi qulluqçuların, hakimlərin, dövlət məmurlarının, din xadimlərinin, məhkəmənin qanuni qüvvəyə minmiş hökmü ilə azadlıqdan məhrum"
+  ]
+ ],
+ "konstitusiya-022-c4": [
+  [
+   "II. AR Məclisinin hər çağırışının",
+   "II. AR Milli Məclisinin hər çağırışının"
+  ]
+ ],
+ "konstitusiya-005-c3": [
+  [
+   " Dövlətin himayəsində olanlar: Nikah və ailə, Valideynləri və ya qəyyumları olmayan, valideyn qayğısından məhrum olan uşaqlar. Konstitusiyanın 34-cü maddəsinə əsasən “Uşaqlara qayğı göstərmək və onları tərbiyə etmək valideynlərin həm hüququ, həm borcudur.",
+   ""
+  ]
+ ],
+ "konstitusiya-038-c3": [
+  [
+   "Maddə tələblər 1 2 2 . Azərbaycan Respublikası Nazirlər Kabinetinin üzvlərinə aid AR Baş naziri",
+   "\nMaddə 122. Azərbaycan Respublikası Nazirlər Kabinetinin üzvlərinə aid tələblər\nAR Baş naziri"
+  ]
+ ]
+}
