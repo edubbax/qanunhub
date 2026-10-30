@@ -690,5 +690,226 @@
    "1,2,3,4,5",
    "1,2,5,6"
   ]
+ },
+ "dovlet-qullugu-c0655e-45": {
+  "answer": [
+   1
+  ],
+  "expect": "Birinci təsnifat və ikinci təsnifat.",
+  "note": "m. 16.2.2–16.2.3: 3-cü dərəcə dövlət müşaviri birinci və ikinci təsnifat üzrə verilir; ali təsnifatda yoxdur"
+ },
+ "dovlet-qullugu-c0655e-51": {
+  "replace": [
+   [
+    "Mal olduğu",
+    "Malik olduğu"
+   ]
+  ]
+ },
+ "dovlet-qullugu-c0655e-87": {
+  "replace": [
+   [
+    "Yalnız ümumi müsahibə yolu ilə.",
+    "Yalnız test imtahanı yolu ilə."
+   ]
+  ],
+  "note": "B variantı açarla demək olar eyni idi"
+ },
+ "dovlet-qullugu-c0655e-99": {
+  "replace": [
+   [
+    "1 il sonra. xidməti fəaliyyətinin",
+    "1 il sonra."
+   ]
+  ]
+ },
+ "dovlet-qullugu-c0655e-110": {
+  "answer": [
+   1
+  ],
+  "expect": "1 ay.",
+  "note": "m. 33: ərizəni verdiyi gündən 1 ay ərzində"
+ },
+ "dovlet-qullugu-c0655e-132": {
+  "replace": [
+   [
+    "bacarığı. xidməti fəaliyyətinin",
+    "bacarığı."
+   ]
+  ]
+ },
+ "dovlet-qullugu-c0655e-138": {
+  "stem": "Dövlət qulluqçusunun dövlət qulluğunda olma müddətinin uzadılması hansı şərtlə mümkündür?",
+  "options": [
+   "Dövlət qulluqçusunun razılığı əsasında.",
+   "Yalnız Dövlət Qulluğunu İdarəetmə Şurasının qərarı ilə.",
+   "Bilavasitə rəhbərin təklifi ilə, dövlət qulluqçusunun razılığı tələb olunmadan.",
+   "Yalnız məhkəmənin qərarı ilə."
+  ],
+  "answer": [
+   0
+  ],
+  "note": "m. 32-1.7-də yalnız razılıq tələb olunur; “yazılı ərizə” qanunda yoxdur"
+ },
+ "dovlet-qullugu-c0655e-160": {
+  "draft": true,
+  "note": "Cavab variantları mənasızdır: sertifikatın bitməsi m. 33.1.5-in özüdür"
+ },
+ "dovlet-qullugu-c0655e-176": {
+  "draft": true,
+  "note": "Qanunda qiymət ilə tədbir arasında uyğunluq verilmir (m. 30-1.12)"
+ },
+ "dovlet-qullugu-c0655e-186": {
+  "draft": true,
+  "note": "Hüquqa “xitam verilməsi” anlayışı qanunda yoxdur, sual qeyri-müəyyəndir"
+ },
+ "dovlet-qullugu-c0655e-199": {
+  "draft": true,
+  "note": "Məhdudiyyətin məqsədi qanunda göstərilmir"
+ },
+ "dovlet-qullugu-c0655e-165": {
+  "draft": true,
+  "note": "Qanun ixtisas dərəcəsi əlavəsini konkret amillə əlaqələndirmir"
+ },
+ "karguzarliq-919e39-8": {
+  "answer": [
+   1
+  ],
+  "expect": "hamısı",
+  "note": "Təlimat, bənd 7.1–7.4: dörd əsasın hamısı sadalanır"
+ },
+ "karguzarliq-919e39-46": {
+  "stem": "Kargüzarlıq xidməti tərəfindən yoxlama zamanı aşkar olunmuş nöqsanlar nəticəsində sənədlər kimə qaytarılır?"
+ },
+ "karguzarliq-919e39-47": {
+  "replace": [
+   [
+    "1,3,5 nöqsanlar",
+    "1,3,5"
+   ]
+  ]
+ },
+ "karguzarliq-919e39-51": {
+  "answer": [
+   3
+  ],
+  "expect": "kargüzarlıq xidmətinin",
+  "note": "Təlimat, bənd 4.3: icra müddətinə nəzarət kargüzarlıq xidmətinin əsas vəzifəsidir"
+ },
+ "karguzarliq-919e39-84": {
+  "options": [
+   "qüvvədə olan normativ hüquqi aktların tələbləri;",
+   "təşkilat rəhbərinin konkret tapşırıqları;",
+   "təşkilatın aparatının işini hüquqi baxımdan tənzimləmək zərurətinin yaranması;",
+   "təşkilat tərəfindən onun üzərinə düşən vəzifələrin icra edilməsi üçün, səlahiyyətləri daxilində cari təşkilati-sərəncamverici və ya inzibati-təsərrüfat fəaliyyətinin həyata keçirilməsi."
+  ],
+  "expect": "təşkilat rəhbərinin konkret tapşırıqları;"
+ },
+ "karguzarliq-919e39-89": {
+  "draft": true,
+  "note": "Dörd rekvizitin hamısı blankda çap edilir (bənd 11); variant A yalnız il səhvi ilə fərqlənir"
+ },
+ "karguzarliq-919e39-111": {
+  "replace": [
+   [
+    "bir birindən asılı olaraq",
+    "müstəqil olaraq"
+   ]
+  ],
+  "note": "Açar variant qanun mətninə uyğunlaşdırıldı (OCR “müstəqil”i “bir birindən asılı” etmişdi)"
+ },
+ "karguzarliq-919e39-178": {
+  "answer": [
+   2
+  ],
+  "expect": "Əmri hazırlayarkən icraçı onu struktur bölmələrinə və tabelikdə olan təşkilatlara göndərmək zərurətini və əmrin tirajını müəyyən edir.",
+  "note": "Təlimat: zərurəti və tirajı icraçı müəyyən edir"
+ },
+ "karguzarliq-919e39-186": {
+  "replace": [
+   [
+    "Protokol təşkilat rəhbəri iclasın katibi",
+    "Protokol təşkilat rəhbəri və iclasın katibi"
+   ]
+  ]
+ },
+ "karguzarliq-919e39-189": {
+  "stem": "Arayışların və məlumat vərəqələrinin hazırlanması və tərtib edilməsinə aid deyil:"
+ },
+ "karguzarliq-919e39-198": {
+  "stem": "Teleqramlar barədə hansı fikir doğrudur?",
+  "replace": [
+   [
+    "Teleqramlar iki nüsxə çap olunur və icraçı onlara viza verir. İmzalanandan sonra teleqramlar göndərilmək üçün kargüzarlıq xidmətinə verilir.",
+    "Teleqramlar bir nüsxə çap olunur və icraçı onlara viza vermir. İmzalanandan sonra teleqramlar göndərilmək üçün arxivə verilir."
+   ]
+  ],
+  "answer": [
+   0
+  ],
+  "note": "Mənbədə açar telefonoqram mətni idi; A və D teleqram üçün doğru idi, D yanlış variantə çevrildi"
+ },
+ "karguzarliq-919e39-199": {
+  "answer": [
+   2
+  ],
+  "expect": "Telefonoqramlardan ölkə, şəhər, rayon daxilində telefonla məlumat vermək üçün istifadə edilir.",
+  "note": "Təlimat, bənd 85"
+ },
+ "karguzarliq-919e39-200": {
+  "answer": [
+   3
+  ],
+  "expect": "Teleqram mətninin əvvəlində (imzadan əlavə) çıxış nömrəsi qoyulur.",
+  "replace": [
+   [
+    "Telefonoqram verilərkən aşağıdakılar göstərilir: kimin ünvanına verilir,",
+    "Telefonoqram verilərkən kimin ünvanına verildiyi göstərilir."
+   ]
+  ],
+  "note": "Çıxış nömrəsi mətnin axırında qoyulur; C qanuna uyğundur"
+ },
+ "karguzarliq-919e39-201": {
+  "answer": [
+   2
+  ],
+  "expect": "Sənədlərin təşkilatda hərəkəti, onlar təşkilata daxil olduğu və ya yaradıldığı andan icra edildiyi və ya göndərildiyi anadək sənədlərin dövriyyəsini təşkil edir.",
+  "note": "Təlimatın mətni C variantıdır"
+ },
+ "karguzarliq-919e39-205": {
+  "replace": [
+   [
+    "məhv etməkdən ibarətdir. 206 “Kargüzarlığın aparılmasına dair Təlimat” a əsasən hansı zərflər açılmır? a) Təşkilata ünvanlanan korrespondensiya b) Şəxsi korrespondensiya c) Təşkilatın rəhbərinə ünvanlanan korrespondensiya d) Bütün zərflər açılır",
+    "məhv etməkdən ibarətdir."
+   ]
+  ]
+ },
+ "karguzarliq-919e39-222": {
+  "replace": [
+   [
+    "qeydə alnımaq",
+    "qeydə alınmaq"
+   ],
+   [
+    "4 Daxili sənədlər",
+    "Daxili sənədlər"
+   ]
+  ]
+ },
+ "karguzarliq-919e39-228": {
+  "replace": [
+   [
+    "işdə maraqlı şəxslərin xahişi ilə Təşkilat rəhbərliyinin göstərişi ilə icrasının nəticəsinin məruzə edilməsi nəzərdə tutulan digər sənədlər də nəzarətə götürülə bilər.",
+    "İşdə maraqlı şəxslərin xahişi ilə"
+   ]
+  ]
+ },
+ "karguzarliq-919e39-234": {
+  "replace": [
+   [
+    "yalnız icarçı",
+    "yalnız icraçı"
+   ]
+  ]
  }
 }
