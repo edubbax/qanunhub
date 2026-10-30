@@ -140,7 +140,7 @@ Formativ sual faylının formatı (düzgün variant `a` indeksi ilə; adətən 0
 
 Yoxlama və baxış: `python3 tools/content/authored.py status` (hər mövzuda neçə dərsin ən azı 2 sualı var, xətalar), `python3 tools/content/authored.py show <mövzu> 1 10` (dərslərin qanun mətni).
 
-6. Mətnləri təmizləyir və yoxlanmış düzəlişləri tətbiq edir (`tools/content/polish.py`): parçalanmış sözlər və OCR səhvləri, dırnaq və boşluqlar, sütun bölgüsündən qırılmış suallar, variantlara yapışmış səhifə başlıqları və nömrələri, sual sözü düşmüş suallar («… aid deyil?» → «… hansı aid deyil?»), qanun kartlarında maddə başlıqları. Sonra `content/fixes/` fayllarını tətbiq edir:
+6. Mətnləri təmizləyir və yoxlanmış düzəlişləri tətbiq edir (`tools/content/polish.py`): parçalanmış sözlər və OCR səhvləri, dırnaq və boşluqlar, sütun bölgüsündən qırılmış suallar, variantlara yapışmış səhifə başlıqları və nömrələri, sual sözü düşmüş suallar («… aid deyil?» → «… hansı aid deyil?»), qanun kartlarında maddə başlıqları və bir kartda iki maddə olanda «(davamı)» kartlarının adı. Sual-cavab fayllarında iki sətrə bölünmüş suallar bir yerə yığılır (`parse_qa.py`); bərpa oluna bilməyən kartlar buraxılır. Sonra `content/fixes/` fayllarını tətbiq edir:
    - `items.json` — sual üzrə: `answer` (yeni açar), `expect` (açarın gözlənilən mətni, qanunla yoxlanılıb), `stem`/`options`/`statements`/`explanation`, `replace`, `publish`/`draft`, `note`. Düzəliş eyni vahiddəki variantlara da ötürülür.
    - `cards.json` — kart üzrə `[köhnə, yeni]` cütləri (`>>` ilə başlayan köhnə mətn kartı oradan sonuna qədər kəsir).
    - `phrases.json` — bütün suallarda dəqiq mətn əvəzləmələri (yazı səhvləri).
@@ -154,8 +154,8 @@ Nəticə: `content/build/report.md`. Sual və dərs ID-ləri sabitdir (fayl + su
 
 ### Hazırkı məzmun (2026-10-30)
 
-21 mövzu, 71 bölmə, 384 dərs, 1873 izah kartı, 3812 sual:
-- **1078 formativ sual** — AC/BA/BB proqramına düşən 368 dərsin hər birində ən azı 2 sual, hər birində maddə istinadı və qanundan sitat.
+21 mövzu, 71 bölmə, 384 dərs, 1867 izah kartı (1245 qanun maddəsi, 611 sual-cavab, 11 qeyd), 3812 sual:
+- **1078 formativ sual** — AC/BA/BB proqramına düşən 368 dərsin hər birində ən azı 2 sual; hər birinin izahında maddə istinadı var, 835-ində qanundan sitat, qalanlarında qısa izah. İzahı yalnız istinaddan ibarət olan 339 sualın sitatı pipeline-da maddənin mətnindən avtomatik götürülür və sualla uyğunluğu yoxlanılır.
 - **2734 mənbə sualı** — 2682 dərc olunub, 52 qaralama.
 
 **Məzmunun yoxlanması.** Bütün mənbə suallarının cavab açarları qanun mətni ilə tutuşdurulub (Konstitusiya sual-sual, digər mövzular `check.py` ilə). Nəticə `content/fixes/`-dədir: 184 sual üzrə düzəliş — 38 cavab açarı dəyişdirilib, 31 düzəlişdə açarın mətni qanunla təsdiqlənib (`expect`), 145 sualın mətni bərpa edilib (qırılmış və ya qarışmış suallar, variantlar, müddəalar), 17 sual qeyri-müəyyən və ya yoxlanıla bilmədiyi üçün qaralamaya çıxarılıb, 15 qaralama yoxlanıb dərc olunub; 252 yazı səhvi əvəzləməsi, 21 kart düzəlişi.

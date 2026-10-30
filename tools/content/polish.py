@@ -259,7 +259,19 @@ def strip_tail_junk(t: str) -> str:
     return re.sub(r'(?<=\d)\s+\d$', '', t) if re.fullmatch(r'[\d\s.,]+', t) else PAGE_NO.sub('', t)
 
 
-CAP_SPLIT = re.compile(r'(?<![\w])([ÖÜ]) (?=[a-zəöüğçşı]{2})')
+CAP_SPLIT = re.compile(r'(?<![\w])([ÖÜ]) (?=[a-zəöüğçşı])')
+# The source font also breaks words right after ö/ü: 'Dö vlət', 'mü hafizə', 'həqiqəti ü zə', 'Gömrü k'.
+UMLAUT_SPLIT = re.compile(r'(?<![\w])([A-Za-zƏəÖöÜüĞğÇçŞşİı]*[öüÖÜ]) ([a-zəöüğçşı]+)')
+
+
+def join_umlaut_splits(text: str, vocab: Counter) -> str:
+    def rep(m: re.Match) -> str:
+        a, b = m.group(1), m.group(2)
+        joined = low(a + b)
+        if vocab[joined] >= 3 and vocab[joined] >= min(vocab[low(a)], vocab[low(b)]):
+            return a + b
+        return m.group(0)
+    return UMLAUT_SPLIT.sub(rep, text)
 QWORD = re.compile(r'\b(hansı\w*|nə\w*|neçə\w*|necə\w*|kim\w*|hara\w*|niyə)\b', re.I)
 PREDICATE = re.compile(r'\s(aid deyil(?:dir)?|aiddir|doğru deyil(?:dir)?|yanlışdır|səhvdir|daxildir|daxil deyil)\?$')
 
@@ -322,6 +334,127 @@ def fix_law_layout(cards: list) -> None:
         c['body'] = c['body'][m.end():].lstrip()
 
 
+INLINE_ARTICLE = re.compile(r'\n(?=Maddə \d+(?:-\d+)?\.)')
+
+
+def _article_no(title: str) -> str | None:
+    m = re.match(r'Maddə (\d+(?:-\d+)?)\.', title or '')
+    return m.group(1) if m else None
+
+
+def fix_continuation_titles(cards: list) -> None:
+    """A law card can end with the start of the next article ('...\\nMaddə 127. ...'); the cards that continue it must
+    be titled after that article, not after the one the first card started with."""
+    by_lesson: dict = {}
+    for c in cards:
+        if c['kind'] == 'law':
+            by_lesson.setdefault(c['lessonId'], []).append(c)
+    for cs in by_lesson.values():
+        current = None
+        for c in sorted(cs, key=lambda x: x['order']):
+            title = c.get('title') or ''
+            if title.endswith('(davamı)') and current and _article_no(title) != _article_no(current):
+                c['title'] = f'{current} (davamı)'
+            elif title and not title.endswith('(davamı)'):
+                current = title
+            heads = re.findall(r'(?:^|\n)(Maddə \d+(?:-\d+)?\.[^\n]*)', c['body'])
+            if heads:
+                current = heads[-1].strip()
+
+
+def _stems(text: str) -> set:
+    return {low(w)[:5] for w in re.findall(r'[A-Za-zƏəÖöÜüĞğÇçŞşİı]{5,}', text)}
+
+
+def _excerpt(text: str, probe: str, limit: int = 320) -> str:
+    """The clause itself if short, else the sentence that shares most words with the question, with its neighbours."""
+    text = text.strip()
+    if len(text) <= limit:
+        return text
+    parts = re.split(r'(?<=[.;])\s+', text)
+    want = _stems(probe)
+    best = max(range(len(parts)), key=lambda k: (len(_stems(parts[k]) & want), -k))
+    lo = hi = best
+    while True:
+        grown = False
+        if hi + 1 < len(parts) and len(' '.join(parts[lo:hi + 2])) <= limit:
+            hi += 1
+            grown = True
+        if lo > 0 and len(' '.join(parts[lo - 1:hi + 1])) <= limit:
+            lo -= 1
+            grown = True
+        if not grown:
+            break
+    out = ' '.join(parts[lo:hi + 1])
+    if len(out) > limit:
+        out = out[:limit].rsplit(' ', 1)[0]
+        hi = -1
+    return ('… ' if lo > 0 else '') + out + (' …' if hi != len(parts) - 1 else '')
+
+
+def clause_quote(article: str, ref: str) -> str | None:
+    """The text of one clause of an article: '3.0.3', '13.2' (with its sub-clauses), '3.III' (a Constitution part),
+    '46.4' (part 4 of a Code article numbered '1.', '2.' ...), '70 (e)' (a lettered item) or '6' (the article's start)."""
+    r = ref.strip()
+    if m := re.fullmatch(r'(\d+(?:-\d+)?)\.([IVX]+)', r):
+        found = re.search(r'(?:^|\s)' + m.group(2) + r'\.\s(.+?)(?=\s[IVX]+\.\s|$)', article)
+        return found.group(1) if found else None
+    if m := re.fullmatch(r'(\d+(?:-\d+)?)((?:\.\d+)+)', r):
+        label = r + '.'
+        start = re.search(r'(?<![\d.\-])' + re.escape(label) + r'\s', article)
+        if start:
+            end = len(article)
+            for nxt in re.finditer(r'\s(\d+(?:-\d+)?(?:\.\d+)+)\.\s', article[start.end():]):
+                if not (nxt.group(1) + '.').startswith(label):
+                    end = start.end() + nxt.start()
+                    break
+            return article[start.end():end]
+        if not re.search(r'(?<![\d.\-])' + re.escape(m.group(1)) + r'\.\d', article):  # parts numbered '1.', '2.'
+            part = m.group(2).rsplit('.', 1)[1]
+            found = re.search(r'(?:^|\s)' + part + r'\.\s(.+?)(?=\s\d+(?:-\d+)?\.\s|$)', article)
+            return found.group(1) if found else None
+        return None
+    if m := re.fullmatch(r'(\d+(?:-\d+)?)\s*\(([a-zçğşəıöü])\)', r):
+        found = re.search(r'(?:^|\s)' + m.group(2) + r'\)\s(.+?)(?=\s[a-zçğşəıöü]\)\s|$)', article)
+        return found.group(1) if found else None
+    if re.fullmatch(r'\d+(?:-\d+)?', r):
+        return article
+    return None
+
+
+def quote_thin_explanations(bundle: dict) -> None:
+    """Formative questions whose explanation is only a reference ('Maddə 3.0.3.') get the quoted clause from the law."""
+    articles: dict = {}
+    for c in bundle['cards']:
+        if c['kind'] != 'law' or not (no := _article_no(c.get('title'))):
+            continue
+        topic = c['lessonId'].rsplit('-', 1)[0]
+        for k, seg in enumerate(INLINE_ARTICLE.split(c['body'])):
+            if k:  # a segment that starts with its own article heading
+                head, _, seg = seg.partition('\n')
+                no = _article_no(head)
+            articles[(topic, no)] = (articles.get((topic, no), '') + ' ' + seg).strip()
+    for it in bundle['items']:
+        expl = (it.get('explanation') or '').strip()
+        if it.get('pool') != 'formative' or len(expl) >= 60 or re.search(r'«[^»]{25,}»', expl):
+            continue
+        ref = (it.get('ref') or '').removeprefix('m.').strip()
+        art = re.match(r'\d+(?:-\d+)?', ref)
+        text = art and articles.get((it['topicId'], art.group(0)))
+        quote = text and clause_quote(text, ref)
+        if not quote or len(quote) < 15:
+            continue
+        # The clause must be about the question; a wrong article part is worse than no quote.
+        probe = it['stem'] + ' ' + ' '.join(it['options'][a] for a in it['answer'])
+        if len(_stems(quote) & _stems(probe)) < min(2, len(_stems(probe))):
+            continue
+        quote = _excerpt(quote.rstrip(' ;'), probe)
+        if re.fullmatch(r'Maddə [\d\-]+(?:\.\d+|\.[IVX]+)*\.?|Maddə \d+(?:-\d+)?, [\d.\-]+-[a-zıüö]+ hissə\.', expl):
+            it['explanation'] = f"{expl.rstrip('.')}: «{quote}»"
+        else:
+            it['explanation'] = f'{expl} Qanun: «{quote}»'
+
+
 def _apply_replacements(text: str, pairs, where: str, problems: list) -> str:
     """Exact replacements; an old text starting with '>>' cuts the card from that text to its end."""
     for old, new in pairs:
@@ -349,16 +482,19 @@ def polish(bundle: dict, fixes_dir: str) -> list:
     vocab = build_vocab(texts)
 
     for c in bundle['cards']:
+        c['body'] = join_umlaut_splits(CAP_SPLIT.sub(r'\1', c['body']), vocab)
+        if c.get('title'):
+            c['title'] = join_umlaut_splits(c['title'], vocab)
         body = fix_splits(c['body'], vocab)
         c['body'] = clean_law(body) if c['kind'] == 'law' else PRIVATE.sub('\n', body).strip()
         if c.get('title'):
             c['title'] = fix_splits(c['title'], vocab)
     for i in bundle['items']:
         # The PDF font splits words after Ö and Ü: 'Ö z', 'Ü mumi'.
-        i['stem'] = CAP_SPLIT.sub(r'\1', i['stem'])
-        i['options'] = [CAP_SPLIT.sub(r'\1', o) for o in i['options']]
+        i['stem'] = join_umlaut_splits(CAP_SPLIT.sub(r'\1', i['stem']), vocab)
+        i['options'] = [join_umlaut_splits(CAP_SPLIT.sub(r'\1', o), vocab) for o in i['options']]
         if i.get('statements'):
-            i['statements'] = [CAP_SPLIT.sub(r'\1', x) for x in i['statements']]
+            i['statements'] = [join_umlaut_splits(CAP_SPLIT.sub(r'\1', x), vocab) for x in i['statements']]
         if i.get('pool', 'exam') == 'exam':
             i['stem'] = strip_tail_junk(i['stem'])
             i['options'] = [strip_tail_junk(o) for o in i['options']]
@@ -396,6 +532,7 @@ def polish(bundle: dict, fixes_dir: str) -> list:
     problems = [f'phrase not found: {old!r}' for old, _ in phrases if old not in used]
     card_fixes = _load(os.path.join(fixes_dir, 'cards.json'))
     by_card = {c['id']: c for c in bundle['cards']}
+    late: list = []
     for cid, pairs in card_fixes.items():
         if cid.startswith('_'):
             continue
@@ -403,8 +540,20 @@ def polish(bundle: dict, fixes_dir: str) -> list:
         if not c:
             problems.append(f'card {cid}: not found')
             continue
-        c['body'] = _apply_replacements(c['body'], pairs, f'card {cid}', problems)
+        missed: list = []
+        c['body'] = _apply_replacements(c['body'], pairs, f'card {cid}', missed)
+        if missed:
+            late.append((c, [p for p in pairs if (p[0][2:] if p[0].startswith('>>') else p[0]) not in c['body']]))
     fix_law_layout(bundle['cards'])
+    # Fixes written against the text after the layout pass (article headings rebuilt there).
+    for c, pairs in late:
+        c['body'] = _apply_replacements(c['body'], pairs, f"card {c['id']}", problems).strip()
+    fix_continuation_titles(bundle['cards'])
+    # Recall cards whose question could not be put back together (the answer has no final period, so the wrapped
+    # question's first line cannot be told apart from it) are left out rather than shown with half a question.
+    bundle['cards'] = [c for c in bundle['cards'] if c['kind'] != 'qa' or (
+        re.match(r'[A-ZƏÖÜÇŞĞİ“"«(0-9]', c['title']) and c['title'].rstrip().endswith('?') and not PRIVATE.search(c['title']) and '\n' not in c['title'])]
+    quote_thin_explanations(bundle)
 
     item_fixes = _load(os.path.join(fixes_dir, 'items.json'))
     by_item = {i['id']: i for i in bundle['items']}
