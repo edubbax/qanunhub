@@ -911,5 +911,88 @@
     "yalnız icraçı"
    ]
   ]
+ },
+ "dovlet-dili-70dcfa-23": {
+  "replace": [
+   [
+    "tarixi ərəb və kiril əlifbalarından yalnız elmi nəşrlərdə istifadə oluna bilər",
+    "tarixi ərəb və kiril əlifbalarından xüsusi hallarda (lüğətlərdə, elmi nəşrlərdə ədəbiyyat göstəricisində və s.) istifadə oluna bilər"
+   ]
+  ],
+  "note": "m. 15: yalnız elmi nəşrlər deyil, lüğətlər də"
+ },
+ "dovlet-dili-70dcfa-13": {
+  "draft": true,
+  "note": "A və D arasında seçim qanun mətni ilə əsaslandırılmır"
+ },
+ "dovlet-dili-81ba57-3": {
+  "replace": [
+   [
+    "qoşulunan beynəlxalq konvensiyalar",
+    "qoşulduğu beynəlxalq konvensiyalar"
+   ]
+  ]
+ },
+ "dovlet-dili-5a5c4d-12": {
+  "stem": "Kazus: AR vətəndaşı rəsmi qaydada adını və soyadını dəyişmək istəyir. Bu prosesə dair “Dövlət dili haqqında” Qanunun mövqeyi necədir?"
+ },
+ "etik-ae27a1-6": {
+  "replace": [
+   [
+    "Dövlət qulluqçusu dövlət orqanlarının və onların rəhbərlərinin fəaliyyəti ilə əlaqədar tənqidi ictimai mülahizələrdən çəkinməlidir, qanunsuz fəaliyyət istisna olmaqla, bu qayda elmi-pedaqoji fəaliyyəti ilə bağlı çıxışlarına və elmi yazılarına",
+    "Dövlət qulluqçusu onun xidməti vəzifəsinə aid olmadığı hallarda dövlət orqanlarının və onların rəhbərlərinin fəaliyyəti ilə əlaqədar tənqidi ictimai mülahizələrdən çəkinməlidir, qanunsuz fəaliyyət istisna olmaqla, bu qayda elmi-pedaqoji fəaliyyəti ilə bağlı çıxışlarına və elmi yazılarına"
+   ]
+  ],
+  "note": "Açar variant m. 6.1-in tam mətninə gətirildi"
+ },
+ "etik-ae27a1-17": {
+  "replace": [
+   [
+    "sərəncamında olan məlumatların əldə olunması və yayılması mümkünlüyünü təmin etməli, habelə dövlət orqanında",
+    "sərəncamında olan məlumatların qanunvericiliklə müəyyən olunmuş qaydada əldə olunması və yayılması mümkünlüyünü təmin etməli, habelə dövlət orqanında"
+   ]
+  ],
+  "note": "Açar variant m. 17-nin tam mətninə gətirildi"
+ },
+ "etik-ae27a1-3": {
+  "draft": true,
+  "note": "Dörd variantın hamısı m. 2-də sadalanan məqsədlərdir"
+ },
+ "etik-b3cc18-22": {
+  "stem": "“Loyallıq” maddəsində dövlət qulluqçusunun çəkinməli olduğu “ictimai qiymət vermə” fəaliyyətinə nə aid edilmir?"
+ },
+ "inzibati-icraat-9e6177-19": {
+  "answer": [
+   1
+  ],
+  "expect": "diskresion səlahiyyətlər - qanunla inzibati orqana və ya vəzifəli şəxsə mümkün qanunauyğun qərarlardan birini seçmək hüququnun verilməsi;",
+  "note": "m. 2.0.7 doğrudur; D-də əlverişli akt vəzifəni götürür, qoymur (m. 2.0.10)"
+ },
+ "nha-47e4c5-35": {
+  "answer": [
+   3
+  ],
+  "expect": "normativ xarakterli aktların.",
+  "note": "m. 4.2: normativ xarakterli aktlar icra olunmamasına görə məsuliyyət müəyyən edə bilməz"
+ },
+ "mehkemeler-92e2c6-24": {
+  "draft": true,
+  "note": "B variantı qanunla eyni mənalıdır (yalnız söz fərqi), yanlış variant yoxdur"
+ },
+ "emek-668017-26": {
+  "stem": "Maddə 45-ə görə, əmək müqaviləsi hansı müddətə bağlana bilər?",
+  "options": [
+   "Yalnız müddətsiz",
+   "Yalnız 5 ilədək müddətli",
+   "Müddətsiz və ya 5 ilədək müddətli",
+   "İstənilən halda yalnız 1 illik müddətə"
+  ],
+  "answer": [
+   2
+  ],
+  "note": "Mənbədə iki sualın variantları qarışmışdı"
+ },
+ "remzler-9d4278-44": {
+  "stem": "Aşağıdakılardan hansı AR Dövlət Bayrağının yerləşdirilməli olduğu yerlərdən biridir?"
  }
 }

@@ -43,7 +43,16 @@ def sentences(topic: str):
     return out
 
 
+NEG = re.compile(r'deyil|yanlış|səhv|olmayan|aid olm|istisna|qadağan|olunmur|edilmir|tapmır|bilməz|daxil deyil', re.I)
+
+
+def coverage(opt: set, sent: set) -> float:
+    return len(opt & sent) / max(1, len(opt))
+
+
 def main():
+    brief = '--brief' in sys.argv
+    sys.argv = [a for a in sys.argv if a != '--brief']
     topic = sys.argv[1]
     start = int(sys.argv[2]) if len(sys.argv) > 2 else 0
     count = int(sys.argv[3]) if len(sys.argv) > 3 else 40
@@ -60,6 +69,18 @@ def main():
         key = it['answer'][0] if it['answer'] else 0
         flag = '!' if not it['answer'] or max(scores) > scores[key] else ' '
         st = '' if it['status'] == 'published' else f' <{it["status"]}>'
+        if brief and it['answer'] and not it.get('statements') and it['status'] == 'published':
+            covs = []
+            for o in it['options']:
+                os_ = stems(o)
+                covs.append(max((coverage(os_, ss) for _, ss in sents), default=0))
+            k = covs[key]
+            others = max(c for j, c in enumerate(covs) if j != key)
+            neg = bool(NEG.search(it['stem']))
+            ok = (k >= 0.8 and k >= others) if not neg else (k < others)
+            if ok:
+                print(f'  ok #{n} {it["stem"][:90]} -> {it["options"][key][:110]}')
+                continue
         print(f'{flag}#{n} {it["id"]}{st} | {it["stem"]}')
         for k, s in enumerate(it.get('statements') or []):
             print(f'     [{k + 1}] {s}')

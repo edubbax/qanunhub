@@ -238,14 +238,51 @@ def split_glued_options(it: dict) -> None:
 
 def clean_law(text: str) -> str:
     text = PRIVATE.sub('\n', text)
+    text = re.sub(r'\s-\s?\d{1,3}\s?-(?=\s)', '', text)  # page numbers of the source PDF: '-5-', '- 13 -'
     text = NOTE_PARENS.sub('', text)
     text = re.sub(r'[ \t]+\n', '\n', text)
     text = re.sub(r'\n{2,}', '\n', text)
     return text.strip()
 
 
+TITLE_TAIL = re.compile(r"^((?:[a-zəöüğçşı][\w()-]*,?\s+)+?)(?=[A-ZƏÖÜĞÇŞİ(]|[IVX]+\.\s|\d+(?:[.-]\d+)*\.)")
+SPACED_ARTICLE = re.compile(r'\s*Maddə\s+((?:\d\s+){1,3}\d?)\s*\.\s*')
+
+
+def fix_law_layout(cards: list) -> None:
+    """Headings of the next article with spaced digits ('Maddə 1 0 . ...') start a new line, and the end of an
+    article title that wrapped into the body ('Maddə 67. ... şəxslərin' + 'hüquqları I. ...') returns to the title."""
+    moved = {}
+    for c in cards:
+        if c['kind'] != 'law':
+            continue
+        c['body'] = SPACED_ARTICLE.sub(lambda m: '\nMaddə ' + re.sub(r'\s+', '', m.group(1)) + '. ', c['body']).strip()
+        title = c.get('title') or ''
+        if title.endswith('(davamı)'):
+            base = title[:-len('(davamı)')].rstrip()
+            if (c['lessonId'], base) in moved:
+                c['title'] = moved[(c['lessonId'], base)] + ' (davamı)'
+            continue
+        m = TITLE_TAIL.match(c['body'])
+        if not m or not title.startswith('Maddə') or len(m.group(1)) > 80:
+            continue
+        tail = m.group(1).strip().rstrip(',')
+        new_title = f'{title} {tail}'
+        moved[(c['lessonId'], title)] = new_title
+        c['title'] = new_title
+        c['body'] = c['body'][m.end():].lstrip()
+
+
 def _apply_replacements(text: str, pairs, where: str, problems: list) -> str:
+    """Exact replacements; an old text starting with '>>' cuts the card from that text to its end."""
     for old, new in pairs:
+        if old.startswith('>>'):
+            at = text.find(old[2:])
+            if at < 0:
+                problems.append(f'{where}: text not found: {old[2:62]!r}')
+                continue
+            text = text[:at].rstrip() + new
+            continue
         if old not in text:
             problems.append(f'{where}: text not found: {old[:60]!r}')
             continue
@@ -305,6 +342,7 @@ def polish(bundle: dict, fixes_dir: str) -> list:
             problems.append(f'card {cid}: not found')
             continue
         c['body'] = _apply_replacements(c['body'], pairs, f'card {cid}', problems)
+    fix_law_layout(bundle['cards'])
 
     item_fixes = _load(os.path.join(fixes_dir, 'items.json'))
     by_item = {i['id']: i for i in bundle['items']}
