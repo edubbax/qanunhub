@@ -18,7 +18,8 @@ export type ErrorCode =
   | 'CONFLICT'
   | 'RATE_LIMITED'
   | 'NOT_IMPLEMENTED'
-  | 'COMPETITION_CLOSED';
+  | 'COMPETITION_CLOSED'
+  | 'PROFILE_REQUIRED';
 
 const STATUS: Record<ErrorCode, number> = {
   UNAUTHORIZED: 401,
@@ -38,6 +39,7 @@ const STATUS: Record<ErrorCode, number> = {
   CONFLICT: 409,
   RATE_LIMITED: 429,
   NOT_IMPLEMENTED: 501,
+  PROFILE_REQUIRED: 428,
   COMPETITION_CLOSED: 409,
 };
 

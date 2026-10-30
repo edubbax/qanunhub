@@ -1,8 +1,19 @@
+import logoUrl from '../assets/logo.png';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
 export function Spinner() {
   return <div className="spinner" role="status" aria-label="Yüklənir" />;
+}
+
+/** Full-screen loading state with the brand, while the session and the account are being read. */
+export function Splash() {
+  return (
+    <div className="splash" role="status" aria-label="Yüklənir">
+      <img src={logoUrl} alt="" />
+      <span className="splash-bar"><span /></span>
+    </div>
+  );
 }
 
 export function Progress({ value, target, tone }: { value: number; target?: number; tone?: 'ok' | 'xp' }) {

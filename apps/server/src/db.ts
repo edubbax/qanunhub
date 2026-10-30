@@ -7,9 +7,10 @@ export type Sql = postgres.Sql<Record<string, unknown>>;
 export type Tx = postgres.TransactionSql<Record<string, unknown>>;
 export type Db = Sql | Tx;
 
-export function connect(url: string): Sql {
+export function connect(url: string, opts: { prepare?: boolean } = {}): Sql {
   return postgres(url, {
     max: 10,
+    prepare: opts.prepare ?? true,
     onnotice: () => {},
     types: {
       // Keep calendar dates as plain 'YYYY-MM-DD' strings; no time zone shifts.

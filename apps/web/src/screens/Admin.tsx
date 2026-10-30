@@ -1,4 +1,4 @@
-// Editor/admin panel: content QA and editing, learner reports, users, import, outgoing mail and audit log.
+// Editor/admin panel: content QA and editing, learner reports, users, import and audit log.
 import type { Card, ContentBundle, Item, ItemStatus } from '@qanunhub/core';
 import { useEffect, useState } from 'react';
 import { useApp } from '../app';
@@ -7,7 +7,7 @@ import { ErrorBox, formatDate, formatTime, Modal, Spinner, toast, useLoad } from
 import { IconBack } from '../ui/icons';
 import { CertificateModal } from './Competitions';
 
-type Tab = 'overview' | 'content' | 'reports' | 'users' | 'competitions' | 'import' | 'mail' | 'audit' | 'payments';
+type Tab = 'overview' | 'content' | 'reports' | 'users' | 'competitions' | 'import' | 'audit' | 'payments';
 
 export const FLAG_LABELS: Record<string, string> = {
   no_key: 'Cavab açarı tapılmayıb',
@@ -35,7 +35,7 @@ export function Admin() {
     ['overview', 'Ümumi'], ['content', 'Məzmun'], ['reports', 'Şikayətlər'],
     ...(me.role === 'admin' ? ([['users', 'İstifadəçilər']] as [Tab, string][]) : []),
     ['competitions', 'Yarışlar'],
-    ['import', 'İdxal'], ['mail', 'Poçt'], ['audit', 'Audit'], ['payments', 'Ödənişlər'],
+    ['import', 'İdxal'], ['audit', 'Audit'], ['payments', 'Ödənişlər'],
   ];
   return (
     <main className="page no-tabs stack">
@@ -53,7 +53,6 @@ export function Admin() {
       {tab === 'users' && <Users />}
       {tab === 'competitions' && <AdminCompetitions />}
       {tab === 'import' && <Import />}
-      {tab === 'mail' && <Mail />}
       {tab === 'audit' && <Audit />}
       {tab === 'payments' && (
         <div className="card stack">
@@ -513,26 +512,6 @@ function Import() {
           setBusy(false);
         }
       }}>İdxal et</button>
-    </div>
-  );
-}
-
-function Mail() {
-  const { api } = useApp();
-  const { data, error, reload } = useLoad(() => api.admin.mail(), []);
-  if (error) return <ErrorBox error={error} onRetry={reload} />;
-  if (!data) return <Spinner />;
-  return (
-    <div className="stack">
-      <p className="small muted">Göndərilən məktublar (MAIL_MODE=outbox rejimində burada saxlanılır; SMTP qoşulanda real göndərilir).</p>
-      {data.length === 0 && <p className="empty card flat">Məktub yoxdur.</p>}
-      {data.map((m) => (
-        <div key={m.id} className="card flat">
-          <div className="row between"><b className="small">{m.subject}</b><span className="tiny muted">{formatTime(m.createdAt)}</span></div>
-          <span className="tiny muted">{m.to}</span>
-          <pre className="mail">{m.body}</pre>
-        </div>
-      ))}
     </div>
   );
 }

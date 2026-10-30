@@ -1,22 +1,19 @@
 import { readFileSync } from 'node:fs';
 import { serve } from '@hono/node-server';
 import type { ContentBundle } from '@qanunhub/core';
+import { hasAuthUsers } from './accounts';
 import { createApp } from './app';
-import { createUser } from './auth';
 import { config } from './config';
 import { ContentCache, importBundle } from './content';
 import { connect, migrate } from './db';
+import { createTokenVerifier } from './supabaseAuth';
 
 async function main() {
-  const sql = connect(config.databaseUrl);
-  await migrate(sql);
-  if (config.adminEmail && config.adminPassword) {
-    const [exists] = await sql`select id from users where email = ${config.adminEmail.toLowerCase()}`;
-    if (!exists) {
-      await createUser(sql, config.adminEmail, config.adminPassword, 'admin', Date.now(), { verified: true, role: 'admin' });
-      console.log(`admin account created: ${config.adminEmail}`);
-    }
+  if (!config.supabaseUrl && !config.supabaseJwtSecret) {
+    console.warn('SUPABASE_URL is not set: no one can sign in until it is.');
   }
+  const sql = connect(config.databaseUrl, { prepare: config.databasePrepare });
+  await migrate(sql);
   // First start on an empty database: load the bundled content so the app is usable right away.
   const [hasContent] = await sql`select 1 from content_meta where key = 'version'`;
   if (!hasContent && config.contentSeed) {
@@ -26,7 +23,9 @@ async function main() {
   const content = new ContentCache(sql);
   await content.reload();
   console.log(`content loaded: version ${content.current.bundle.version}, ${content.current.itemById.size} published items`);
-  const app = createApp({ sql, content });
+  const authUsers = await hasAuthUsers(sql);
+  const verifyToken = createTokenVerifier({ supabaseUrl: config.supabaseUrl, jwtSecret: config.supabaseJwtSecret });
+  const app = createApp({ sql, content, verifyToken, authUsers });
   serve({ fetch: app.fetch, port: config.port }, (info) => console.log(`QanunHub API listening on :${info.port}`));
 }
 

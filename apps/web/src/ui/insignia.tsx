@@ -5,7 +5,6 @@ import { useId } from 'react';
 const GOLD = '#c9a646';
 const GOLD_DARK = '#9c7c2c';
 const MAROON = '#4a0e17';
-const MAROON_LIGHT = '#6b1a26';
 
 function starPath(cx: number, cy: number, r: number, points = 5, inner = 0.42): string {
   const step = Math.PI / points;
@@ -18,34 +17,82 @@ function starPath(cx: number, cy: number, r: number, points = 5, inner = 0.42): 
   return d + 'Z';
 }
 
-/** Stylised state emblem for the highest rank: an eight-pointed star with a flame inside a ring. */
+// Colours of the shoulder boards of the Armed Forces of Azerbaijan: olive cloth, yellow eight-pointed stars,
+// red piping on the generals' boards.
+const OLIVE = '#5f6136';
+const OLIVE_LIGHT = '#767847';
+const OLIVE_DARK = '#3f4023';
+const STAR = '#f4c430';
+const STAR_EDGE = '#a7791a';
+const PIPING = '#c8282e';
+
+/** The state emblem on the Army General's board: an eight-pointed star over a blue-red-green ring with a flame. */
 function Emblem({ cx, cy, r }: { cx: number; cy: number; r: number }) {
+  const arc = (from: number, to: number, rad: number) => {
+    const a = (from - 90) * (Math.PI / 180);
+    const b = (to - 90) * (Math.PI / 180);
+    return `M${cx + rad * Math.cos(a)},${cy + rad * Math.sin(a)} A${rad},${rad} 0 0 1 ${cx + rad * Math.cos(b)},${cy + rad * Math.sin(b)}`;
+  };
   return (
     <g>
-      <circle cx={cx} cy={cy} r={r} fill={MAROON} stroke={GOLD_DARK} strokeWidth={1} />
-      <path d={starPath(cx, cy, r * 0.82, 8, 0.72)} fill={GOLD} stroke={GOLD_DARK} strokeWidth={0.6} />
-      <circle cx={cx} cy={cy} r={r * 0.36} fill="#1f6fb2" />
-      <path d={`M${cx},${cy - r * 0.3} C${cx + r * 0.22},${cy - r * 0.05} ${cx + r * 0.12},${cy + r * 0.2} ${cx},${cy + r * 0.24} C${cx - r * 0.12},${cy + r * 0.2} ${cx - r * 0.22},${cy - r * 0.05} ${cx},${cy - r * 0.3}Z`} fill="#e64a3b" />
+      <path d={starPath(cx, cy, r, 8, 0.78)} fill={STAR} stroke={STAR_EDGE} strokeWidth={0.8} />
+      <circle cx={cx} cy={cy} r={r * 0.62} fill="#fff" />
+      <path d={arc(-60, 60, r * 0.55)} stroke="#00a3d8" strokeWidth={r * 0.14} fill="none" />
+      <path d={arc(60, 180, r * 0.55)} stroke="#e4002b" strokeWidth={r * 0.14} fill="none" />
+      <path d={arc(180, 300, r * 0.55)} stroke="#2e9a3c" strokeWidth={r * 0.14} fill="none" />
+      <path d={starPath(cx, cy, r * 0.42, 8, 0.7)} fill="#fff" stroke={STAR_EDGE} strokeWidth={0.5} />
+      <path d={`M${cx},${cy - r * 0.3} C${cx + r * 0.2},${cy - r * 0.04} ${cx + r * 0.12},${cy + r * 0.2} ${cx},${cy + r * 0.22} C${cx - r * 0.12},${cy + r * 0.2} ${cx - r * 0.2},${cy - r * 0.04} ${cx},${cy - r * 0.3}Z`} fill="#e64a3b" />
+      <path d={`M${cx - r * 0.85},${cy + r * 0.55} Q${cx},${cy + r * 1.15} ${cx + r * 0.85},${cy + r * 0.55}`} stroke="#d9a520" strokeWidth={r * 0.12} fill="none" strokeLinecap="round" />
     </g>
   );
 }
 
-function stars(rank: MilitaryRank): { x: number; y: number; r: number }[] {
-  const c = 30;
+/** The crescent of the senior officers' boards, horns up. */
+function Crescent({ cx, cy, w }: { cx: number; cy: number; w: number }) {
+  return (
+    <path
+      d={`M${cx - w},${cy - w * 0.35} A${w},${w} 0 0 0 ${cx + w},${cy - w * 0.35} A${w},${w * 0.5} 0 0 1 ${cx - w},${cy - w * 0.35}Z`}
+      fill={STAR} stroke={STAR_EDGE} strokeWidth={0.7}
+    />
+  );
+}
+
+/** The generals' crossed sabres over a crescent. */
+function Sabres({ cx, cy, w }: { cx: number; cy: number; w: number }) {
+  const blade = (dir: 1 | -1) => (
+    <g>
+      <path d={`M${cx - dir * w},${cy + w * 0.35} Q${cx - dir * w * 0.1},${cy + w * 0.1} ${cx + dir * w * 0.95},${cy - w * 0.75}`} stroke={STAR} strokeWidth={1.8} fill="none" strokeLinecap="round" />
+      <path d={`M${cx - dir * w * 0.82},${cy + w * 0.05} L${cx - dir * w * 0.62},${cy + w * 0.45}`} stroke={STAR_EDGE} strokeWidth={1.4} strokeLinecap="round" />
+    </g>
+  );
+  return (
+    <g>
+      <Crescent cx={cx} cy={cy + w * 0.35} w={w * 0.9} />
+      {blade(1)}
+      {blade(-1)}
+    </g>
+  );
+}
+
+interface Layout { stars: { y: number; r: number }[]; device?: 'crescent' | 'sabres' | 'emblem' }
+
+/** Star positions from the bottom of the board up, as on the regulation boards. */
+function layout(rank: MilitaryRank): Layout {
+  const col = (ys: number[], r: number) => ys.map((y) => ({ y, r }));
   switch (rank.code) {
-    case 'gizir': return [{ x: c, y: 92, r: 5 }, { x: c, y: 76, r: 5 }];
-    case 'kl': return [{ x: c, y: 84, r: 5.2 }];
-    case 'l': return [{ x: c - 11, y: 90, r: 5.2 }, { x: c + 11, y: 90, r: 5.2 }];
-    case 'bl': return [{ x: c - 11, y: 92, r: 5.2 }, { x: c + 11, y: 92, r: 5.2 }, { x: c, y: 76, r: 5.2 }];
-    case 'kapitan': return [{ x: c - 11, y: 94, r: 5.2 }, { x: c + 11, y: 94, r: 5.2 }, { x: c, y: 79, r: 5.2 }, { x: c, y: 64, r: 5.2 }];
-    case 'mayor': return [{ x: c, y: 82, r: 7.5 }];
-    case 'pl': return [{ x: c - 13, y: 88, r: 7.5 }, { x: c + 13, y: 88, r: 7.5 }];
-    case 'polkovnik': return [{ x: c - 13, y: 92, r: 7.5 }, { x: c + 13, y: 92, r: 7.5 }, { x: c, y: 70, r: 7.5 }];
-    case 'gm': return [{ x: c, y: 84, r: 10 }];
-    case 'gl': return [{ x: c, y: 92, r: 9.5 }, { x: c, y: 66, r: 9.5 }];
-    case 'gp': return [{ x: c, y: 96, r: 9 }, { x: c, y: 74, r: 9 }, { x: c, y: 52, r: 9 }];
-    case 'og': return [{ x: c, y: 94, r: 12 }];
-    default: return [];
+    case 'gizir': return { stars: col([112, 94], 5.5) };
+    case 'kl': return { stars: col([100], 6.8) };
+    case 'l': return { stars: col([112, 90], 6.8) };
+    case 'bl': return { stars: col([122, 100, 78], 6.8) };
+    case 'kapitan': return { stars: col([126, 104, 82, 60], 6.8) };
+    case 'mayor': return { stars: col([104], 8.5), device: 'crescent' };
+    case 'pl': return { stars: col([104, 81], 8.5), device: 'crescent' };
+    case 'polkovnik': return { stars: col([104, 81, 58], 8.5), device: 'crescent' };
+    case 'gm': return { stars: col([98], 9.5), device: 'sabres' };
+    case 'gl': return { stars: col([98, 73], 9.5), device: 'sabres' };
+    case 'gp': return { stars: col([98, 73, 48], 9.5), device: 'sabres' };
+    case 'og': return { stars: col([50], 12), device: 'emblem' };
+    default: return { stars: [] };
   }
 }
 
@@ -54,33 +101,31 @@ export function Epaulette({ code, size = 48, title }: { code: string; size?: num
   const id = useId().replace(/:/g, '');
   const rank = rankByCode(code) ?? GIZIR;
   const general = rank.tier === 'general' || rank.tier === 'army';
-  const outline = 'M6,30 L30,6 L54,30 L54,112 Q54,118 48,118 L12,118 Q6,118 6,112 Z';
+  const { stars, device } = layout(rank);
+  const outline = 'M7,26 Q7,6 30,4 Q53,6 53,26 L53,142 Q53,146 49,146 L11,146 Q7,146 7,142 Z';
+  const inner = 'M10.5,26.5 Q10.5,9.5 30,7.5 Q49.5,9.5 49.5,26.5 L49.5,142.5 L10.5,142.5 Z';
   const label = title ?? rank.title;
   return (
-    <svg viewBox="0 0 60 124" width={size * (60 / 124)} height={size} role="img" aria-label={label} className="epaulette">
+    <svg viewBox="0 0 60 150" width={size * (60 / 150)} height={size} role="img" aria-label={label} className="epaulette">
       <title>{label}</title>
       <defs>
         <linearGradient id={`f${id}`} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor={general ? '#b8923a' : MAROON} />
-          <stop offset="0.5" stopColor={general ? '#e2c470' : MAROON_LIGHT} />
-          <stop offset="1" stopColor={general ? '#b8923a' : MAROON} />
+          <stop offset="0" stopColor={OLIVE_DARK} />
+          <stop offset="0.5" stopColor={OLIVE_LIGHT} />
+          <stop offset="1" stopColor={OLIVE_DARK} />
         </linearGradient>
-        <pattern id={`z${id}`} width="10" height="8" patternUnits="userSpaceOnUse">
-          <path d="M0,6 L5,2 L10,6" fill="none" stroke={GOLD_DARK} strokeWidth="1.1" opacity="0.6" />
-        </pattern>
-        <clipPath id={`c${id}`}><path d={outline} /></clipPath>
       </defs>
-      <path d={outline} fill={`url(#f${id})`} stroke={general ? GOLD_DARK : GOLD} strokeWidth="2" />
-      <g clipPath={`url(#c${id})`}>
-        {general && <rect x="0" y="0" width="60" height="124" fill={`url(#z${id})`} />}
-        {rank.tier === 'junior' && <rect x="28" y="14" width="4" height="106" fill={GOLD} opacity="0.9" />}
-        {rank.tier === 'senior' && (<><rect x="22" y="14" width="3.5" height="106" fill={GOLD} opacity="0.9" /><rect x="34.5" y="14" width="3.5" height="106" fill={GOLD} opacity="0.9" /></>)}
-      </g>
-      <circle cx="30" cy="22" r="5" fill={general ? MAROON : GOLD} stroke={general ? '#2e080e' : GOLD_DARK} strokeWidth="1" />
-      {stars(rank).map((s, i) => (
-        <path key={i} d={starPath(s.x, s.y, s.r)} fill={general ? '#e9e4e6' : GOLD} stroke={general ? '#8d8689' : GOLD_DARK} strokeWidth="0.8" />
+      <path d={outline} fill={`url(#f${id})`} stroke={OLIVE_DARK} strokeWidth="1.5" />
+      {general && <path d={inner} fill="none" stroke={PIPING} strokeWidth="2.2" />}
+      {rank.code === 'gizir' && <rect x="9" y="132" width="42" height="5" fill={STAR} opacity="0.9" />}
+      <circle cx="30" cy="20" r="4.6" fill={OLIVE} stroke={STAR_EDGE} strokeWidth="1.2" />
+      <path d={starPath(30, 20, 2.6, 8, 0.6)} fill={STAR} />
+      {stars.map((s, i) => (
+        <path key={i} d={starPath(30, s.y, s.r, 8, 0.6)} fill={STAR} stroke={STAR_EDGE} strokeWidth="0.7" />
       ))}
-      {rank.code === 'og' && <Emblem cx={30} cy={60} r={14} />}
+      {device === 'crescent' && <Crescent cx={30} cy={130} w={13} />}
+      {device === 'sabres' && <Sabres cx={30} cy={124} w={14} />}
+      {device === 'emblem' && <Emblem cx={30} cy={104} r={17} />}
     </svg>
   );
 }
@@ -92,11 +137,11 @@ export function LifeStars({ current, max = 3, infinite = false, size = 28 }: { c
   return (
     <svg viewBox={`0 0 ${w} 30`} height={size} width={(size * w) / 30} role="img" aria-label={label} className="life-stars">
       <title>{label}</title>
-      <path d={`M3,4 L${w - 14},4 L${w - 3},15 L${w - 14},26 L3,26 Q1,26 1,24 L1,6 Q1,4 3,4Z`} fill={MAROON} stroke={GOLD} strokeWidth="1.5" />
-      <circle cx={w - 13} cy="15" r="3.6" fill={GOLD} />
+      <path d={`M3,4 L${w - 14},4 Q${w - 2},5 ${w - 2},15 Q${w - 2},25 ${w - 14},26 L3,26 Q1,26 1,24 L1,6 Q1,4 3,4Z`} fill={OLIVE} stroke={OLIVE_DARK} strokeWidth="1.5" />
+      <circle cx={w - 12} cy="15" r="3.4" fill={OLIVE_LIGHT} stroke={STAR_EDGE} strokeWidth="1" />
       {Array.from({ length: max }, (_, i) => {
         const on = infinite || i < current;
-        return <path key={i} d={starPath(14 + i * 22, 15, 8.2)} fill={on ? GOLD : 'none'} stroke={on ? GOLD_DARK : '#b98f96'} strokeWidth={on ? 0.8 : 1.2} opacity={on ? 1 : 0.7} />;
+        return <path key={i} d={starPath(14 + i * 22, 15, 8.4, 8, 0.6)} fill={on ? STAR : 'none'} stroke={on ? STAR_EDGE : '#a9ab86'} strokeWidth={on ? 0.8 : 1.1} opacity={on ? 1 : 0.75} />;
       })}
     </svg>
   );

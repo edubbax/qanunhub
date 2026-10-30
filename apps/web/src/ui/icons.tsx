@@ -39,3 +39,8 @@ export const IconCrown = () => <S><path d="M3 18h18M4 8l4 4 4-7 4 7 4-4-1.5 10h-
 export const IconDownload = () => <S><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></S>;
 export const IconCalendar = () => <S><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></S>;
 export const IconUsers = () => <S><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c1.8.7 3 2.6 3.5 5.4" /></S>;
+export const IconEye = () => <S><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></S>;
+export const IconEyeOff = () => <S><path d="M3 3l18 18M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.2M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7c1.8 0 3.4-.5 4.8-1.2" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></S>;
+export const IconAt = () => <S><circle cx="12" cy="12" r="4" /><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.9 7.9" /></S>;
+export const IconKey = () => <S><circle cx="7.5" cy="15.5" r="4.5" /><path d="M10.7 12.3 21 2M16 7l3 3M14 9l2 2" /></S>;
+export const IconLogout = () => <S><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></S>;

@@ -1,6 +1,8 @@
 // Demo backend: the same engine as the server, running in the browser over an in-memory store saved to
-// localStorage. Accounts, payments and email are simulated; everything else behaves like production.
-import type { AdminApi, AdminAudit, AdminMail, AdminUser, Api, ItemFilter, MetaDto } from './types';
+// localStorage. Accounts (in place of Supabase Auth), payments and email are simulated; everything else behaves like production.
+import type { AdminApi, AdminAudit, AdminUser, Api, ItemFilter, MetaDto } from './types';
+import type { AuthBackend, AuthEvent, AuthUser, Profile } from '../auth/types';
+import { AuthError, USERNAME_RE, normalizeUsername, validateCredentials, validateProfile } from '../auth/types';
 import { ApiError } from './types';
 import {
   AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, ContentIndex, EXAM_FORMATS, MemoryStore, SAMPLE_EMAIL_SUFFIX, SUBGROUPS, answer, complete, emptyMemoryData,
@@ -11,18 +13,17 @@ import {
   type Card, type Category, type ContentBundle, type EngineCtx, type Item, type MemoryData, type SessionKind,
 } from '@qanunhub/core';
 
-const KEY = 'qanunhub-demo-v4';
+const KEY = 'qanunhub-demo-v5';
 const DEMO_EMAIL = 'demo@qanunhub.az';
 const DEMO_PASSWORD = 'demo-hesab-2026';
 
 interface DemoState {
   memory: MemoryData;
   accounts: Record<string, { userId: string; pass: string }>;
+  profiles: Record<string, Profile>;
   current: string | null;
   overrides: { items: Record<string, Partial<Item>>; cards: Record<string, { title?: string | null; body?: string }> };
-  mail: AdminMail[];
   audit: AdminAudit[];
-  resetTokens: Record<string, string>;
   seeded: string[];
 }
 
@@ -46,7 +47,7 @@ function load(): DemoState | null {
 }
 
 function fresh(): DemoState {
-  return { memory: emptyMemoryData(), accounts: {}, current: null, overrides: { items: {}, cards: {} }, mail: [], audit: [], resetTokens: {}, seeded: [] };
+  return { memory: emptyMemoryData(), accounts: {}, profiles: {}, current: null, overrides: { items: {}, cards: {} }, audit: [], seeded: [] };
 }
 
 // Not a security measure: demo accounts live only in this browser.
@@ -65,7 +66,7 @@ function wrap(e: unknown): never {
   throw e;
 }
 
-export async function localApi(loadBundle: () => Promise<ContentBundle>): Promise<Api> {
+export async function localApi(loadBundle: () => Promise<ContentBundle>): Promise<{ api: Api; auth: AuthBackend }> {
   let state: DemoState = load() ?? fresh();
   let base = await loadBundle();
   const store = new MemoryStore(state.memory);
@@ -356,10 +357,6 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       save();
       return { topics: bundle.topics.length, lessons: bundle.lessons.length, items: bundle.items.length, keptEdited: 0 };
     },
-    async mail() {
-      requireStaff();
-      return state.mail;
-    },
     async audit() {
       requireStaff();
       return state.audit;
@@ -370,53 +367,10 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
     mode: 'demo',
     async me() {
       if (!state.current || !store.data.users[state.current]) return null;
+      const p = state.profiles[state.current];
+      if (!p?.firstName || !p.lastName || !p.username) throw new ApiError('PROFILE_REQUIRED', 'Əvvəlcə profilini tamamla: ad, soyad və istifadəçi adı.', 428);
       return run((c, id) => getMe(c, id));
     },
-    async register(email, password, nickname) {
-      const e = email.trim().toLowerCase();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) throw new ApiError('VALIDATION', 'Email ünvanı düzgün deyil.', 400);
-      if (password.length < 8) throw new ApiError('VALIDATION', 'Şifrə ən azı 8 simvol olmalıdır.', 400);
-      if (!/^[\p{L}\p{N}_.-]{3,24}$/u.test(nickname)) throw new ApiError('VALIDATION', 'Ləqəb 3–24 simvol olmalıdır: hərf, rəqəm, «_», «.», «-».', 400);
-      if (state.accounts[e]) throw new ApiError('CONFLICT', 'Bu email ilə hesab artıq var. Daxil ol və ya şifrəni bərpa et.', 409);
-      if (Object.values(store.data.users).some((u) => u.nickname.toLowerCase() === nickname.toLowerCase())) throw new ApiError('CONFLICT', 'Bu ləqəb artıq istifadə olunur.', 409);
-      const u = newUser(randomId(), e, nickname, Date.now());
-      u.emailVerified = true;
-      store.data.users[u.id] = u;
-      state.accounts[e] = { userId: u.id, pass: demoHash(password) };
-      state.current = u.id;
-      save();
-    },
-    async login(email, password) {
-      const a = state.accounts[email.trim().toLowerCase()];
-      if (!a || a.pass !== demoHash(password)) throw new ApiError('UNAUTHORIZED', 'Email və ya şifrə yanlışdır.', 401);
-      state.current = a.userId;
-      save();
-    },
-    async logout() {
-      state.current = null;
-      save();
-    },
-    async forgot(email) {
-      const e = email.trim().toLowerCase();
-      const a = state.accounts[e];
-      if (a) {
-        const token = randomId();
-        state.resetTokens[token] = a.userId;
-        state.mail.unshift({ id: token, to: e, subject: 'QanunHub: şifrənin bərpası', body: `Demo: bərpa kodu ${token}`, createdAt: Date.now() });
-        save();
-      }
-    },
-    async reset(token, password) {
-      const userId = state.resetTokens[token];
-      if (!userId) throw new ApiError('VALIDATION', 'Bərpa linki etibarsızdır və ya vaxtı keçib.', 400);
-      if (password.length < 8) throw new ApiError('VALIDATION', 'Şifrə ən azı 8 simvol olmalıdır.', 400);
-      const email = Object.keys(state.accounts).find((k) => state.accounts[k].userId === userId)!;
-      state.accounts[email].pass = demoHash(password);
-      delete state.resetTokens[token];
-      save();
-    },
-    async verify() {},
-    async resendVerification() {},
     async meta() {
       return meta;
     },
@@ -460,8 +414,11 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       },
       /** Signs in to a ready demo account with Premium, so every screen can be seen without registering. */
       async quickStart() {
-        if (!state.accounts[DEMO_EMAIL]) await api.register(DEMO_EMAIL, DEMO_PASSWORD, 'demo.hesab');
-        await api.login(DEMO_EMAIL, DEMO_PASSWORD);
+        if (!state.accounts[DEMO_EMAIL]) {
+          await auth.signUp(DEMO_EMAIL, DEMO_PASSWORD);
+          await auth.saveProfile({ firstName: 'Demo', lastName: 'İstifadəçi', username: 'demo.hesab' });
+        }
+        await auth.signIn(DEMO_EMAIL, DEMO_PASSWORD);
         const u = store.data.users[currentId()];
         if (!u.premiumUntil || u.premiumUntil < Date.now()) await run((c, id) => grantPremium(c, id, Date.now() + 365 * 86400_000));
       },
@@ -476,5 +433,106 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       },
     },
   };
-  return api;
+
+  // ---------------------------------------------------------------- auth (stands in for Supabase Auth)
+
+  const listeners = new Set<(e: AuthEvent, u: AuthUser | null) => void>();
+  const authUser = (): AuthUser | null => {
+    const id = state.current;
+    if (!id || !store.data.users[id]) return null;
+    return { id, email: store.data.users[id].email };
+  };
+  const emit = (e: AuthEvent) => {
+    const u = authUser();
+    listeners.forEach((l) => setTimeout(() => l(e, u), 0));
+  };
+  const signedIn = (): string => {
+    const id = authUser()?.id;
+    if (!id) throw new AuthError('Sessiyanın vaxtı bitib. Yenidən daxil ol.');
+    return id;
+  };
+  const usernameTaken = (name: string, except: string) =>
+    Object.entries(state.profiles).some(([id, p]) => id !== except && p.username === name)
+    || Object.values(store.data.users).some((u) => u.id !== except && u.nickname.toLowerCase() === name);
+
+  const auth: AuthBackend = {
+    kind: 'demo',
+    onChange(listener) {
+      listeners.add(listener);
+      setTimeout(() => listener('INITIAL_SESSION', authUser()), 0);
+      return () => listeners.delete(listener);
+    },
+    async accessToken() {
+      return authUser() ? 'demo' : null;
+    },
+    async signIn(email, password) {
+      const a = state.accounts[email.trim().toLowerCase()];
+      if (!a || a.pass !== demoHash(password)) throw new AuthError('E-poçt və ya şifrə yanlışdır.');
+      state.current = a.userId;
+      save();
+      emit('SIGNED_IN');
+    },
+    async signUp(email, password) {
+      const e = email.trim().toLowerCase();
+      const invalid = validateCredentials(e, password);
+      if (invalid) throw new AuthError(invalid);
+      if (state.accounts[e]) throw new AuthError('Bu e-poçt ilə hesab artıq var. Daxil ol və ya şifrəni bərpa et.');
+      // The engine's learner row; the empty profile is what the Supabase trigger creates.
+      const u = newUser(randomId(), e, `u_${randomId().slice(0, 10)}`, Date.now());
+      u.emailVerified = true;
+      store.data.users[u.id] = u;
+      state.accounts[e] = { userId: u.id, pass: demoHash(password) };
+      state.profiles[u.id] = { firstName: null, lastName: null, username: null };
+      state.current = u.id;
+      save();
+      emit('SIGNED_IN');
+      return { confirmEmail: false };
+    },
+    async signOut() {
+      state.current = null;
+      save();
+      emit('SIGNED_OUT');
+    },
+    async resendConfirmation() {},
+    async sendPasswordReset(email) {
+      // No email in the demo: the account opens straight on "new password", as the link in the email would.
+      const a = state.accounts[email.trim().toLowerCase()];
+      if (!a) return;
+      state.current = a.userId;
+      save();
+      emit('PASSWORD_RECOVERY');
+    },
+    async updatePassword(password) {
+      const id = signedIn();
+      if (password.length < 8) throw new AuthError('Şifrə ən azı 8 simvol olmalıdır.');
+      const email = Object.keys(state.accounts).find((k) => state.accounts[k].userId === id)!;
+      state.accounts[email].pass = demoHash(password);
+      save();
+      emit('USER_UPDATED');
+    },
+    async getProfile() {
+      return state.profiles[signedIn()] ?? { firstName: null, lastName: null, username: null };
+    },
+    async saveProfile(input) {
+      const id = signedIn();
+      const errors = validateProfile(input);
+      const first = Object.values(errors)[0];
+      if (first) throw new AuthError(first);
+      const username = normalizeUsername(input.username);
+      if (usernameTaken(username, id)) throw new AuthError('Bu istifadəçi adı artıq tutulub. Başqasını seç.');
+      const p: Profile = { firstName: input.firstName.trim().replace(/\s+/g, ' '), lastName: input.lastName.trim().replace(/\s+/g, ' '), username };
+      state.profiles[id] = p;
+      // The server copies these into the learner row on every request; the demo does it here.
+      const u = store.data.users[id];
+      u.nickname = username;
+      u.fullName = `${p.firstName} ${p.lastName}`;
+      save();
+      return p;
+    },
+    async usernameAvailable(username) {
+      const name = normalizeUsername(username);
+      return USERNAME_RE.test(name) && !usernameTaken(name, authUser()?.id ?? '');
+    },
+  };
+  return { api, auth };
 }

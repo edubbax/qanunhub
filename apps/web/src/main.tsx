@@ -4,8 +4,9 @@ import { createRoot } from 'react-dom/client';
 import { App } from './app';
 import { httpApi } from './api/http';
 import type { Api } from './api/types';
+import type { AuthBackend } from './auth/types';
 import { applyTheme, savedTheme } from './screens/Profile';
-import { Spinner } from './ui/components';
+import { Splash } from './ui/components';
 import './styles.css';
 
 
@@ -20,18 +21,21 @@ async function demoBundle(): Promise<ContentBundle> {
   return JSON.parse(await new Response(stream).text()) as ContentBundle;
 }
 
-async function createApi(): Promise<Api> {
+/** Production: Supabase Auth (settings from the server) + the HTTP API. Demo: both simulated in the browser. */
+async function createBackends(): Promise<{ api: Api; auth: AuthBackend }> {
   if (__DEMO__) {
     const { localApi } = await import('./api/local');
     return localApi(demoBundle);
   }
-  return httpApi();
+  const { loadSupabaseSettings, supabaseAuth } = await import('./auth/supabase');
+  const auth = supabaseAuth(await loadSupabaseSettings());
+  return { api: httpApi(auth), auth };
 }
 
 const root = createRoot(document.getElementById('root')!);
-root.render(<Spinner />);
-createApi().then(
-  (api) => root.render(<StrictMode><App api={api} /></StrictMode>),
+root.render(<Splash />);
+createBackends().then(
+  ({ api, auth }) => root.render(<StrictMode><App api={api} auth={auth} /></StrictMode>),
   (e) => root.render(<div className="shell"><div className="page no-tabs"><p>Tətbiq yüklənmədi: {String(e)}</p></div></div>),
 );
 

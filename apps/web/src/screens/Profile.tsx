@@ -3,7 +3,8 @@ import { ROMAN } from '@qanunhub/core';
 import { useState } from 'react';
 import { useApp } from '../app';
 import { formatDate, Modal, Progress, toast } from '../ui/components';
-import { IconDown, IconFlame, IconSettings, IconShield } from '../ui/icons';
+import { IconDown, IconFlame, IconLogout, IconSettings, IconShield } from '../ui/icons';
+import { ProfileForm } from './CompleteProfile';
 import { Epaulette, GIZIR, MILITARY_RANKS, Medal } from '../ui/insignia';
 import { RankHero } from '../ui/rank';
 
@@ -28,7 +29,7 @@ export function savedTheme(): Theme {
 }
 
 export function Profile() {
-  const { api, me, meta, nav, setMe, refreshMe } = useApp();
+  const { api, me, meta, nav, refreshMe, profile, signOut } = useApp();
   const [theme, setTheme] = useState<Theme>(savedTheme);
   const [edit, setEdit] = useState(false);
   const [editName, setEditName] = useState(false);
@@ -77,7 +78,7 @@ export function Profile() {
               const above = i - 1 > myLevel && r.code !== 'gizir';
               return (
                 <div key={r.code} className={`ladder-row ${current ? 'current' : ''} ${above ? 'above' : ''}`}>
-                  <Epaulette code={r.code} size={46} />
+                  <Epaulette code={r.code} size={56} />
                   <span className="stack" style={{ gap: 0 }}>
                     <b>{r.title}</b>
                     <span className="tiny muted">
@@ -114,11 +115,12 @@ export function Profile() {
           <button className="btn ghost small" onClick={() => setEditName(true)}>Dəyiş</button>
         </div>
         <div className="info-list">
-          <div><span>Ləqəb</span><span>{me.nickname}</span></div>
-          <div><span>Ad və soyad</span><span>{me.fullName ?? 'qeyd olunmayıb'}</span></div>
-          <div><span>Email</span><span>{me.email}</span></div>
+          <div><span>Ad</span><span>{profile?.firstName ?? '—'}</span></div>
+          <div><span>Soyad</span><span>{profile?.lastName ?? '—'}</span></div>
+          <div><span>İstifadəçi adı</span><span>@{profile?.username ?? me.nickname}</span></div>
+          <div><span>E-poçt</span><span>{me.email}</span></div>
         </div>
-        <p className="tiny muted">Ad və soyad yarış sertifikatlarında yazılır. Reytinqdə yalnız ləqəb görünür.</p>
+        <p className="tiny muted">Ad və soyad yarış sertifikatlarında yazılır. Reytinqdə yalnız istifadəçi adı görünür.</p>
       </section>
 
       <section className="card stack">
@@ -168,7 +170,7 @@ export function Profile() {
 
       <section className="stack">
         <button className="btn secondary block" onClick={() => nav({ name: 'certificate' })}>Sertifikatı yoxla</button>
-        <button className="btn secondary block" onClick={async () => { await api.logout(); setMe(null); nav({ name: 'welcome' }, true); }}>Çıxış</button>
+        <button className="btn secondary block" onClick={signOut}><IconLogout />Çıxış</button>
         {api.demo && <button className="btn ghost" onClick={() => setConfirmReset(true)}>Demo məlumatlarını sıfırla</button>}
         <p className="tiny muted center">Məzmun versiyası {meta.contentVersion}. Tədris materialıdır, hüquqi məsləhət deyil. Qanunların rəsmi mətni: e-qanun.az.</p>
       </section>
@@ -209,34 +211,17 @@ export function Profile() {
 }
 
 function NameEdit({ onClose }: { onClose: () => void }) {
-  const { api, me, setMe } = useApp();
-  const [name, setName] = useState(me?.fullName ?? '');
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const save = async () => {
-    setBusy(true);
-    setError(null);
-    try {
-      setMe(await api.updateProfile({ fullName: name.trim() || null }));
-      toast('Yadda saxlanıldı.');
-      onClose();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Xəta baş verdi.');
-    } finally {
-      setBusy(false);
-    }
-  };
+  const { profile, setProfile } = useApp();
   return (
     <Modal onClose={onClose}>
-      <h2>Ad və soyad</h2>
-      <div className="field">
-        <label htmlFor="pe-name">Sertifikatda yazılacaq ad</label>
-        <input id="pe-name" className="input" value={name} maxLength={60} autoComplete="name" onChange={(e) => setName(e.target.value)} placeholder="Məsələn, Aynur Məmmədova" />
-        <span className="hint">Artıq verilmiş sertifikatlar dəyişmir; yeni sertifikatlarda bu ad yazılacaq.</span>
-      </div>
-      {error && <div className="banner bad" role="alert">{error}</div>}
-      <button className="btn primary block" disabled={busy} onClick={save}>Yadda saxla</button>
-      <button className="btn secondary block" onClick={onClose}>Ləğv et</button>
+      <h2>Şəxsi məlumat</h2>
+      <p className="small muted">Artıq verilmiş sertifikatlar dəyişmir; yeni sertifikatlarda yeni ad yazılacaq.</p>
+      <ProfileForm
+        initial={profile ?? { firstName: null, lastName: null, username: null }}
+        submitText="Yadda saxla"
+        onSaved={(p) => { setProfile(p); toast('Yadda saxlanıldı.'); onClose(); }}
+      />
+      <button className="btn ghost block" onClick={onClose}>Ləğv et</button>
     </Modal>
   );
 }

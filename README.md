@@ -2,31 +2,50 @@
 
 Dövlət qulluğu test imtahanının **«Qanunvericilik»** fənninə (AC, BA, BB kateqoriyaları; **AB tezliklə**) Duolingo modelində hazırlıq: alt mövzulara (bölmələrə) bölünmüş qısa dərslər, aralıqlı təkrar (SRS), can yerinə paqonda 3 ulduz, XP, ardıcıl günlər, Gizirdən Ordu generalına qədər hərbi rütbələr, təltiflər, həftəlik/aylıq reytinq, PDF sertifikatlı yarışlar, bölmə testləri, mövzu final testləri və real formatda sınaq imtahanı. Abunə modeli: pulsuz plan (Konstitusiya mövzusu) + Premium.
 
-Bu repozitoriya işlək MVP-dir: istifadəçi tətbiqi, redaktor/admin paneli, server API, Postgres sxemi və PDF materiallardan məzmun yaradan pipeline. **Onlayn ödəniş hələ qoşulmayıb** (növbəti mərhələ, aşağıya bax).
+Bu repozitoriya istifadəçi tətbiqi, redaktor/admin paneli, server API, Postgres sxemi və PDF materiallardan məzmun yaradan pipeline-dan ibarətdir. Hesablar və verilənlər bazası **Supabase** üzərindədir (Auth + Postgres). **Onlayn ödəniş hələ qoşulmayıb** (növbəti mərhələ, aşağıya bax).
 
 ## Tərkib
 
 ```
 packages/core      Domen mühərriki (TypeScript): SRS, ulduzlar, XP, ardıcıllıq, hərbi rütbələr və təltiflər, reytinq,
                    yarışlar, imtahan formatı, dərs/təkrar/bölmə/final/sınaq sessiyaları. Server və brauzer demosu eyni kodu işlədir.
-apps/server        Hono + Postgres API: qeydiyyat/giriş, email təsdiqi, şifrə bərpası, öyrənmə API-si, admin API-si,
+apps/server        Hono + Postgres API: Supabase access token-lərinin yoxlanması, öyrənmə API-si, admin API-si,
                    məzmun idxalı, miqrasiyalar. İstehsalda veb tətbiqi də bu server verir.
-apps/web           React PWA (mobil-birinci). İki rejim: server (HTTP API) və demo (bütün məntiq brauzerdə).
+apps/web           React PWA (mobil-birinci). Supabase Auth (@supabase/supabase-js) + server API; demo rejimində hər şey brauzerdə.
+supabase/          profiles.sql: profiles cədvəli, qeydiyyat triggeri, RLS — Supabase SQL Editor-da bir dəfə işə salınır.
 tools/content      Python pipeline: PDF → qanun maddələri, testlər, sual-cavab → mövzu/dərs/kart/sual; mətn təmizləmə və yoxlama alətləri.
 content/fixes      Hüquqi yoxlamadan keçmiş düzəlişlər: cavab açarları, sual mətnləri, kartlar, yazı səhvləri.
 content/build      Hazır məzmun paketi (content.json) və keyfiyyət hesabatı (report.md).
-scripts/dev-db.sh  Docker-siz lokal Postgres 16 (inkişaf və testlər üçün).
+scripts/           dev-db.sh: Docker-siz lokal Postgres 16; supabase-stub.sql: lokal testlər üçün auth sxeminin minimal əvəzi.
 ```
 
+## Supabase qurulumu
+
+1. **Layihə**: supabase.com-da yeni layihə yaradın.
+2. **SQL**: Dashboard → SQL Editor → `supabase/profiles.sql` faylının məzmununu yapışdırıb işə salın. Skript təkrar işə salına bilər. Nə qurur:
+   - `public.profiles` (`id` → `auth.users.id`, `first_name`, `last_name`, `username` — unikal, kiçik hərflərlə, `updated_at`);
+   - `on_auth_user_created` triggeri: qeydiyyatdan keçən kimi boş profil sətri yaranır;
+   - RLS: hər kəs yalnız öz sətrini oxuyur və dəyişir, `anon` girişi yoxdur;
+   - `username_available(text)`: «Profilini tamamla» ekranında istifadəçi adını yoxlamaq üçün (yalnız daxil olmuş istifadəçilərə).
+3. **Auth**: Authentication → Sign In / Providers → Email aktiv, **Confirm email** açıq. Authentication → URL Configuration: *Site URL* = tətbiqin ünvanı (məs. `https://qanunhub.az`), *Redirect URLs*-ə `https://qanunhub.az/**` əlavə edin (təsdiq və şifrə bərpası linkləri `/` və `/sifre-yenile` ünvanlarına qayıdır). Email şablonlarını Azərbaycan dilinə çevirmək tövsiyə olunur; istehsalda öz SMTP provayderinizi qoşun.
+4. **Server**: `.env.example` → `.env`: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` (Project Settings → API) və `DATABASE_URL` (Project Settings → Database, session pooler). Server ilk başlanğıcda öz cədvəllərini (`users`, irəliləyiş, reytinq, məzmun …) eyni bazada yaradır və hamısında RLS-i açır — Data API onlara çata bilmir, server isə cədvəllərin sahibi kimi qoşulur.
+5. **Admin**: `ADMIN_EMAIL`-dəki hesab ilk girişində admin olur; sonradan: `npm run cli -w @qanunhub/server -- set-role <email> admin`.
+
+Token-lər yeni layihələrdə asimmetrik açarla imzalanır və server onları `https://<ref>.supabase.co/auth/v1/.well-known/jwks.json` ilə yoxlayır (issuer `…/auth/v1`, audience `authenticated`, anonim sessiyalar qəbul edilmir). Köhnə HS256 «JWT secret»-lə işləyən layihədə `SUPABASE_JWT_SECRET` təyin edin.
+
+**İstifadəçi axını**: e-poçt + şifrə ilə giriş/qeydiyyat → (təsdiq linki) → **Profilini tamamla** (ad, soyad, unikal istifadəçi adı; tamamlanmayana qədər server bütün öyrənmə API-sini `428 PROFILE_REQUIRED` ilə bağlayır) → kateqoriya seçimi → əsas panel. Sessiyanı `supabase-js` saxlayır və yeniləyir; tətbiq `onAuthStateChange`-ə bağlıdır (`apps/web/src/app.tsx`). Ad, soyad və istifadəçi adı `profiles`-də saxlanılır, server hər sorğuda onları `users.nickname` / `full_name`-ə köçürür (reytinq və sertifikatlar üçün).
+
 ## Tez başla (Docker)
+
+```bash
+cp .env.example .env
+```
 
 ```bash
 docker compose up --build
 ```
 
-Tətbiq: http://localhost:8080. İlk açılışda miqrasiyalar tətbiq olunur, `content/build/content.json` bazaya yüklənir və admin hesabı yaradılır (`ADMIN_EMAIL` / `ADMIN_PASSWORD`, standart: `admin@example.com` / `change-me-please`; ilk girişdən sonra dəyişin).
-
-Qeydiyyatdan keçən istifadəçinin təsdiq məktubu **Admin paneli → Poçt** bölməsində görünür (email provayderi hələ qoşulmayıb). Yoxlama mərhələsində təsdiqi keçmək üçün: `AUTO_VERIFY_EMAIL=true docker compose up`.
+Tətbiq: http://localhost:8080. İlk açılışda miqrasiyalar tətbiq olunur və `content/build/content.json` bazaya yüklənir.
 
 ## Lokal inkişaf
 
@@ -36,12 +55,18 @@ Tələblər: Node.js 20+, Postgres 16 (və ya `scripts/dev-db.sh`), məzmun pipe
 npm install
 ```
 
+Supabase-siz lokal baza (auth sxeminin əvəzi ilə):
+
 ```bash
 scripts/dev-db.sh start          # postgres://postgres@localhost:55432/qanunhub
 ```
 
 ```bash
-cp .env.example .env             # DATABASE_URL-i yuxarıdakı ünvana dəyişin
+psql -h /tmp -p 55432 -U postgres -d qanunhub -f scripts/supabase-stub.sql -f supabase/profiles.sql
+```
+
+```bash
+cp .env.example .env             # DATABASE_URL-i yuxarıdakı ünvana, SUPABASE_* dəyərlərini öz layihənizə dəyişin
 set -a; . ./.env; set +a
 npm run db:migrate
 npm run content:import           # content/build/content.json → baza
@@ -63,12 +88,12 @@ npm run dev:web                  # Veb: http://localhost:5173 (/api serverə pro
 npm run build:demo               # apps/web/dist-demo/index.html
 ```
 
-Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir, hesablar və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Giriş səhifəsində «Demo hesabla bax (Premium)» bir kliklə hazır Premium hesaba daxil edir. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
+Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir; Supabase əvəzinə hesablar, profillər və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Giriş, qeydiyyat, «Profilini tamamla» və şifrə bərpası istehsaldakı kimi işləyir (bərpa linki əvəzinə dərhal «Yeni şifrə» ekranı açılır). Giriş səhifəsində «Demo hesabla bax (Premium)» bir kliklə hazır Premium hesaba daxil edir. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
 
 ### Testlər
 
 ```bash
-scripts/dev-db.sh start && npm test      # core: 33 test, server API: 17 inteqrasiya testi (qanunhub_test bazası)
+scripts/dev-db.sh start && npm test      # core: 33 test, server API: 19 inteqrasiya testi (qanunhub_test bazası, Supabase əvəzi + profiles.sql)
 ```
 
 ```bash
@@ -79,18 +104,21 @@ npm run typecheck
 
 | Dəyişən | Təyinat | Standart |
 |---|---|---|
-| `DATABASE_URL` | Postgres bağlantısı | `postgres://qanunhub:qanunhub@localhost:5432/qanunhub` |
+| `SUPABASE_URL` | `https://<ref>.supabase.co` | — |
+| `SUPABASE_PUBLISHABLE_KEY` | Publishable (və ya köhnə anon) açar; brauzerə `/api/config` ilə verilir | — |
+| `SUPABASE_JWT_SECRET` | Yalnız HS256 ilə imzalayan köhnə layihələr üçün | boş |
+| `DATABASE_URL` | Supabase Postgres bağlantısı | — |
+| `DATABASE_PREPARE` | Transaction pooler (6543) üçün `false` | `true` |
 | `PORT` | Server portu | `8080` |
-| `APP_ORIGIN` | Tətbiqin ictimai ünvanı (email linkləri, CSRF yoxlaması) | `http://localhost:5173` |
-| `COOKIE_SECURE` | Sessiya cookie-si yalnız HTTPS ilə | istehsalda `true` |
+| `APP_ORIGIN` | Tətbiqin ictimai ünvanı | `http://localhost:5173` |
 | `TRUST_PROXY` | Reverse proxy arxasında (`X-Forwarded-For`) | `false` |
-| `ADMIN_EMAIL`, `ADMIN_PASSWORD` | İlk administrator (yoxdursa yaradılır) | — |
-| `AUTO_VERIFY_EMAIL` | Email təsdiqini keçmək (yalnız sınaq mühiti) | `false` |
+| `ADMIN_EMAIL` | Bu e-poçtlu hesab ilk girişində admin olur | — |
 | `CATEGORY_CHANGE_LIMIT` | Kateqoriyanı 30 gündə bir dəfə dəyişmək | `true` |
-| `MAIL_MODE` | `outbox` (bazada) və ya `console` (həm də loqda, yalnız lokal) | `outbox` |
-| `WEB_DIST` | Serverin verəcəyi veb quruluşu | boş |
-| `CONTENT_SEED` | Baza boşdursa, başlanğıcda idxal olunan content.json | boş |
+| `WEB_DIST` | Serverin verəcəyi veb quruluşu (Docker təyin edir) | boş |
+| `CONTENT_SEED` | Baza boşdursa, başlanğıcda idxal olunan content.json (Docker təyin edir) | boş |
 | `MIGRATIONS_DIR` | Miqrasiya qovluğu | `apps/server/migrations` |
+
+Statik hostinqdə (server olmadan) veb tətbiq Supabase ayarlarını `VITE_SUPABASE_URL` və `VITE_SUPABASE_PUBLISHABLE_KEY` build dəyişənlərindən götürür.
 
 ## Əsas qaydalar (kodda)
 
@@ -111,9 +139,11 @@ npm run typecheck
 ## Təhlükəsizlik
 
 - Düzgün cavablar klientə göndərilmir: hər cavab serverdə yoxlanılır, nəticə və XP serverdə hesablanır (istifadəçi üzrə `pg_advisory_xact_lock`, təkrar `complete` idempotentdir).
-- Şifrələr scrypt ilə; sessiya tokenləri bazada sha256 ilə saxlanılır, `HttpOnly` + `SameSite=Lax` cookie.
-- Bütün yazma sorğularında CSRF başlığı (`X-Requested-With`), sərt CSP, `X-Frame-Options: DENY`.
-- Giriş, qeydiyyat və bərpa üçün sorğu limiti (yaddaşda: bir server nüsxəsi üçün; bir neçə nüsxədə Redis-ə keçirilməlidir).
+- Şifrələr, sessiyalar, e-poçt təsdiqi və bərpa Supabase Auth-dadır. Server hər sorğuda `Authorization: Bearer` token-ini JWKS (və ya köhnə layihədə HS256 secret) ilə yoxlayır: imza, issuer, audience `authenticated`, rol; anonim sessiyalar rədd edilir. E-poçtun təsdiqi `auth.users.email_confirmed_at`-dan oxunur.
+- `profiles` RLS ilə qorunur (yalnız öz sətri; `anon` girişi yoxdur); `username_available` yalnız daxil olmuş istifadəçiyə «bəli/xeyr» qaytarır. Serverin öz cədvəllərində RLS açıqdır və heç bir policy yoxdur, ona görə Data API (anon/authenticated) onları görmür. Yeni cədvəl əlavə edən miqrasiya da RLS-i açmalıdır.
+- `service_role`/secret açar heç yerdə istifadə olunmur; brauzerə yalnız publishable açar gedir.
+- Bütün yazma sorğularında `X-Requested-With` başlığı, sərt CSP (`connect-src` yalnız öz domen və Supabase), `X-Frame-Options: DENY`.
+- Sorğu limiti yaddaşdadır (bir server nüsxəsi üçün; bir neçə nüsxədə Redis-ə keçirilməlidir). Giriş və qeydiyyat limitləri Supabase Auth-dadır.
 - Admin əməliyyatları audit jurnalına yazılır (əvvəlki və sonrakı dəyərlərlə).
 
 ## Məzmun pipeline-ı
@@ -177,7 +207,7 @@ Qoşulma üçün lazım olanlar:
 2. `checkout`: provayderdə ödəniş sessiyası yaratmaq, `payments`-ə `pending` yazmaq, istifadəçini ödəniş səhifəsinə yönləndirmək.
 3. Webhook: imzanı yoxlamaq, idempotent emal (provayderin əməliyyat ID-si unikal), uğurlu ödənişdə `grantPremium`, abunəlik yenilənməsi və ləğvi.
 4. İstifadə şərtləri, məxfilik siyasəti, pulun qaytarılması qaydaları və vergi (ƏDV) statusu.
-5. Email provayderi (təsdiq və bərpa məktubları hazırda `mail_outbox`-a yazılır).
+5. Supabase Auth üçün öz SMTP provayderi və Azərbaycan dilində e-poçt şablonları.
 
 ## Hüquqi qeyd
 

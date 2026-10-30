@@ -10,7 +10,7 @@ export function RankHero({ me, compact = false, onPremium }: { me: MeDto; compac
   return (
     <section className="hero-card stack">
       <div className="rank-line">
-        <Epaulette code={r.code} size={compact ? 64 : 84} />
+        <Epaulette code={r.code} size={compact ? 72 : 96} />
         <div className="grow stack tight">
           <span className="small">{me.fullName || me.nickname}</span>
           <span className="rank-title">{r.title}</span>

@@ -203,7 +203,7 @@ export function CertificateCheck({ code: initial }: { code?: string }) {
   useEffect(() => { if (initial) check(initial); }, [initial]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <main className="page no-tabs stack loose">
-      <button className="btn ghost" style={{ alignSelf: 'flex-start', paddingInline: 0 }} onClick={() => nav(me ? { name: 'competitions' } : { name: 'welcome' })}><IconBack />Geri</button>
+      <button className="btn ghost" style={{ alignSelf: 'flex-start', paddingInline: 0 }} onClick={() => nav(me ? { name: 'competitions' } : { name: 'login' })}><IconBack />Geri</button>
       <section className="stack tight">
         <h1>Sertifikatı yoxla</h1>
         <p className="muted">QanunHub yarışlarında verilən sertifikatın kodunu daxil et (məsələn, QH-AB12-CD34).</p>

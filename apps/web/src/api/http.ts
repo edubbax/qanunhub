@@ -1,15 +1,21 @@
-// Api over HTTP to the QanunHub server (same origin, session cookie).
+// Api over HTTP to the QanunHub server (same origin). Every call carries the Supabase access token.
 import type { ContentBundle, PathDto, SessionKind } from '@qanunhub/core';
+import type { AuthBackend } from '../auth/types';
 import type { Api, ItemFilter } from './types';
 import { ApiError } from './types';
 
-async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(auth: AuthBackend, method: string, path: string, body?: unknown): Promise<T> {
   let res: Response;
+  const token = await auth.accessToken();
   try {
     res = await fetch(path, {
       method,
-      credentials: 'same-origin',
-      headers: { 'content-type': 'application/json', 'x-requested-with': 'qanunhub' },
+      credentials: 'omit',
+      headers: {
+        'content-type': 'application/json',
+        'x-requested-with': 'qanunhub',
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
+      },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
@@ -27,7 +33,8 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
 const qs = (o: Record<string, unknown>) =>
   Object.entries(o).filter(([, v]) => v !== undefined && v !== '' && v !== null).map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
 
-export function httpApi(): Api {
+export function httpApi(auth: AuthBackend): Api {
+  const call = <T,>(method: string, path: string, body?: unknown) => request<T>(auth, method, path, body);
   return {
     mode: 'server',
     async me() {
@@ -38,13 +45,6 @@ export function httpApi(): Api {
         throw e;
       }
     },
-    register: (email, password, nickname) => call('POST', '/api/auth/register', { email, password, nickname, accept: true }),
-    login: (email, password) => call('POST', '/api/auth/login', { email, password }),
-    logout: () => call('POST', '/api/auth/logout'),
-    forgot: (email) => call('POST', '/api/auth/forgot', { email }),
-    reset: (token, password) => call('POST', '/api/auth/reset', { token, password }),
-    verify: (token) => call('POST', '/api/auth/verify', { token }),
-    resendVerification: () => call('POST', '/api/auth/resend-verification'),
     meta: () => call('GET', '/api/meta'),
     updateProfile: (p) => call('PATCH', '/api/me', p),
     home: () => call('GET', '/api/home'),
@@ -77,7 +77,6 @@ export function httpApi(): Api {
       users: (q) => call('GET', `/api/admin/users?${qs({ q })}`),
       updateUser: (id, patch) => call('PATCH', `/api/admin/users/${id}`, patch),
       importContent: (bundle: ContentBundle) => call('POST', '/api/admin/import', bundle),
-      mail: () => call('GET', '/api/admin/mail'),
       audit: () => call('GET', '/api/admin/audit'),
     },
   };

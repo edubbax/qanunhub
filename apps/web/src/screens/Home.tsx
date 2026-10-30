@@ -7,7 +7,7 @@ import { LifeStars } from '../ui/insignia';
 import { RankHero } from '../ui/rank';
 
 export function Home() {
-  const { api, nav, setMe, meta } = useApp();
+  const { api, auth, nav, setMe, meta } = useApp();
   const { data, error, loading, reload } = useLoad(() => api.home(), []);
   const [sent, setSent] = useState(false);
   const [live, setLive] = useState<CompetitionDto | null>(null);
@@ -32,8 +32,8 @@ export function Home() {
         <div className="banner warn">
           <IconMail />
           <div className="grow stack tight">
-            <span>Email ünvanını təsdiqlə: reytinq, yarışlar və ödəniş bundan sonra açılır.</span>
-            <button className="btn ghost small" style={{ alignSelf: 'flex-start', paddingInline: 0 }} disabled={sent} onClick={async () => { await api.resendVerification(); setSent(true); toast('Təsdiq məktubu yenidən göndərildi.'); }}>
+            <span>E-poçt ünvanını təsdiqlə: reytinq, yarışlar və ödəniş bundan sonra açılır.</span>
+            <button className="btn ghost small" style={{ alignSelf: 'flex-start', paddingInline: 0 }} disabled={sent} onClick={async () => { try { await auth.resendConfirmation(h.me.email); setSent(true); toast('Təsdiq məktubu yenidən göndərildi.'); } catch (e) { toast(e instanceof Error ? e.message : 'Göndərilmədi.'); } }}>
               {sent ? 'Göndərildi' : 'Məktubu yenidən göndər'}
             </button>
           </div>

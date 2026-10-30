@@ -6,7 +6,6 @@ import { join } from 'node:path';
 import { serveStatic } from '@hono/node-server/serve-static';
 import type { Context } from 'hono';
 import { Hono } from 'hono';
-import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { z } from 'zod';
 import type { Category, ContentBundle, EngineCtx, Period, Scope, UserRecord } from '@qanunhub/core';
 import {
@@ -15,22 +14,24 @@ import {
   adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
   startCompetition,
 } from '@qanunhub/core';
-import {
-  SESSION_COOKIE, SESSION_DAYS, consumeToken, createSession, createUser, destroySession, issueToken, login, sessionUser, setPassword,
-} from './auth';
+import { resolveAccount } from './accounts';
 import { config } from './config';
 import type { ContentCache } from './content';
 import { importBundle, rowToItem } from './content';
 import type { Sql, Tx } from './db';
-import { resetMail, sendMail, verifyMail } from './mailer';
 import { PgStore } from './pgStore';
 import { rateLimit } from './rateLimit';
+import type { TokenVerifier } from './supabaseAuth';
 
-type Env = { Variables: { user: UserRecord | null } };
+type Env = { Variables: { user: UserRecord | null; profileComplete: boolean } };
 
 export interface AppDeps {
   sql: Sql;
   content: ContentCache;
+  /** Checks a Supabase access token (Authorization: Bearer ...). */
+  verifyToken: TokenVerifier;
+  /** auth.users is in this database (Supabase), so email confirmation is read from it. */
+  authUsers?: boolean;
   now?: () => number;
 }
 
@@ -41,12 +42,10 @@ export const PLANS = [
 
 const answerSchema = z.object({ qid: z.number().int().min(0).max(500), answer: z.array(z.number().int().min(0).max(20)).max(20), ms: z.number().min(0).max(3_600_000) });
 const profileSchema = z.object({
-  fullName: z.string().max(80).nullable().optional(),
   category: z.enum(['AB', 'AC', 'BA', 'BB']).optional(),
   subgroup: z.string().max(5).nullable().optional(),
   examDate: z.string().max(10).nullable().optional(),
   dailyGoal: z.number().int().optional(),
-  nickname: z.string().max(24).optional(),
 });
 
 function clientIp(c: Context): string {
@@ -58,9 +57,7 @@ function clientIp(c: Context): string {
   return env?.incoming?.socket?.remoteAddress ?? 'local';
 }
 
-function setSessionCookie(c: Context, token: string) {
-  setCookie(c, SESSION_COOKIE, token, { httpOnly: true, sameSite: 'Lax', path: '/', secure: config.cookieSecure, maxAge: SESSION_DAYS * 86400 });
-}
+const bearer = (c: Context) => /^Bearer\s+(\S+)$/i.exec(c.req.header('authorization') ?? '')?.[1];
 
 async function body<T>(c: Context, schema: z.ZodType<T>): Promise<T> {
   let raw: unknown;
@@ -75,7 +72,9 @@ async function body<T>(c: Context, schema: z.ZodType<T>): Promise<T> {
 }
 
 export function createApp(deps: AppDeps) {
-  const { sql, content } = deps;
+  const { sql, content, verifyToken } = deps;
+  const accountOpts = { adminEmail: config.adminEmail, authUsers: !!deps.authUsers };
+  const supabaseOrigin = config.supabaseUrl ? new URL(config.supabaseUrl).origin : '';
   const now = deps.now ?? Date.now;
   const app = new Hono<Env>();
 
@@ -91,23 +90,32 @@ export function createApp(deps: AppDeps) {
     c.header('Referrer-Policy', 'same-origin');
     c.header('X-Frame-Options', 'DENY');
     if (!c.req.path.startsWith('/api')) {
-      c.header('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      c.header('Content-Security-Policy', `default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin}` : ''}; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`);
     }
   });
 
-  // CSRF: state-changing API calls must come from our own scripts (custom header + same-origin cookie).
+  // Requests carry the Supabase access token, not a cookie; the custom header stays as a second guard.
   app.use('/api/*', async (c, next) => {
     if (c.req.method !== 'GET' && c.req.method !== 'HEAD' && c.req.header('x-requested-with') !== 'qanunhub') {
       throw new AppError('FORBIDDEN', 'Sorğu qəbul edilmədi.');
     }
     rateLimit(`all:${clientIp(c)}`, 600, 60_000, now());
-    c.set('user', await sessionUser(sql, getCookie(c, SESSION_COOKIE)));
+    const claims = await verifyToken(bearer(c));
+    if (claims) {
+      const account = await resolveAccount(sql, claims, now(), accountOpts);
+      c.set('user', account.user);
+      c.set('profileComplete', account.profileComplete);
+    } else {
+      c.set('user', null);
+      c.set('profileComplete', false);
+    }
     await next();
   });
 
   const requireUser = (c: Context<Env>): UserRecord => {
     const u = c.get('user');
     if (!u) throw new AppError('UNAUTHORIZED', 'Hesaba daxil ol.');
+    if (!c.get('profileComplete')) throw new AppError('PROFILE_REQUIRED', 'Əvvəlcə profilini tamamla: ad, soyad və istifadəçi adı.');
     return u;
   };
   const requireRole = (c: Context<Env>, roles: UserRecord['role'][]): UserRecord => {
@@ -129,82 +137,16 @@ export function createApp(deps: AppDeps) {
     }) as Promise<T>;
   }
 
-  // ------------------------------------------------------------------ auth
+  // ------------------------------------------------------------------ public
 
-  app.post('/api/auth/register', async (c) => {
-    rateLimit(`register:${clientIp(c)}`, 10, 3600_000, now());
-    const b = await body(c, z.object({ email: z.string(), password: z.string(), nickname: z.string(), accept: z.literal(true) }));
-    const user = await sql.begin(async (tx) => {
-      const u = await createUser(tx, b.email, b.password, b.nickname.trim(), now(), { verified: config.autoVerifyEmail });
-      if (!u.emailVerified) {
-        const token = await issueToken(tx, u.id, 'verify');
-        const m = verifyMail(`${config.appOrigin}/tesdiq?token=${token}`);
-        await sendMail(tx, u.email, m.subject, m.body);
-      }
-      return u;
-    });
-    setSessionCookie(c, await createSession(sql, user.id, { ua: c.req.header('user-agent'), ip: clientIp(c) }));
-    return c.json({ ok: true });
-  });
-
-  app.post('/api/auth/login', async (c) => {
-    const b = await body(c, z.object({ email: z.string().max(200), password: z.string().max(200) }));
-    rateLimit(`login:${clientIp(c)}`, 20, 15 * 60_000, now());
-    rateLimit(`login:${b.email.toLowerCase()}`, 10, 15 * 60_000, now());
-    const u = await login(sql, b.email, b.password);
-    setSessionCookie(c, await createSession(sql, u.id, { ua: c.req.header('user-agent'), ip: clientIp(c) }));
-    return c.json({ ok: true });
-  });
-
-  app.post('/api/auth/logout', async (c) => {
-    await destroySession(sql, getCookie(c, SESSION_COOKIE));
-    deleteCookie(c, SESSION_COOKIE, { path: '/' });
-    return c.json({ ok: true });
-  });
-
-  app.post('/api/auth/verify', async (c) => {
-    const b = await body(c, z.object({ token: z.string().max(100) }));
-    const userId = await consumeToken(sql, b.token, 'verify');
-    await sql`update users set email_verified = true where id = ${userId}`;
-    return c.json({ ok: true });
-  });
-
-  app.post('/api/auth/resend-verification', async (c) => {
-    const u = requireUser(c);
-    rateLimit(`resend:${u.id}`, 3, 3600_000, now());
-    if (u.emailVerified) return c.json({ ok: true });
-    const token = await issueToken(sql, u.id, 'verify');
-    const m = verifyMail(`${config.appOrigin}/tesdiq?token=${token}`);
-    await sendMail(sql, u.email, m.subject, m.body);
-    return c.json({ ok: true });
-  });
-
-  app.post('/api/auth/forgot', async (c) => {
-    const b = await body(c, z.object({ email: z.string().max(200) }));
-    rateLimit(`forgot:${clientIp(c)}`, 5, 3600_000, now());
-    const [r] = await sql`select id, email from users where email = ${b.email.trim().toLowerCase()}`;
-    if (r) {
-      const token = await issueToken(sql, r.id, 'reset');
-      const m = resetMail(`${config.appOrigin}/sifre-berpa?token=${token}`);
-      await sendMail(sql, r.email, m.subject, m.body);
-    }
-    return c.json({ ok: true }); // same answer whether or not the account exists
-  });
-
-  app.post('/api/auth/reset', async (c) => {
-    const b = await body(c, z.object({ token: z.string().max(100), password: z.string().max(200) }));
-    await sql.begin(async (tx) => {
-      const userId = await consumeToken(tx, b.token, 'reset');
-      await setPassword(tx, userId, b.password);
-    });
-    return c.json({ ok: true });
-  });
+  // The browser builds its Supabase client from these; the publishable key is meant to be public.
+  app.get('/api/config', (c) => c.json({ supabaseUrl: config.supabaseUrl, supabaseKey: config.supabasePublishableKey }));
 
   // ------------------------------------------------------------------ learner
 
   // Test formats and programme sizes are shown only after sign-in.
   app.get('/api/meta', (c) => {
-    const signedIn = !!c.get('user');
+    const signedIn = !!c.get('user') && c.get('profileComplete');
     return c.json({
       categories: CATEGORIES, availableCategories: AVAILABLE_CATEGORIES, comingSoonCategories: COMING_SOON_CATEGORIES,
       subgroups: SUBGROUPS, plans: PLANS, contentVersion: content.current.bundle.version, signedIn,
@@ -215,12 +157,8 @@ export function createApp(deps: AppDeps) {
 
   app.get('/api/me', async (c) => c.json(await run(c, (ctx, id) => getMe(ctx, id))));
   app.patch('/api/me', async (c) => {
+    // Name and username are edited in public.profiles (Supabase) and follow from there.
     const b = await body(c, profileSchema);
-    if (b.nickname) {
-      const u = requireUser(c);
-      const [taken] = await sql`select 1 from users where lower(nickname) = lower(${b.nickname}) and id <> ${u.id}`;
-      if (taken) throw new AppError('CONFLICT', 'Bu ləqəb artıq istifadə olunur.');
-    }
     return c.json(await run(c, (ctx, id) => updateProfile(ctx, id, b as any)));
   });
   app.get('/api/home', async (c) => c.json(await run(c, (ctx, id) => getHome(ctx, id))));
@@ -484,12 +422,6 @@ export function createApp(deps: AppDeps) {
     await audit(sql, actor.id, 'content.import', 'content', b.version ?? '', null, res);
     await content.reload();
     return c.json(res);
-  });
-
-  app.get('/api/admin/mail', async (c) => {
-    requireRole(c, ['admin']);
-    const rows = await sql`select id, to_email, subject, body, created_at from mail_outbox order by id desc limit 50`;
-    return c.json(rows.map((r) => ({ id: String(r.id), to: r.to_email, subject: r.subject, body: r.body, createdAt: new Date(r.created_at).getTime() })));
   });
 
   app.get('/api/admin/audit', async (c) => {

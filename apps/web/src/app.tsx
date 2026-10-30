@@ -1,50 +1,55 @@
-// App shell: routing (URL paths on the server build, in-memory in the demo), session state and layout.
+// App shell. The user flow follows Supabase Auth (onAuthStateChange):
+//   signed out            -> AuthScreen (e-mail and password: sign in, sign up, forgotten password)
+//   password-reset link   -> NewPassword
+//   profile not complete  -> CompleteProfile (first name, last name, unique username); the app stays closed
+//   no category chosen    -> Onboarding (category, subgroup, exam date)
+//   otherwise             -> the learning app (Home, Path, competitions, ...)
+// Routing uses URL paths on the server build and stays in memory in the demo.
 import type { MeDto, SessionKind } from '@qanunhub/core';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { Api, MetaDto } from './api/types';
 import { ApiError } from './api/types';
-import { ErrorBox, Spinner, ToastHost } from './ui/components';
+import type { AuthBackend, AuthUser, Profile } from './auth/types';
+import { isProfileComplete } from './auth/types';
+import { ErrorBox, Splash, ToastHost } from './ui/components';
 import { IconBolt, IconFlame, IconHome, IconMedal, IconPath, IconTrophy, IconUser } from './ui/icons';
 import { LifeStars } from './ui/insignia';
 import logoUrl from './assets/logo.png';
 import { Competitions, CompetitionScreen, CertificateCheck } from './screens/Competitions';
-import { Forgot, Login, Register, Reset, Verify, Welcome } from './screens/Auth';
+import { AuthScreen, NewPassword, type AuthMode } from './screens/Auth';
+import { CompleteProfile } from './screens/CompleteProfile';
 import { Onboarding } from './screens/Onboarding';
 import { Home } from './screens/Home';
 import { PathScreen } from './screens/Path';
 import { SessionScreen } from './screens/Session';
 import { Leaderboard } from './screens/Leaderboard';
 import { Weak } from './screens/Weak';
-import { Profile } from './screens/Profile';
+import { Profile as ProfileScreen } from './screens/Profile';
 import { Premium } from './screens/Premium';
 import { Admin } from './screens/Admin';
 
 export type Route =
-  | { name: 'welcome' } | { name: 'login' } | { name: 'register' } | { name: 'forgot' }
-  | { name: 'reset'; token: string } | { name: 'verify'; token: string }
+  | { name: 'login' } | { name: 'register' } | { name: 'forgot' }
   | { name: 'onboarding' } | { name: 'home' } | { name: 'path'; topicId?: string }
   | { name: 'session'; kind: SessionKind; lessonId?: string; topicId?: string; sectionId?: string; competitionId?: string; back?: Route }
   | { name: 'leaderboard' } | { name: 'weak' } | { name: 'profile' } | { name: 'premium' } | { name: 'admin' }
   | { name: 'competitions' } | { name: 'competition'; id: string } | { name: 'certificate'; code?: string };
 
 const PATHS: Record<string, string> = {
-  welcome: '/', login: '/giris', register: '/qeydiyyat', forgot: '/sifre-unutdum', reset: '/sifre-berpa', verify: '/tesdiq',
+  login: '/giris', register: '/qeydiyyat', forgot: '/sifre-unutdum',
   onboarding: '/baslangic', home: '/bu-gun', path: '/yol', leaderboard: '/reytinq', weak: '/zeif', profile: '/profil',
   premium: '/premium', admin: '/admin', competitions: '/yarislar', certificate: '/sertifikat',
 };
+const RECOVERY_PATH = '/sifre-yenile';
 
 function routeFromUrl(): Route {
   const p = window.location.pathname.replace(/\/+$/, '') || '/';
-  const token = new URLSearchParams(window.location.search).get('token') ?? '';
+  const q = new URLSearchParams(window.location.search);
   const name = Object.keys(PATHS).find((k) => PATHS[k] === p);
-  if (name === 'reset' || name === 'verify') return { name, token };
-  if (name === 'path') return { name: 'path', topicId: new URLSearchParams(window.location.search).get('movzu') ?? undefined };
-  if (name === 'competitions') {
-    const id = new URLSearchParams(window.location.search).get('id');
-    if (id) return { name: 'competition', id };
-  }
-  if (name === 'certificate') return { name: 'certificate', code: new URLSearchParams(window.location.search).get('kod') ?? undefined };
-  return name && name !== 'session' ? ({ name } as Route) : { name: 'welcome' };
+  if (name === 'path') return { name: 'path', topicId: q.get('movzu') ?? undefined };
+  if (name === 'competitions' && q.get('id')) return { name: 'competition', id: q.get('id')! };
+  if (name === 'certificate') return { name: 'certificate', code: q.get('kod') ?? undefined };
+  return name ? ({ name } as Route) : { name: 'home' };
 }
 
 function urlFor(r: Route): string | null {
@@ -57,12 +62,17 @@ function urlFor(r: Route): string | null {
 
 interface Ctx {
   api: Api;
+  auth: AuthBackend;
+  user: AuthUser | null;
+  profile: Profile | null;
+  setProfile: (p: Profile) => void;
   me: MeDto | null;
   meta: MetaDto;
   route: Route;
   nav: (r: Route, replace?: boolean) => void;
   refreshMe: () => Promise<MeDto | null>;
   setMe: (m: MeDto | null) => void;
+  signOut: () => Promise<void>;
 }
 
 const AppCtx = createContext<Ctx | null>(null);
@@ -72,15 +82,29 @@ export function useApp(): Ctx {
   return c;
 }
 
-const PUBLIC = new Set(['welcome', 'login', 'register', 'forgot', 'reset', 'verify', 'certificate']);
+const AUTH_ROUTES = new Set(['login', 'register', 'forgot']);
 const TABS = new Set(['home', 'path', 'leaderboard', 'profile', 'weak', 'premium', 'competitions', 'competition']);
 
-export function App({ api }: { api: Api }) {
+/** Where the session stands; 'loading' until the first onAuthStateChange event. */
+type Session = { status: 'loading' } | { status: 'out' } | { status: 'in'; user: AuthUser };
+/** The learner's data after sign-in, loaded in this order: profile, then the API's me + meta. */
+type Account =
+  | { step: 'idle' }
+  | { step: 'loading' }
+  | { step: 'profile'; profile: Profile }
+  | { step: 'ready'; profile: Profile; me: MeDto }
+  | { step: 'error'; error: unknown };
+
+export function App({ api, auth }: { api: Api; auth: AuthBackend }) {
   const useHistory = api.mode === 'server';
-  const [route, setRoute] = useState<Route>(() => (useHistory ? routeFromUrl() : { name: 'welcome' }));
-  const [me, setMe] = useState<MeDto | null>(null);
+  const [route, setRoute] = useState<Route>(() => (useHistory ? routeFromUrl() : { name: 'home' }));
+  const [session, setSession] = useState<Session>({ status: 'loading' });
+  const [recovery, setRecovery] = useState(() => useHistory && window.location.pathname === RECOVERY_PATH);
+  const [account, setAccount] = useState<Account>({ step: 'idle' });
   const [meta, setMeta] = useState<MetaDto | null>(null);
-  const [boot, setBoot] = useState<{ error: unknown; done: boolean }>({ error: null, done: false });
+  const [metaError, setMetaError] = useState<unknown>(null);
+  const userId = session.status === 'in' ? session.user.id : null;
+  const loadSeq = useRef(0);
 
   const nav = useCallback((r: Route, replace = false) => {
     setRoute(r);
@@ -98,74 +122,151 @@ export function App({ api }: { api: Api }) {
     return () => window.removeEventListener('popstate', f);
   }, [useHistory]);
 
-  const refreshMe = useCallback(async () => {
-    const m = await api.me();
-    setMe(m);
-    // Test formats and programme sizes arrive only for signed-in learners.
-    if (m) api.meta().then(setMeta, () => {});
-    return m;
-  }, [api]);
+  // The single source of truth for "who is signed in": Supabase's auth state, persisted across reloads.
+  useEffect(() => auth.onChange((event, user) => {
+    if (event === 'PASSWORD_RECOVERY') setRecovery(true);
+    if (!user) {
+      setSession({ status: 'out' });
+      setAccount({ step: 'idle' });
+      return;
+    }
+    // Token refreshes keep the same user: nothing to reload.
+    setSession((prev) => (prev.status === 'in' && prev.user.id === user.id ? prev : { status: 'in', user }));
+  }), [auth]);
 
-  const start = useCallback(async () => {
-    setBoot({ error: null, done: false });
+  const loadMeta = useCallback(async () => {
+    setMetaError(null);
     try {
-      const [m, mt] = await Promise.all([api.me(), api.meta()]);
-      setMe(m);
-      setMeta(mt);
-      setBoot({ error: null, done: true });
+      setMeta(await api.meta());
     } catch (e) {
-      setBoot({ error: e, done: true });
+      setMetaError(e);
     }
   }, [api]);
 
-  useEffect(() => { start(); }, [start]);
+  useEffect(() => { loadMeta(); }, [loadMeta]);
 
-  // Route guards: public pages for guests, onboarding until a category is chosen.
+  /** Profile first (Supabase), then the learner record (API). Returns me when the app can open. */
+  const loadAccount = useCallback(async () => {
+    const seq = ++loadSeq.current;
+    setAccount({ step: 'loading' });
+    try {
+      const profile = await auth.getProfile();
+      if (seq !== loadSeq.current) return null;
+      if (!isProfileComplete(profile)) {
+        setAccount({ step: 'profile', profile });
+        return null;
+      }
+      const [me, mt] = await Promise.all([api.me(), api.meta()]);
+      if (seq !== loadSeq.current) return null;
+      setMeta(mt);
+      if (!me) {
+        // The API refused the token (expired beyond refresh, or a different project): start over.
+        await auth.signOut();
+        return null;
+      }
+      setAccount({ step: 'ready', profile, me });
+      return me;
+    } catch (e) {
+      if (seq !== loadSeq.current) return null;
+      if (e instanceof ApiError && e.code === 'PROFILE_REQUIRED') {
+        setAccount({ step: 'profile', profile: await auth.getProfile().catch(() => ({ firstName: null, lastName: null, username: null })) });
+        return null;
+      }
+      setAccount({ step: 'error', error: e });
+      return null;
+    }
+  }, [api, auth]);
+
   useEffect(() => {
-    if (!boot.done || boot.error) return;
-    if (!me && !PUBLIC.has(route.name)) nav({ name: 'welcome' }, true);
-    else if (me && !me.category && route.name !== 'onboarding' && route.name !== 'verify') nav({ name: 'onboarding' }, true);
-    else if (me && me.category && (route.name === 'welcome' || route.name === 'login' || route.name === 'register' || route.name === 'onboarding')) nav({ name: 'home' }, true);
-  }, [boot, me, route.name, nav]);
+    if (userId) loadAccount();
+    else loadSeq.current++;
+  }, [userId, loadAccount]);
 
-  const ctx = useMemo<Ctx | null>(() => (meta ? { api, me, meta, route, nav, refreshMe, setMe } : null), [api, me, meta, route, nav, refreshMe]);
+  const refreshMe = useCallback(async () => {
+    const me = await api.me();
+    if (me) setAccount((a) => (a.step === 'ready' ? { ...a, me } : a));
+    return me;
+  }, [api]);
 
-  if (!boot.done) return <Spinner />;
-  if (boot.error || !ctx) {
-    return (
-      <div className="shell"><div className="page no-tabs"><ErrorBox error={boot.error ?? new ApiError('BOOT', 'Tətbiq yüklənmədi.', 0)} onRetry={start} /></div></div>
-    );
+  const setMe = useCallback((me: MeDto | null) => {
+    setAccount((a) => (a.step === 'ready' && me ? { ...a, me } : a));
+  }, []);
+
+  const setProfile = useCallback((profile: Profile) => {
+    setAccount((a) => (a.step === 'ready' ? { ...a, profile, me: { ...a.me, nickname: profile.username ?? a.me.nickname, fullName: `${profile.firstName} ${profile.lastName}` } } : a));
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await auth.signOut();
+    nav({ name: 'login' }, true);
+  }, [auth, nav]);
+
+  const me = account.step === 'ready' ? account.me : null;
+  const profile = account.step === 'ready' || account.step === 'profile' ? account.profile : null;
+  const user = session.status === 'in' ? session.user : null;
+
+  // Route guards once the learner is in: onboarding until a category is chosen, never the sign-in pages.
+  useEffect(() => {
+    if (!me) return;
+    if (!me.category && route.name !== 'onboarding') nav({ name: 'onboarding' }, true);
+    else if (me.category && (AUTH_ROUTES.has(route.name) || route.name === 'onboarding')) nav({ name: 'home' }, true);
+  }, [me, route.name, nav]);
+
+  const ctx = useMemo<Ctx | null>(
+    () => (meta ? { api, auth, user, profile, setProfile, me, meta, route, nav, refreshMe, setMe, signOut } : null),
+    [api, auth, user, profile, setProfile, me, meta, route, nav, refreshMe, setMe, signOut],
+  );
+
+  if (metaError && !meta) {
+    return <div className="shell"><div className="page no-tabs"><ErrorBox error={metaError} onRetry={loadMeta} /></div></div>;
   }
+  if (!ctx || session.status === 'loading') return <Splash />;
 
   let screen: JSX.Element;
-  switch (route.name) {
-    case 'welcome': screen = <Welcome />; break;
-    case 'login': screen = <Login />; break;
-    case 'register': screen = <Register />; break;
-    case 'forgot': screen = <Forgot />; break;
-    case 'reset': screen = <Reset token={route.token} />; break;
-    case 'verify': screen = <Verify token={route.token} />; break;
-    case 'onboarding': screen = <Onboarding />; break;
-    case 'home': screen = <Home />; break;
-    case 'path': screen = <PathScreen topicId={route.topicId} />; break;
-    case 'session': screen = <SessionScreen key={JSON.stringify(route)} route={route} />; break;
-    case 'leaderboard': screen = <Leaderboard />; break;
-    case 'weak': screen = <Weak />; break;
-    case 'profile': screen = <Profile />; break;
-    case 'premium': screen = <Premium />; break;
-    case 'admin': screen = <Admin />; break;
-    case 'competitions': screen = <Competitions />; break;
-    case 'competition': screen = <CompetitionScreen id={route.id} />; break;
-    case 'certificate': screen = <CertificateCheck code={route.code} />; break;
+  let chrome = false;
+  if (route.name === 'certificate') {
+    // Public: anyone can check a certificate code, signed in or not.
+    screen = <CertificateCheck code={route.code} />;
+  } else if (session.status === 'out') {
+    const mode: AuthMode = route.name === 'register' ? 'register' : route.name === 'forgot' ? 'forgot' : 'login';
+    screen = <AuthScreen mode={mode} onMode={(m) => nav({ name: m }, true)} />;
+  } else if (recovery) {
+    screen = <NewPassword onDone={() => { setRecovery(false); if (useHistory) history.replaceState(null, '', '/'); }} />;
+  } else if (account.step === 'idle' || account.step === 'loading') {
+    screen = <Splash />;
+  } else if (account.step === 'error') {
+    screen = (
+      <main className="page no-tabs stack">
+        <ErrorBox error={account.error} onRetry={loadAccount} />
+        <button className="btn ghost" onClick={signOut}>Çıxış</button>
+      </main>
+    );
+  } else if (account.step === 'profile') {
+    screen = <CompleteProfile initial={account.profile} onSaved={() => { loadAccount().then((m) => m && nav(m.category ? { name: 'home' } : { name: 'onboarding' }, true)); }} />;
+  } else if (!account.me.category || route.name === 'onboarding') {
+    screen = <Onboarding />;
+  } else {
+    chrome = TABS.has(route.name);
+    switch (route.name) {
+      case 'path': screen = <PathScreen topicId={route.topicId} />; break;
+      case 'session': screen = <SessionScreen key={JSON.stringify(route)} route={route} />; break;
+      case 'leaderboard': screen = <Leaderboard />; break;
+      case 'weak': screen = <Weak />; break;
+      case 'profile': screen = <ProfileScreen />; break;
+      case 'premium': screen = <Premium />; break;
+      case 'admin': screen = <Admin />; break;
+      case 'competitions': screen = <Competitions />; break;
+      case 'competition': screen = <CompetitionScreen id={route.id} />; break;
+      default: screen = <Home />; chrome = true;
+    }
   }
 
-  const showChrome = !!me?.category && TABS.has(route.name);
   return (
     <AppCtx.Provider value={ctx}>
-      <div className={`shell ${route.name === 'admin' ? 'wide' : ''}`}>
-        {showChrome && <TopBar />}
+      <div className={`shell ${route.name === 'admin' && me ? 'wide' : ''}`}>
+        {chrome && <TopBar />}
         {screen}
-        {showChrome && <TabBar />}
+        {chrome && <TabBar />}
       </div>
       <ToastHost />
     </AppCtx.Provider>

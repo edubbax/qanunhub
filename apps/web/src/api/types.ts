@@ -1,4 +1,5 @@
 // The contract between the UI and its backend: the HTTP server in production, the in-browser engine in the demo.
+// Sign-in and the profile are not here: they go through AuthBackend (Supabase Auth in production).
 import type {
   AnswerDto, Card, Category, CertificateDto, Competition, CompetitionDto, CompetitionInput, CompetitionStandingsDto, CompleteDto,
   ContentBundle, EXAM_FORMATS, HomeDto, Item, LeaderboardDto, MeDto, PathDto, Period, ProfilePatch, Scope, SessionDto,
@@ -43,7 +44,6 @@ export interface AdminUser {
   premiumUntil: number | null; emailVerified: boolean; leaderboardBanned: boolean; xpTotal: number; createdAt: number; lastSeenAt: number | null;
 }
 export interface AdminReport { id: string; itemId: string; reason: string; body: string; status: string; resolution: string; createdAt: number; nickname: string; stem: string | null; topicId: string | null }
-export interface AdminMail { id: string; to: string; subject: string; body: string; createdAt: number }
 export interface AdminAudit { id: string; actor: string | null; action: string; entity: string; entityId: string; createdAt: number }
 export interface ItemFilter { topicId?: string; lessonId?: string; status?: string; flag?: string; q?: string; page?: number }
 export type ItemPatch = Partial<Pick<Item, 'stem' | 'statements' | 'options' | 'answer' | 'explanation' | 'ref' | 'status' | 'flags'>>;
@@ -68,20 +68,13 @@ export interface AdminApi {
   users(q: string): Promise<AdminUser[]>;
   updateUser(id: string, patch: { premiumUntil?: number | null; role?: AdminUser['role']; leaderboardBanned?: boolean; emailVerified?: boolean }): Promise<void>;
   importContent(bundle: ContentBundle): Promise<{ topics: number; lessons: number; items: number; keptEdited: number }>;
-  mail(): Promise<AdminMail[]>;
   audit(): Promise<AdminAudit[]>;
 }
 
 export interface Api {
   mode: 'server' | 'demo';
+  /** The signed-in learner; null when signed out. Throws PROFILE_REQUIRED until the profile is complete. */
   me(): Promise<MeDto | null>;
-  register(email: string, password: string, nickname: string): Promise<void>;
-  login(email: string, password: string): Promise<void>;
-  logout(): Promise<void>;
-  forgot(email: string): Promise<void>;
-  reset(token: string, password: string): Promise<void>;
-  verify(token: string): Promise<void>;
-  resendVerification(): Promise<void>;
   meta(): Promise<MetaDto>;
   updateProfile(p: ProfilePatch): Promise<MeDto>;
   home(): Promise<HomeDto>;
