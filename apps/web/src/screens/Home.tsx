@@ -43,7 +43,7 @@ export function Home() {
       {locked && (
         <div className="banner bad">
           <LifeStars current={0} size={22} />
-          <div className="grow">Paqonda ulduz qalmayıb. Yeni dərslər {untilText(hearts!.lockedUntil!)} sonra açılacaq. Bu arada təkrar et: 10 sualdan 8-ni düz cavablasan, 1 ulduz qayıdır.</div>
+          <div className="grow">Paqonda ulduz qalmayıb. Yeni dərslər {untilText(hearts!.lockedUntil!)} sonra açılacaq. Bu arada təkrar et: 10 sualdan 8-ni düzgün cavablandırsan, paqonuna 1 ulduz qayıdır.</div>
         </div>
       )}
 

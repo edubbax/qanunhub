@@ -236,7 +236,10 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.45; }
 .node.final .dot { border-radius: 10px; }
 .node + .node::before { content: ""; position: absolute; left: 18px; top: -10px; height: 20px; width: 2px; background: var(--line); }
 .section-block + .section-block { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
-.section-head { display: flex; align-items: center; gap: 10px; padding: 4px 0 6px; }
+.section-head { display: flex; align-items: center; gap: 10px; padding: 6px 0; width: 100%; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ink); }
+.section-head .chev { width: 18px; color: var(--muted); flex: none; transition: transform 0.15s; }
+.section-no.done { background: var(--ok); color: #fff; }
+.section-no svg { width: 14px; height: 14px; }
 .section-block + .node.final { margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--line); }
 .section-no { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; flex: none; font-size: 0.78rem; font-weight: 700; background: var(--primary-soft); color: var(--primary); }
 .choice[disabled] { cursor: default; opacity: 0.6; }

@@ -114,7 +114,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
       {heartsOut && phase === 'quiz' && (
         <Modal>
           <div className="row"><LifeStars current={0} size={30} /><h2>Paqonda ulduz qalmadı</h2></div>
-          <p>Yeni dərslər 4 saat sonra açılacaq. Təkrar ulduz xərcləmir: 10 sualdan 8-ni düz cavablasan, 1 ulduz qaytarırsan.</p>
+          <p>Yeni dərslər 4 saat sonra açılacaq. Təkrar ulduz xərcləmir: 10 sualdan 8-ni düzgün cavablandırsan, paqonuna 1 ulduz qayıdır.</p>
           <button className="btn primary block" onClick={() => { setHeartsOut(false); finish(); }}>Dərsi bitir</button>
           <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium: ulduzlar tükənmir</button>
         </Modal>
@@ -381,7 +381,7 @@ function Result({ r, back }: { r: CompleteDto; back: Route }) {
   const { nav } = useApp();
   const exam = r.kind === 'final' || r.kind === 'mock' || r.kind === 'section' || r.kind === 'competition';
   const mistakes = r.review.filter((x) => !x.correct);
-  const title = !r.completed ? 'Dərs dayandı' : r.kind === 'competition' ? 'Yarış cəhdin qeydə alındı' : exam ? (r.passed ? 'Keçdin!' : 'Hələ keçid balı yoxdur') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
+  const title = !r.completed ? 'Dərs dayandı' : r.kind === 'competition' ? 'Yarış cəhdin qeydə alındı' : exam ? (r.passed ? 'Keçdin!' : 'Keçid balı toplanmadı') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
   return (
     <main className="page no-tabs stack loose">
       <section className="result-hero">
@@ -395,7 +395,7 @@ function Result({ r, back }: { r: CompleteDto; back: Route }) {
             <p className="muted">{r.points} / {r.maxPoints} bal{r.targetPercent != null ? ` · hədəf ${r.targetPercent}%${r.kind === 'mock' ? ' (alt qrupunun keçid faizi)' : ''}` : ''}</p>
           </>
         ) : (
-          <p className="muted">{r.correct} / {r.total} sual ilk cəhddə düz</p>
+          <p className="muted">İlk cəhddə düzgün: {r.correct} / {r.total}</p>
         )}
       </section>
 

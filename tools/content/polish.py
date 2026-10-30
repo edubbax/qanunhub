@@ -47,6 +47,18 @@ WORD_FIXES = {
     'vitseprezidentinin': 'vitse-prezidentinin', 'qeyrimaddi': 'qeyri-maddi', 'birbirinə': 'bir-birinə',
     # Short words typed with the wrong letters in one of the source files.
     'va': 'və', 've': 'və', 'ila': 'ilə', 'ile': 'ilə', 'aktin': 'aktın',
+    # Letters misread by OCR ('nı' as 'mı' or 'm', 'rı' as 'n', 'y' as 'v') and other single typos.
+    'qaydalarmı': 'qaydalarını', 'qaydalarım': 'qaydalarını', 'proqramlarmı': 'proqramlarını', 'funksiyalarmı': 'funksiyalarını',
+    'qeydiyyatmı': 'qeydiyyatını', 'hüquqpozmalarım': 'hüquqpozmalarını', 'qarşısım': 'qarşısını', 'qurumlan': 'qurumları',
+    'ehtiyatlan': 'ehtiyatları', 'informasiyalan': 'informasiyaları', 'blanklan': 'blankları', 'hallan': 'halları',
+    'adlan': 'adları', 'qəran': 'qərarı', 'müəyvən': 'müəyyən', 'uvğun': 'uyğun', 'verli': 'yerli', 'verinə': 'yerinə',
+    'venidən': 'yenidən', 'sovadı': 'soyadı', 'qevri': 'qeyri', 'kifavət': 'kifayət', 'hansl': 'hansı', 'sonar': 'sonra',
+    'beynəlxlaq': 'beynəlxalq', 'ştruktur': 'struktur', 'olunmış': 'olunmuş', 'ictimal': 'ictimai', 'edildildə': 'edildikdə',
+    'bocludur': 'borcludur', 'olunuğu': 'olunduğu', 'məauliyyətə': 'məsuliyyətə', 'apellyasia': 'apellyasiya',
+    'fövqaladə': 'fövqəladə', 'müxtələf': 'müxtəlif', 'prosesual': 'prosessual', 'çıxdığə': 'çıxdığı', 'lcraçının': 'icraçının',
+    'hakimiyətinin': 'hakimiyyətinin', 'təhlükəsiziliyinin': 'təhlükəsizliyinin', 'nüməyəndənin': 'nümayəndənin',
+    'vsait': 'vəsait', 'səniddir': 'sənəddir', 'geçmiş': 'keçmiş', 'fəaliyyə': 'fəaliyyət', 'organ': 'orqan',
+    'həkimlərin': 'hakimlərin', 'leyhinə': 'əleyhinə',
 }
 WORD_FIX_RE = re.compile(r'\b(' + '|'.join(WORD_FIXES) + r')\b', re.I)
 
@@ -236,6 +248,43 @@ def split_glued_options(it: dict) -> None:
         it['options'].append(m.group(1).strip())
 
 
+# Page furniture of the source PDFs that ends up glued to the last option: '... bilər. də', '... zləyin: Sual Cavab', '... edir. 5'.
+TAIL_JUNK = re.compile(r'(?:\s+(?:ə r )?(?:rdə|də|i|ə|n i|n))?(?:\s+zləyin:?)?(?:\s+Sual Cavab)*$')
+PAGE_NO = re.compile(r'(?<=[.;:])\s+\d$')
+
+
+def strip_tail_junk(t: str) -> str:
+    t = TAIL_JUNK.sub('', t.rstrip())
+    # In a list of statement numbers only a number after a bare space is a page number ('1, 3, 4 4').
+    return re.sub(r'(?<=\d)\s+\d$', '', t) if re.fullmatch(r'[\d\s.,]+', t) else PAGE_NO.sub('', t)
+
+
+CAP_SPLIT = re.compile(r'(?<![\w])([ÖÜ]) (?=[a-zəöüğçşı]{2})')
+QWORD = re.compile(r'\b(hansı\w*|nə\w*|neçə\w*|necə\w*|kim\w*|hara\w*|niyə)\b', re.I)
+PREDICATE = re.compile(r'\s(aid deyil(?:dir)?|aiddir|doğru deyil(?:dir)?|yanlışdır|səhvdir|daxildir|daxil deyil)\?$')
+
+
+# Words that start the original question but follow the joined column header ('... uyğun olaraq Qanunvericilik təşəbbüsü').
+MID_CAPS = re.compile(r'((?:uyğun olaraq|əsasən) )(Qanunvericilik|Bələdiyyələr\w*|Qanunla|Qanunlar|Hakimlərin|Bu|İcra|Məhkəmələrdə'
+                      r'|Göstərilən|Tətil|Sosial|Sərbəst|Akta|Məhkəmə(?= hakimiyyəti)|Dövlət(?= ehtiyacları))\b')
+
+
+def fix_question_stem(it: dict) -> None:
+    """Test books often drop the question word ('Prezidentin səlahiyyətlərinə aid deyil?'); puts 'hansı' back."""
+    s = it['stem'] = MID_CAPS.sub(lambda m: m.group(1) + low(m.group(2)[0]) + m.group(2)[1:], it['stem'])
+    if not s.endswith('?') or QWORD.search(s) or re.search(r'm[iıuü](?:d[iıuü]r)?\?$', s) or re.search(r'\.{3,}|_{3,}|…', s):
+        return
+    out = re.sub(r'\bbu adda (bölmə|fəsil|maddə|maddələr) yoxdur\?$', r'hansı adda \1 yoxdur?', s)
+    if out == s:
+        out = re.sub(r'(\w+(?:dən|dan)) biri ', r'\1 hansı ', s, count=1)
+    if out == s:
+        many = all(re.fullmatch(r'\d+(?:\s*[,-]\s*\d+)+', o.strip()) for o in it['options'])
+        out = PREDICATE.sub(lambda m: f" {'hansılar' if many else 'hansı'} {m.group(1)}?", s)
+    if out == s:
+        out = re.sub(r'\s(müəyyən edin|seçin|göstərin)\?$', r' \1.', s)
+    it['stem'] = out
+
+
 def clean_law(text: str) -> str:
     text = PRIVATE.sub('\n', text)
     text = re.sub(r'\s-\s?\d{1,3}\s?-(?=\s)', '', text)  # page numbers of the source PDF: '-5-', '- 13 -'
@@ -305,6 +354,16 @@ def polish(bundle: dict, fixes_dir: str) -> list:
         if c.get('title'):
             c['title'] = fix_splits(c['title'], vocab)
     for i in bundle['items']:
+        # The PDF font splits words after Ö and Ü: 'Ö z', 'Ü mumi'.
+        i['stem'] = CAP_SPLIT.sub(r'\1', i['stem'])
+        i['options'] = [CAP_SPLIT.sub(r'\1', o) for o in i['options']]
+        if i.get('statements'):
+            i['statements'] = [CAP_SPLIT.sub(r'\1', x) for x in i['statements']]
+        if i.get('pool', 'exam') == 'exam':
+            i['stem'] = strip_tail_junk(i['stem'])
+            i['options'] = [strip_tail_junk(o) for o in i['options']]
+            if i.get('statements'):
+                i['statements'] = [strip_tail_junk(x) for x in i['statements']]
         i['stem'] = fix_quotes(fix_splits(PRIVATE.sub(' ', i['stem']), vocab)).strip()
         i['options'] = [fix_quotes(HEADING_TAIL.sub('', fix_splits(PRIVATE.sub(' ', o), vocab))).strip() for o in i['options']]
         if i.get('statements'):
@@ -330,6 +389,9 @@ def polish(bundle: dict, fixes_dir: str) -> list:
             i['options'] = [sub(o) for o in i['options']]
             if i.get('statements'):
                 i['statements'] = [sub(x) for x in i['statements']]
+
+    for i in bundle['items']:
+        fix_question_stem(i)
 
     problems = [f'phrase not found: {old!r}' for old, _ in phrases if old not in used]
     card_fixes = _load(os.path.join(fixes_dir, 'cards.json'))

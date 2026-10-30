@@ -3,7 +3,7 @@ import type { CertificateDto, CompetitionDto } from '@qanunhub/core';
 import { useEffect, useState } from 'react';
 import { useApp } from '../app';
 import { ApiError } from '../api/types';
-import { canvasToPdf, downloadBlob, renderCertificate } from '../ui/certificate';
+import { canvasToPdf, renderCertificate, saveFile } from '../ui/certificate';
 import { ErrorBox, Modal, Spinner, formatDate, formatTime, ordinal, toast, untilText, useLoad } from '../ui/components';
 import { IconBack, IconCalendar, IconClock, IconDownload, IconExam, IconInfo, IconMedal, IconUsers } from '../ui/icons';
 import { Epaulette } from '../ui/insignia';
@@ -170,7 +170,7 @@ export function CertificateModal({ code, onClose, admin = false }: { code: strin
         <>
           <img className="cert-preview" src={data.url} alt={`${data.cert.name} üçün sertifikat`} />
           <p className="small muted">Kod: <b>{data.cert.code}</b>. Sertifikatın həqiqiliyini bu kodla yoxlamaq olar.</p>
-          <button className="btn primary block" onClick={() => { downloadBlob(data.pdf, `QanunHub-sertifikat-${data.cert.code}.pdf`); toast('Sertifikat yükləndi.'); }}>
+          <button className="btn primary block" onClick={async () => { if (await saveFile(data.pdf, `QanunHub-sertifikat-${data.cert.code}.pdf`)) toast('Sertifikat yükləndi.'); }}>
             <IconDownload />PDF kimi yüklə
           </button>
         </>

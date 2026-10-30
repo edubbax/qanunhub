@@ -94,7 +94,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
   }
 
   function currentId(): string {
-    if (!state.current || !store.data.users[state.current]) throw new ApiError('UNAUTHORIZED', 'Daxil olun.', 401);
+    if (!state.current || !store.data.users[state.current]) throw new ApiError('UNAUTHORIZED', 'Hesaba daxil ol.', 401);
     return state.current;
   }
 
@@ -199,7 +199,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
 
   function requireStaff() {
     const u = store.data.users[currentId()];
-    if (u.role === 'user') throw new ApiError('FORBIDDEN', 'Bu bölməyə giriş icazəniz yoxdur.', 403);
+    if (u.role === 'user') throw new ApiError('FORBIDDEN', 'Bu bölməyə giriş icazən yoxdur.', 403);
     return u;
   }
 
@@ -286,7 +286,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       const cur = allItems().find((i) => i.id === id);
       if (!cur) throw new ApiError('NOT_FOUND', 'Sual tapılmadı.', 404);
       const next = { ...cur, ...patch } as Item;
-      if (next.answer.some((a) => a >= next.options.length)) throw new ApiError('VALIDATION', 'Düzgün cavab variantların sayından kənardadır.', 400);
+      if (next.answer.some((a) => a >= next.options.length)) throw new ApiError('VALIDATION', 'Düzgün cavabın nömrəsi variantların sayına uyğun deyil.', 400);
       if (next.type === 'single' && next.answer.length !== 1) throw new ApiError('VALIDATION', 'Tək seçimli sualın bir düzgün cavabı olmalıdır.', 400);
       state.overrides.items[id] = { ...(state.overrides.items[id] ?? {}), ...patch };
       audit('item.update', 'item', id);
@@ -328,7 +328,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
     },
     async users(q) {
       const me = requireStaff();
-      if (me.role !== 'admin') throw new ApiError('FORBIDDEN', 'Bu bölməyə giriş icazəniz yoxdur.', 403);
+      if (me.role !== 'admin') throw new ApiError('FORBIDDEN', 'Bu bölməyə giriş icazən yoxdur.', 403);
       const s = q.toLowerCase();
       return Object.values(store.data.users)
         .filter((u) => !s || u.email.includes(s) || u.nickname.toLowerCase().includes(s))
@@ -377,7 +377,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) throw new ApiError('VALIDATION', 'Email ünvanı düzgün deyil.', 400);
       if (password.length < 8) throw new ApiError('VALIDATION', 'Şifrə ən azı 8 simvol olmalıdır.', 400);
       if (!/^[\p{L}\p{N}_.-]{3,24}$/u.test(nickname)) throw new ApiError('VALIDATION', 'Ləqəb 3–24 simvol olmalıdır: hərf, rəqəm, «_», «.», «-».', 400);
-      if (state.accounts[e]) throw new ApiError('CONFLICT', 'Bu email ilə hesab artıq var. Daxil olun.', 409);
+      if (state.accounts[e]) throw new ApiError('CONFLICT', 'Bu email ilə hesab artıq var. Daxil ol və ya şifrəni bərpa et.', 409);
       if (Object.values(store.data.users).some((u) => u.nickname.toLowerCase() === nickname.toLowerCase())) throw new ApiError('CONFLICT', 'Bu ləqəb artıq istifadə olunur.', 409);
       const u = newUser(randomId(), e, nickname, Date.now());
       u.emailVerified = true;

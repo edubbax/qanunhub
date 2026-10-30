@@ -82,7 +82,7 @@ export function createApp(deps: AppDeps) {
   app.onError((err, c) => {
     if (isAppError(err)) return c.json({ error: { code: err.code, message: err.message, data: err.data ?? null } }, err.status as any);
     console.error(err);
-    return c.json({ error: { code: 'INTERNAL', message: 'Gözlənilməz xəta baş verdi. Bir az sonra yenidən cəhd edin.' } }, 500);
+    return c.json({ error: { code: 'INTERNAL', message: 'Gözlənilməz xəta baş verdi. Bir az sonra yenidən cəhd et.' } }, 500);
   });
 
   app.use('*', async (c, next) => {
@@ -107,12 +107,12 @@ export function createApp(deps: AppDeps) {
 
   const requireUser = (c: Context<Env>): UserRecord => {
     const u = c.get('user');
-    if (!u) throw new AppError('UNAUTHORIZED', 'Daxil olun.');
+    if (!u) throw new AppError('UNAUTHORIZED', 'Hesaba daxil ol.');
     return u;
   };
   const requireRole = (c: Context<Env>, roles: UserRecord['role'][]): UserRecord => {
     const u = requireUser(c);
-    if (!roles.includes(u.role)) throw new AppError('FORBIDDEN', 'Bu bölməyə giriş icazəniz yoxdur.');
+    if (!roles.includes(u.role)) throw new AppError('FORBIDDEN', 'Bu bölməyə giriş icazən yoxdur.');
     return u;
   };
 
@@ -460,7 +460,7 @@ export function createApp(deps: AppDeps) {
       leaderboardBanned: z.boolean().optional(), emailVerified: z.boolean().optional(),
     }));
     const id = (c.req.param('id') ?? '');
-    if (id === actor.id && b.role && b.role !== 'admin') throw new AppError('VALIDATION', 'Öz admin rolunuzu silə bilməzsiniz.');
+    if (id === actor.id && b.role && b.role !== 'admin') throw new AppError('VALIDATION', 'Öz admin rolunu silə bilməzsən.');
     await sql.begin(async (tx) => {
       const [r] = await tx`select id, role, premium_until, leaderboard_banned, email_verified from users where id = ${id} for update`;
       if (!r) throw new AppError('NOT_FOUND', 'İstifadəçi tapılmadı.');

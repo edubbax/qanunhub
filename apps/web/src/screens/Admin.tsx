@@ -29,7 +29,7 @@ export function Admin() {
   const [tab, setTab] = useState<Tab>('overview');
   const [focusItem, setFocusItem] = useState<string | null>(null);
   if (!me || me.role === 'user') {
-    return <main className="page no-tabs"><ErrorBox error={new Error('Bu bölməyə giriş icazəniz yoxdur.')} /></main>;
+    return <main className="page no-tabs"><ErrorBox error={new Error('Bu bölməyə giriş icazən yoxdur.')} /></main>;
   }
   const tabs: [Tab, string][] = [
     ['overview', 'Ümumi'], ['content', 'Məzmun'], ['reports', 'Şikayətlər'],

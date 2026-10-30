@@ -15,7 +15,7 @@ const FEATURES: [string, boolean, boolean][] = [
   ['Həftəlik və aylıq reytinqdə iştirak', false, true],
   ['Zabit rütbələri: Leytenantdan Ordu generalına qədər (pulsuz planda Gizir)', false, true],
   ['Yarışlar, təltiflər və sertifikatlar', true, true],
-  ['Ayda 2 seriya dondurma', false, true],
+  ['Ayda 2 buraxılmış gün seriyanı qırmır', false, true],
   ['Final testinə 24 saat gözləmədən təkrar cəhd', false, true],
 ];
 

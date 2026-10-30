@@ -28,7 +28,7 @@ export function Welcome() {
       </section>
       <div className="stack">
         <div className="feature"><span className="ico"><IconBook /></span><div><b>Qanunun öz mətninə əsaslanan dərslər</b><p className="muted small">Konstitusiyadan Kargüzarlıq Təlimatına qədər, kateqoriyana uyğun mövzular. AC, BA və BB hazırdır, AB tezliklə.</p></div></div>
-        <div className="feature"><span className="ico"><IconRepeat /></span><div><b>Unutduğunu özü qaytaran təkrar</b><p className="muted small">Səhv etdiyin sual bir neçə dəqiqə, sonra bir neçə gün sonra yenidən gəlir. İmtahan tarixinə uyğunlaşır.</p></div></div>
+        <div className="feature"><span className="ico"><IconRepeat /></span><div><b>Unutduğunu özü qaytaran təkrar</b><p className="muted small">Səhv etdiyin sual əvvəlcə bir neçə dəqiqədən, sonra bir neçə gündən sonra yenidən qarşına çıxır. Təkrar cədvəli imtahan tarixinə uyğunlaşır.</p></div></div>
         <div className="feature"><span className="ico"><IconShield /></span><div><b>Rütbə, ulduz və təltiflər</b><p className="muted small">Gizirdən Ordu generalına qədər rütbələr, paqonda üç ulduz, uğurlu testlərə görə medal və ordenlər.</p></div></div>
         <div className="feature"><span className="ico"><IconTrophy /></span><div><b>Reytinq və yarışlar</b><p className="muted small">Həftəlik və aylıq cədvəllər, qaliblərə PDF sertifikat verilən yarışlar.</p></div></div>
       </div>

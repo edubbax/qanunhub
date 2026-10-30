@@ -51,7 +51,7 @@ function corner(ctx: CanvasRenderingContext2D, x: number, y: number, sx: number,
 }
 
 function placeTitle(place: number): string {
-  return place === 1 ? 'Yarış qalibi' : 'Yarış prizyoru';
+  return place === 1 ? 'Yarış qalibi' : 'Yarış mükafatçısı';
 }
 
 export const PLACE_WORDS = ['', 'birinci', 'ikinci', 'üçüncü'];
@@ -227,7 +227,28 @@ export function canvasToPdf(canvas: HTMLCanvasElement, title: string): Blob {
   return new Blob(parts as BlobPart[], { type: 'application/pdf' });
 }
 
-export function downloadBlob(blob: Blob, filename: string) {
+interface FileHost {
+  use?: (name: 'downloads') => Promise<{ save(r: { filename: string; data: Blob }): Promise<unknown> } | null>;
+}
+
+/** Saves a generated file. Inside the claude.ai artifact viewer a page cannot start a download itself, so the viewer is
+ * asked through its `downloads` capability; everywhere else a plain link download is used. Resolves false if declined. */
+export async function saveFile(blob: Blob, filename: string): Promise<boolean> {
+  const host = (window as unknown as { claude?: FileHost }).claude;
+  const downloads = host?.use ? await host.use('downloads').catch(() => null) : null;
+  if (!downloads) {
+    downloadBlob(blob, filename);
+    return true;
+  }
+  try {
+    await downloads.save({ filename, data: blob });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

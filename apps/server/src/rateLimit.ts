@@ -11,7 +11,7 @@ export function rateLimit(key: string, limit: number, windowMs: number, now = Da
     return;
   }
   b.count++;
-  if (b.count > limit) throw new AppError('RATE_LIMITED', 'Çox sayda sorğu göndərildi. Bir az sonra yenidən cəhd edin.', { retryAt: b.resetAt });
+  if (b.count > limit) throw new AppError('RATE_LIMITED', 'Çox sayda sorğu göndərildi. Bir az sonra yenidən cəhd et.', { retryAt: b.resetAt });
 }
 
 export function resetRateLimits() {

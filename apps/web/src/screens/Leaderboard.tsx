@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { rankByCode } from '@qanunhub/core';
 import { useApp } from '../app';
 import { Epaulette } from '../ui/insignia';
-import { ErrorBox, Spinner, untilText, useLoad } from '../ui/components';
+import { ErrorBox, Spinner, ordinal, untilText, useLoad } from '../ui/components';
 import { IconLock, IconTrophy } from '../ui/icons';
 
 export function Leaderboard() {
@@ -17,7 +17,7 @@ export function Leaderboard() {
     <main className="page stack">
       <section className="stack tight">
         <h1>Reytinq</h1>
-        <p className="muted small">Yalnız dərs, təkrar və testlərdən qazanılan XP sayılır, gündə ən çox 600 XP. Bərabər XP-də dəqiqlik, sonra kim tez çatıbsa.</p>
+        <p className="muted small">Yalnız dərs, təkrar və testlərdən qazanılan XP sayılır (gündə ən çox 600 XP). XP bərabər olduqda daha dəqiq cavab verən, sonra bu XP-yə daha tez çatan irəlidə olur.</p>
       </section>
       <div className="row wrap between">
         <div className="seg" role="group" aria-label="Dövr">
@@ -42,7 +42,7 @@ export function Leaderboard() {
               <div className="grow stack tight">
                 <span>
                   {me?.premium ? 'Reytinqdə iştirak üçün email ünvanını təsdiqlə.' : 'Reytinqdə iştirak Premium planı ilədir.'}
-                  {data.previewRank ? ` Bu dövrün XP-si ilə ${data.previewRank}-ci yerdə olardın.` : ''}
+                  {data.previewRank ? ` Bu dövrün XP-si ilə ${ordinal(data.previewRank)} yerdə olardın.` : ''}
                 </span>
                 {!me?.premium && <button className="btn primary small" style={{ alignSelf: 'flex-start' }} onClick={() => nav({ name: 'premium' })}>Premium-a bax</button>}
               </div>

@@ -140,7 +140,7 @@ export function Profile() {
           <h2>Abunəlik</h2>
           {me.premium ? <span className="chip ok">Premium</span> : <span className="chip">Pulsuz</span>}
         </div>
-        <p className="small muted">{me.premium ? `Premium ${formatDate(me.premiumUntil)} tarixinədək aktivdir. Dondurma günləri: ${me.freezesLeft}.` : 'Pulsuz planda Konstitusiya mövzusu açıqdır, paqonda gündə 3 ulduz var və rütbən Gizirdir.'}</p>
+        <p className="small muted">{me.premium ? `Premium ${formatDate(me.premiumUntil)} tarixinədək aktivdir. Bu ay seriyanı qoruyan günlər: ${me.freezesLeft}.` : 'Pulsuz planda Konstitusiya mövzusu açıqdır, paqonda gündə 3 ulduz var və rütbən Gizirdir.'}</p>
         <button className={`btn ${me.premium ? 'secondary' : 'primary'} block`} onClick={() => nav({ name: 'premium' })}>{me.premium ? 'Planı idarə et' : 'Premium-a keç'}</button>
       </section>
 

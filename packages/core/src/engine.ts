@@ -70,7 +70,7 @@ export function newUser(id: string, email: string, nickname: string, now: number
 
 async function loadUser(ctx: EngineCtx, userId: string): Promise<UserRecord> {
   const u = await ctx.store.getUser(userId);
-  if (!u) throw new AppError('UNAUTHORIZED', 'Hesab tapılmadı. Yenidən daxil olun.');
+  if (!u) throw new AppError('UNAUTHORIZED', 'Hesab tapılmadı. Yenidən daxil ol.');
   u.hearts = normalizeHearts(u.hearts, ctx.now);
   const today = dayKey(ctx.now);
   if (u.today.day !== today) u.today = { day: today, xp: 0, lbXp: 0 };
@@ -82,7 +82,7 @@ async function loadUser(ctx: EngineCtx, userId: string): Promise<UserRecord> {
 }
 
 function requireCategory(u: UserRecord): Category {
-  if (!u.category) throw new AppError('NO_CATEGORY', 'Əvvəlcə kateqoriyanı seçin.');
+  if (!u.category) throw new AppError('NO_CATEGORY', 'Əvvəlcə kateqoriyanı seç.');
   return u.category;
 }
 
@@ -609,7 +609,7 @@ export async function answer(ctx: EngineCtx, userId: string, sessionId: string, 
   if (!Array.isArray(given) || given.some((g) => !Number.isInteger(g) || g < 0 || g >= q.perm.length)) {
     throw new AppError('VALIDATION', 'Cavab formatı yanlışdır.');
   }
-  if (item.type === 'single' && given.length !== 1) throw new AppError('VALIDATION', 'Bir variant seçin.');
+  if (item.type === 'single' && given.length !== 1) throw new AppError('VALIDATION', 'Bir variant seç.');
 
   const u = await loadUser(ctx, userId);
   const premium = isPremium(u, ctx.now);
@@ -691,7 +691,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   const maxPoints = first.reduce((a, q) => a + (ctx.content.itemById.get(q.itemId)?.points ?? 1), 0);
   const pct = maxPoints ? Math.round((points / maxPoints) * 100) : 0;
   const exam = isExamKind(s.kind);
-  if (!exam && !s.heartsOut && first.some((q) => !q.answer)) throw new AppError('VALIDATION', 'Bütün suallara cavab verin.');
+  if (!exam && !s.heartsOut && first.some((q) => !q.answer)) throw new AppError('VALIDATION', 'Bütün suallara cavab ver.');
 
   let xp = 0;
   let passed: boolean | null = null;

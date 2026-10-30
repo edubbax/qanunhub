@@ -11,10 +11,10 @@ const KIND: Record<Category, string> = {
 };
 
 const CAT_TEXT: Record<Category, string> = {
-  AB: 'İnzibati rəhbər vəzifələr: şöbə və sektor müdirləri, müavinlər, regional bölmə rəhbərləri.',
-  AC: 'İnzibati rəhbər vəzifələr: yerli bölmə rəhbərləri, tabe orqanların rəhbərləri və müavinləri.',
-  BA: 'İnzibati icraçı vəzifələr: baş, aparıcı və böyük məsləhətçilər, baş mühasib.',
-  BB: 'İnzibati icraçı vəzifələr: məsləhətçilər, hakim köməkçisi, məhkəmə iclasının katibi.',
+  AB: '4–5-ci təsnifat: şöbə və sektor müdirləri, onların müavinləri, regional bölmə rəhbərləri, rəhbərin müşaviri və köməkçisi.',
+  AC: '5–7-ci təsnifat: yerli bölmə rəhbərləri, sektor müdirləri, tabe orqanların rəhbərləri və onların müavinləri.',
+  BA: '4–5-ci təsnifat: baş, böyük və aparıcı məsləhətçilər, məsləhətçilər, baş mühasib, hakim köməkçisi, məhkəmə iclasının katibi.',
+  BB: '6–7-ci təsnifat: baş, böyük və aparıcı məsləhətçilər, məsləhətçilər, baş mühasib, hakim köməkçisi, məhkəmə iclasının katibi.',
 };
 
 export function Onboarding() {

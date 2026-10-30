@@ -131,9 +131,9 @@ export const AWARDS: AwardDef[] = [
   { id: 'mock90', title: 'Qızıl sınaq', rule: 'Sınaq imtahanında {n} dəfə 90%-dən yuxarı nəticə göstər', counter: 'mocks90', tiers: [1, 5], shape: 'order', color: 'gold' },
   { id: 'streak', title: 'Dəmir iradə', rule: '{n} gün ardıcıl məşq et', counter: 'bestStreak', tiers: [7, 30, 100], shape: 'medal', color: 'bronze' },
   { id: 'correct', title: 'Bilik xəzinəsi', rule: '{n} suala düzgün cavab ver', counter: 'correct', tiers: [100, 1000, 5000], shape: 'medal', color: 'maroon' },
-  { id: 'podium', title: 'Yarış prizyoru', rule: 'Yarışda {n} dəfə ilk üçlüyə düş', counter: 'competitionPodiums', tiers: [1, 5], shape: 'medal', color: 'silver' },
+  { id: 'podium', title: 'Yarış mükafatçısı', rule: 'Yarışda {n} dəfə ilk üçlüyə düş', counter: 'competitionPodiums', tiers: [1, 5], shape: 'medal', color: 'silver' },
   { id: 'champion', title: 'Yarış qalibi', rule: 'Yarışda {n} dəfə birinci yeri tut', counter: 'competitionsWon', tiers: [1, 3], shape: 'order', color: 'gold' },
-  { id: 'report', title: 'Diqqətli göz', rule: 'Sualdakı {n} səhvi tap və bildir', counter: 'reportsConfirmed', tiers: [1, 5], shape: 'badge', color: 'maroon' },
+  { id: 'report', title: 'Diqqətli göz', rule: 'Suallarda {n} səhv tap və bildir', counter: 'reportsConfirmed', tiers: [1, 5], shape: 'badge', color: 'maroon' },
 ];
 
 export const ROMAN = ['I', 'II', 'III', 'IV', 'V'];

@@ -39,7 +39,7 @@ export function validateCredentials(email: string, password: string) {
   if (!EMAIL_RE.test(email) || email.length > 200) throw new AppError('VALIDATION', 'Email ünvanı düzgün deyil.');
   if (typeof password !== 'string' || password.length < 8) throw new AppError('VALIDATION', 'Şifrə ən azı 8 simvol olmalıdır.');
   if (password.length > 200) throw new AppError('VALIDATION', 'Şifrə çox uzundur.');
-  if (WEAK.has(password.toLowerCase())) throw new AppError('VALIDATION', 'Bu şifrə çox sadədir. Başqa şifrə seçin.');
+  if (WEAK.has(password.toLowerCase())) throw new AppError('VALIDATION', 'Bu şifrə çox sadədir. Başqa şifrə seç.');
 }
 
 export async function createUser(sql: Db, email: string, password: string, nickname: string, now: number, opts: { verified?: boolean; role?: UserRecord['role'] } = {}): Promise<UserRecord> {
@@ -47,7 +47,7 @@ export async function createUser(sql: Db, email: string, password: string, nickn
   validateCredentials(e, password);
   if (!/^[\p{L}\p{N}_.-]{3,24}$/u.test(nickname)) throw new AppError('VALIDATION', 'Ləqəb 3–24 simvol olmalıdır: hərf, rəqəm, «_», «.», «-».');
   const [exists] = await sql`select 1 from users where email = ${e}`;
-  if (exists) throw new AppError('CONFLICT', 'Bu email ilə hesab artıq var. Daxil olun və ya şifrəni bərpa edin.');
+  if (exists) throw new AppError('CONFLICT', 'Bu email ilə hesab artıq var. Daxil ol və ya şifrəni bərpa et.');
   const [nickTaken] = await sql`select 1 from users where lower(nickname) = lower(${nickname})`;
   if (nickTaken) throw new AppError('CONFLICT', 'Bu ləqəb artıq istifadə olunur.');
   const u = newUser(randomUUID(), e, nickname, now);
@@ -105,7 +105,7 @@ export async function consumeToken(sql: Db, token: string, kind: 'verify' | 'res
 
 export async function setPassword(sql: Db, userId: string, password: string) {
   if (typeof password !== 'string' || password.length < 8) throw new AppError('VALIDATION', 'Şifrə ən azı 8 simvol olmalıdır.');
-  if (WEAK.has(password.toLowerCase())) throw new AppError('VALIDATION', 'Bu şifrə çox sadədir. Başqa şifrə seçin.');
+  if (WEAK.has(password.toLowerCase())) throw new AppError('VALIDATION', 'Bu şifrə çox sadədir. Başqa şifrə seç.');
   await sql`update users set password_hash = ${await hashPassword(password)} where id = ${userId}`;
   await sql`delete from auth_sessions where user_id = ${userId}`;
 }

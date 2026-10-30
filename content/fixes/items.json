@@ -994,5 +994,303 @@
  },
  "remzler-9d4278-44": {
   "stem": "Aşağıdakılardan hansı AR Dövlət Bayrağının yerləşdirilməli olduğu yerlərdən biridir?"
+ },
+ "konstitusiya-0e3efc-140": {
+  "stem": "Konstitusiyanın “Məsuliyyət” maddəsində aşağıdakılardan hansı müəyyən olunmayıb?",
+  "note": "Stem tail moved back (PDF layout)."
+ },
+ "konstitusiya-bb196a-2": {
+  "stem": "Binəqədi Rayon Məhkəməsinin hakimi Araz Əzizov istirahətə gedərkən yolda öz avtomobili ilə qəzaya düşür. Araz Əzizovun idarə etdiyi avtomobil qarşı tərəfdən gələn maşının yoluna çıxaraq onunla toqquşmuş və nəticədə öz maşınındakı iki nəfər sərnişinin – həyat yoldaşı və uşağının ölümü ilə nəticələnən hadisə baş vermişdir. Bu əməllər barədə məhkəmənin qanuni qüvvəyə minmiş ittiham hökmü olduqda Araz Əzizovun vəzifədən kənarlaşdırılması mümkündürmü? AR Konstitusiyasına görə situasiya ilə bağlı hansı fikirlər doğrudur?"
+ },
+ "korrupsiya-cdc2e9-30": {
+  "stem": "Korrupsiya ilə əlaqədar müraciətlərə baxılarkən sübut etmə yükü nə zaman işəgötürənin üzərinə düşür?",
+  "options": [
+   "İşçi qisas məqsədilə tədbirlərin tətbiqinə dair dəlillər irəli sürdükdə.",
+   "İşçi işə gecikdikdə və bu sənədləşdirildikdə.",
+   "İşçi özü işdən çıxmaq barədə ərizə yazdıqda.",
+   "İşçi cinayət törətdikdə."
+  ],
+  "expect": "İşçi qisas məqsədilə tədbirlərin tətbiqinə dair dəlillər irəli sürdükdə."
+ },
+ "korrupsiya-cdc2e9-40": {
+  "stem": "“Korrupsiyaya qarşı mübarizə haqqında” Qanun nə vaxt qüvvəyə minib?",
+  "options": [
+   "13 yanvar 2004-cü il",
+   "1 yanvar 2005-ci il",
+   "1 yanvar 2004-cü il",
+   "13 yanvar 2005-ci il"
+  ],
+  "expect": "1 yanvar 2005-ci il"
+ },
+ "informasiya-1fa27c-12": {
+  "stem": "İnformasiya sahibləri kimlərdir?"
+ },
+ "informasiya-1fa27c-18": {
+  "stem": "Sorğu hansı hallarda qeydə alınmır?"
+ },
+ "dovlet-sirri-481696-11": {
+  "stem": "Tabelikdə olmayan qurumlar dövlət sirri təşkil edən məlumatları bir-birinə necə verə bilər?",
+  "options": [
+   "Qanunsuz qaydada",
+   "İcazə olmadan",
+   "Sərəncam səlahiyyətinə malik orqanın icazəsi ilə",
+   "Özbaşına"
+  ],
+  "expect": "Sərəncam səlahiyyətinə malik orqanın icazəsi ilə"
+ },
+ "dovlet-sirri-481696-22": {
+  "stem": "İnformasiyanı mühafizə vasitələrinin sertifikatlaşdırılması kim tərəfindən təşkil edilir?",
+  "options": [
+   "Məhkəmə",
+   "Müraciət edən şəxs",
+   "Müvafiq icra hakimiyyəti orqanı",
+   "Nazirliklər"
+  ],
+  "expect": "Müvafiq icra hakimiyyəti orqanı",
+  "note": "Maddə 28.2."
+ },
+ "nha-47e4c5-14": {
+  "stem": "“Normativ hüquqi aktlar haqqında” AR Konstitusiya Qanununa əsasən hansı fikir doğrudur?",
+  "options": [
+   "Normativ hüquqi aktların hüquqi qüvvəsi AR Konstitusiyasının 49-cu maddəsinin II, III, IV, V, VI hissələri və 151-ci maddəsi ilə müəyyən edilir.",
+   "Normativ hüquqi aktların hüquqi qüvvəsi AR Konstitusiyasının 149-cu maddəsinin II, III, IV, V, VI hissələri və 148-ci maddəsi ilə müəyyən edilir.",
+   "Normativ hüquqi aktların hüquqi qüvvəsi AR Konstitusiyasının 149-cu maddəsinin II, III, IV, V, VI hissələri və 51-ci maddəsi ilə müəyyən edilir.",
+   "Normativ hüquqi aktların hüquqi qüvvəsi AR Konstitusiyasının 149-cu maddəsinin II, III, IV, V, VI hissələri və 151-ci maddəsi ilə müəyyən edilir."
+  ],
+  "expect": "Normativ hüquqi aktların hüquqi qüvvəsi AR Konstitusiyasının 149-cu maddəsinin II, III, IV, V, VI hissələri və 151-ci maddəsi ilə müəyyən edilir."
+ },
+ "nha-47e4c5-18": {
+  "stem": "“Normativ hüquqi aktlar haqqında” AR Konstitusiya Qanununa əsasən normativ xarakterli aktlara hansılar aiddir?",
+  "statements": [
+   "AR Konstitusiyasının 130-cu maddəsinin III hissəsinin 1-7-ci bəndlərinə və IV hissəsinə əsasən qəbul edilmiş AR Konstitusiya Məhkəməsinin qanunları;",
+   "AR Mərkəzi Seçki Komissiyasının qanunları, təlimatları və izahları;",
+   "maliyyə bazarları tənzimləyicisinin qərarları;",
+   "Məhkəmə-Hüquq Şurasının təlimatı;",
+   "Audiovizual Şuranın sərəncamları;",
+   "yerli özünüidarə orqanlarının qərarları;",
+   "yerli icra hakimiyyəti orqanlarının qərarları."
+  ]
+ },
+ "inzibati-icraat-9e6177-14": {
+  "stem": "“İnzibati icraat haqqında” AR Qanununa əsasən ərizə nədir?",
+  "replace": [
+   [
+    "inzįbati",
+    "inzibati"
+   ]
+  ]
+ },
+ "inzibati-icraat-9e6177-32": {
+  "stem": "“İnzibati icraat haqqında” AR Qanununun 4-cü fəsli necə adlanır?",
+  "replace": [
+   [
+    "in-zibati",
+    "inzibati"
+   ]
+  ],
+  "expect": "İnzibati icraat"
+ },
+ "inzibati-icraat-9e6177-37": {
+  "stem": "“İnzibati icraat haqqında” AR Qanununa əsasən ərizəyə baxılması və həmin ərizə üzrə müvafiq inzibati aktın qəbul edilməsi başqa inzibati orqanın səlahiyyətlərinə aid olduğu halda, ərizəçinin müraciət etdiyi inzibati orqan ərizənin daxil olduğu vaxtdan nə qədər müddətdə ərizəni və ona əlavə olunmuş sənədləri səlahiyyətli inzibati orqana göndərməlidir?",
+  "expect": "ən geci 10 gün",
+  "note": "Maddə 33.1."
+ },
+ "mehkemeler-5efa8e-7": {
+  "stem": "Azərbaycan Respublikasında ədalət mühakiməsinin həyata keçirilməsi prinsiplərinə dair hansı fikir səhvdir?"
+ },
+ "elektron-imza-36e8ad-3": {
+  "stem": "Aşağıdakı fikirlərdən hansı doğrudur?"
+ },
+ "elektron-imza-36e8ad-13": {
+  "stem": "Aşağıdakılardan hansı fikir yanlışdır?"
+ },
+ "elektron-imza-36e8ad-11": {
+  "stem": "Elektron sənədin əsli hansı təqdimat formasında ola bilər?",
+  "options": [
+   "Yalnız daxili",
+   "Yalnız xarici",
+   "Yalnız imzalı",
+   "Yalnız imzasız"
+  ],
+  "expect": "Yalnız daxili"
+ },
+ "elektron-imza-36e8ad-17": {
+  "stem": "“Elektron imza və elektron sənəd haqqında” AR Qanununa əsasən elektron imza və elektron sənəd haqqında AR qanunvericiliyi nədən ibarətdir? Tam və düzgün olanı seçin."
+ },
+ "elektron-imza-36e8ad-20": {
+  "stem": "“Elektron imza və elektron sənəd haqqında” AR Qanununa əsasən hansı elektron sənədə dair tələblərdən deyil?"
+ },
+ "elektron-imza-36e8ad-28": {
+  "stem": "“Elektron imza və elektron sənəd haqqında” AR Qanununa əsasən Alan hansı hallarda elektron sənədi Göndərən tərəfindən göndərilməmiş hesab etməlidir? Tam və düzgün cavabı seçin.",
+  "statements": [
+   "elektron sənədin göndərilməməsi barədə bildiriş almışdırsa;",
+   "elektron sənədin həqiqiliyi təsdiqlənmişdirsə;",
+   "elektron sənədin həqiqiliyi təsdiqlənməmişdirsə;",
+   "elektron sənədin həqiqiliyinin yoxlanması nəticəsində Alana bəlli olmuşdur və ya bəlli olmalı idi ki, qəbul edilmiş elektron sənəd başqa sənədin avtomatik təkrarıdır;",
+   "elektron sənədin həqiqiliyinin yoxlanması nəticəsində Alana bəlli olmuşdur və ya bəlli olmalı idi ki, qəbul edilmiş elektron sənəd başqa sənədin avtomatik təkrarı deyil."
+  ],
+  "expect": "1, 3, 4"
+ },
+ "mulki-20f211-14": {
+  "stem": "Hüquqi şəxsin idarəetmə orqanında təmsil olunan şəxs hansı halda vurduğu zərərə görə məsuliyyət daşıyır?"
+ },
+ "emek-668017-23": {
+  "stem": "Əmək müqaviləsinin 70-ci maddənin “b” bəndi (ştatların ixtisarı) ilə ləğvi zamanı hansı şərt mütləqdir?"
+ },
+ "emek-668017-27": {
+  "draft": true,
+  "note": "Stem garbled in the source (two questions merged); key not verifiable against the Code text in the bundle."
+ },
+ "muraciet-299788-53": {
+  "stem": "Canlı yayımlanan televiziya proqramlarında edilən müraciətlərin dərhal cavablandırılması mümkün olmadıqda nə edilir?"
+ },
+ "konstitusiya-b61376-1": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyası necə və nə vaxt qəbul olunub?",
+  "explanation": "Konstitusiya 1995-ci il noyabrın 12-də ümumxalq səsverməsində (referendumda) qəbul edilmişdir."
+ },
+ "konstitusiya-0e3efc-40": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına görə mülkiyyətin hansı növü yoxdur?",
+  "expect": "şəxsi mülkiyyət"
+ },
+ "konstitusiya-b61376-29": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikası Silahlı Qüvvələri hansı məqsədlə yaradır?",
+  "options": [
+   "Ərazi bütövlüyünü genişləndirmək üçün",
+   "İnsan və vətəndaş hüquq və azadlıqlarını qorumaq üçün",
+   "Öz təhlükəsizliyini və müdafiəsini təmin etmək məqsədi ilə",
+   "Hər biri"
+  ],
+  "expect": "Öz təhlükəsizliyini və müdafiəsini təmin etmək məqsədi ilə"
+ },
+ "konstitusiya-b61376-71": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq dövlət ehtiyacları üçün mülkiyyətin özgəninkiləşdirilməsinə hansı halda yol verilə bilər?"
+ },
+ "konstitusiya-b61376-134": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq əcnəbilər və vətəndaşlığı olmayan şəxslər dövlət qulluğuna qəbul edilə bilərlərmi?"
+ },
+ "konstitusiya-b61376-151": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq cinayətin törədilməsində təqsirləndirilən şəxs özünün təqsirsizliyini sübuta yetirməyə borcludurmu?"
+ },
+ "konstitusiya-b61376-162": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq zərər çəkmiş şəxsin ədalət mühakiməsinin həyata keçirilməsində iştirak etmək və ona vurulmuş zərərin ödənilməsini tələb etmək hüququ varmı?"
+ },
+ "konstitusiya-b61376-172": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq hər kəsin üzərinə vəzifələr nə ilə qoyula bilər?"
+ },
+ "konstitusiya-b61376-187": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikası Milli Məclisinin deputatlarının səlahiyyət müddəti nə ilə məhdudlaşır?"
+ },
+ "konstitusiya-b61376-213": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikası Milli Məclisinin deputatları Azərbaycan Respublikası Milli Məclisindəki fəaliyyətinə, səsverməyə və söylədiyi fikrə görə məsuliyyətə cəlb oluna bilərlərmi?"
+ },
+ "konstitusiya-b61376-268": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq növbədənkənar seçkilərdə seçilən Azərbaycan Respublikası Milli Məclisinin çağırışının səlahiyyət müddəti beş ildən az ola bilərmi?"
+ },
+ "konstitusiya-b61376-271": {
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Prezidenti növbədənkənar Azərbaycan Respublikası Prezidenti seçkilərini elan edə bilərmi?"
+ },
+ "konstitusiya-b61376-484": {
+  "stem": "Milli Məclisin deputatı səlahiyyət müddəti ərzində hansı halda cinayət məsuliyyətinə cəlb edilə bilər?"
+ },
+ "konstitusiya-bb196a-181": {
+  "stem": "Milli Məclisin deputatı səlahiyyət müddəti ərzində hansı halda cinayət məsuliyyətinə cəlb edilə bilər?"
+ },
+ "konstitusiya-bb196a-96": {
+  "stem": "Səlahiyyətli orqanların tutduğu, həbsə aldığı və cinayət törədilməsində ittiham etdiyi hər bir şəxsə onun hüquqları nə vaxt bildirilir?"
+ },
+ "konstitusiya-b61376-156": {
+  "replace": [
+   [
+    "Özü nə",
+    "Özünə"
+   ]
+  ]
+ },
+ "konstitusiya-0e3efc-361": {
+  "replace": [
+   [
+    "ərazi bütövlüyü nə",
+    "ərazi bütövlüyünə"
+   ]
+  ],
+  "expect": "suverenliyinə",
+  "note": "Maddə 146.II."
+ },
+ "ombudsman-37f090-15": {
+  "stem": "Müvəkkilə kimlər şikayət verə bilməz?",
+  "options": [
+   "Dövlət orqanları",
+   "AR vətəndaşları",
+   "Əcnəbilər və vətəndaşlığı olmayan şəxslər",
+   "Hüquqi şəxslər"
+  ],
+  "expect": "Dövlət orqanları"
+ },
+ "ombudsman-37f090-1-3d6b": {
+  "replace": [
+   [
+    "nə- zarəti",
+    "nəzarəti"
+   ]
+  ]
+ },
+ "mehkemeler-92e2c6-18": {
+  "replace": [
+   [
+    "127-d maddəsinin",
+    "127-ci maddəsinin"
+   ]
+  ]
+ },
+ "nha-47e4c5-41": {
+  "stem": "Normativ hüquqi aktların rekvizitlərinə hansı daxildir?"
+ },
+ "melumat-azadligi-cc47c1-14-06d8": {
+  "stem": "Şəxsiyyət barədə məlumata nə aiddir?"
+ },
+ "melumat-azadligi-cc47c1-50": {
+  "stem": "“Məlumat azadlığı haqqında” AR Qanununa əsasən şəxsiyyət barədə məlumata nə aiddir?",
+  "replace": [
+   [
+    " Açıq suallar",
+    ""
+   ]
+  ]
+ },
+ "melumat-azadligi-cc47c1-14-1b97": {
+  "stem": "“Məlumat azadlığı haqqında” AR Qanununa əsasən şəxsiyyət barədə məlumata nə aiddir?"
+ },
+ "melumat-azadligi-cc47c1-41": {
+  "stem": "Şəxsiyyət haqqında məlumata nə aiddir?"
+ },
+ "inzibati-icraat-026-f-3e2de675": {
+  "stem": "Müddətin bərpası haqqında ərizə ilə yanaşı daha nə edilməlidir?"
+ },
+ "dovlet-sirri-020-f-cd0cb1f6": {
+  "stem": "Ağır cinayətə görə məhkumluq götürülübsə, bu, dövlət sirrinə buraxılışdan imtina üçün əsasdırmı?"
+ },
+ "inzibati-icraat-9e6177-18": {
+  "replace": [
+   [
+    "müvafiq hərəkat (hərəkətsizlik)",
+    "müvafiq hərəkət (hərəkətsizlik)"
+   ]
+  ]
+ },
+ "mehkemeler-5efa8e-17": {
+  "replace": [
+   [
+    "istifad məcburidir",
+    "istifadəsi məcburidir"
+   ]
+  ]
+ },
+ "konstitusiya-0e3efc-253": {
+  "replace": [
+   [
+    "bütövlüyünü n pozulmasına",
+    "bütövlüyünün pozulmasına"
+   ]
+  ]
  }
 }

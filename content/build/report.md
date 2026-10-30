@@ -27,7 +27,7 @@
 ## Bayraqlar
 
 - `no_key`: 30
-- `reviewed_out`: 16
+- `reviewed_out`: 17
 - `dup_options`: 4
 - `garbled`: 2
 - `stem_length`: 1
