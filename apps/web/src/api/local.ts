@@ -412,15 +412,13 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
         u.role = on ? 'admin' : 'user';
         save();
       },
-      /** Signs in to a ready demo account with Premium, so every screen can be seen without registering. */
+      /** Signs in to a ready demo account, so every screen can be seen without registering. */
       async quickStart() {
         if (!state.accounts[DEMO_EMAIL]) {
           await auth.signUp(DEMO_EMAIL, DEMO_PASSWORD);
           await auth.saveProfile({ firstName: 'Demo', lastName: 'İstifadəçi', username: 'demo.hesab' });
         }
         await auth.signIn(DEMO_EMAIL, DEMO_PASSWORD);
-        const u = store.data.users[currentId()];
-        if (!u.premiumUntil || u.premiumUntil < Date.now()) await run((c, id) => grantPremium(c, id, Date.now() + 365 * 86400_000));
       },
       reset() {
         try {

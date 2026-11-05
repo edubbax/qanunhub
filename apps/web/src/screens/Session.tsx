@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Route } from '../app';
 import { useApp } from '../app';
 import { ApiError } from '../api/types';
-import { Modal, Progress, Spinner, toast, untilText } from '../ui/components';
+import { comingSoon, Modal, Progress, Spinner, toast, untilText } from '../ui/components';
 import { AWARDS, ROMAN } from '@qanunhub/core';
 import { IconAlert, IconBolt, IconCheck, IconClock, IconFlag, IconFlame, IconShield, IconStar, IconX } from '../ui/icons';
 import { Epaulette, LifeStars, Medal } from '../ui/insignia';
@@ -116,7 +116,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
           <div className="row"><LifeStars current={0} size={30} /><h2>Paqonda ulduz qalmadı</h2></div>
           <p>Yeni dərslər 4 saat sonra açılacaq. Təkrar ulduz xərcləmir: 10 sualdan 8-ni düzgün cavablandırsan, paqonuna 1 ulduz qayıdır.</p>
           <button className="btn primary block" onClick={() => { setHeartsOut(false); finish(); }}>Dərsi bitir</button>
-          <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium: ulduzlar tükənmir</button>
+          <button className="btn secondary block" onClick={() => comingSoon('Tükənməyən ulduzlar')}>Premium: ulduzlar tükənmir — tezliklə</button>
         </Modal>
       )}
 
@@ -163,13 +163,13 @@ function SessionError({ error, back }: { error: ApiError; back: Route }) {
     <main className="page no-tabs stack loose" style={{ paddingTop: 48 }}>
         <div className="row" style={{ color: 'var(--xp)' }}>
           {error.code === 'HEARTS_LOCKED' ? <LifeStars current={0} size={30} /> : <IconAlert />}
-          <h1>{error.code === 'HEARTS_LOCKED' ? 'Ulduzların bitib' : error.code === 'PREMIUM_REQUIRED' ? 'Premium tələb olunur' : 'Başlamaq olmadı'}</h1>
+          <h1>{error.code === 'HEARTS_LOCKED' ? 'Ulduzların bitib' : error.code === 'PREMIUM_REQUIRED' ? 'Tezliklə' : 'Başlamaq olmadı'}</h1>
         </div>
-        <p>{error.message}</p>
+        <p>{error.code === 'PREMIUM_REQUIRED' ? 'Bu imkan Premium ilə açılacaq. Premium tezliklə; hazırda Konstitusiya mövzusu hamı üçün açıqdır.' : error.message}</p>
         {lockedUntil && <p className="muted">Ulduzlar {untilText(lockedUntil)} sonra bərpa olunacaq.</p>}
         {next && <p className="muted">Növbəti cəhd {untilText(next)} sonra mümkündür.</p>}
         {error.code === 'HEARTS_LOCKED' && <button className="btn primary block" onClick={() => nav({ name: 'session', kind: 'review', back })}>Təkrar et və ulduz qaytar</button>}
-        {(error.code === 'PREMIUM_REQUIRED' || error.code === 'HEARTS_LOCKED') && <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium planlara bax</button>}
+        {error.code === 'HEARTS_LOCKED' && <button className="btn secondary block" onClick={() => comingSoon('Tükənməyən ulduzlar')}>Premium: ulduzlar tükənmir — tezliklə</button>}
         <button className="btn ghost" onClick={() => nav(back)}>Geri qayıt</button>
     </main>
   );

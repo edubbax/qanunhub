@@ -65,6 +65,30 @@ export function ToastHost() {
   return msg ? <div className="toast" role="status">{msg}</div> : null;
 }
 
+// "Tezliklə": Premium is announced but not on sale. Any Premium entry point opens this notice instead.
+let soonSetter: ((feature: string | null) => void) | null = null;
+export function comingSoon(feature = 'Premium') {
+  soonSetter?.(feature);
+}
+export function ComingSoonHost() {
+  const [feature, setFeature] = useState<string | null>(null);
+  useEffect(() => {
+    soonSetter = setFeature;
+    return () => { soonSetter = null; };
+  }, []);
+  if (!feature) return null;
+  return (
+    <Modal onClose={() => setFeature(null)}>
+      <div className="soon">
+        <span className="soon-badge">Tezliklə</span>
+        <h2>{feature}</h2>
+        <p className="muted">Premium imkanları hazırlanır və tezliklə açılacaq. Hazırda hamı pulsuz planda öyrənir: Konstitusiya mövzusu tam açıqdır, paqonda gündə 3 ulduz var, rütbə — Gizir.</p>
+      </div>
+      <button className="btn primary block" onClick={() => setFeature(null)} autoFocus>Aydındır</button>
+    </Modal>
+  );
+}
+
 export function ErrorBox({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
   const message = error instanceof Error ? error.message : 'Gözlənilməz xəta baş verdi.';
   return (

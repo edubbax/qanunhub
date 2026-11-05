@@ -1,6 +1,6 @@
 # QanunHub
 
-Dövlət qulluğu test imtahanının **«Qanunvericilik»** fənninə (AC, BA, BB kateqoriyaları; **AB tezliklə**) Duolingo modelində hazırlıq: alt mövzulara (bölmələrə) bölünmüş qısa dərslər, aralıqlı təkrar (SRS), can yerinə paqonda 3 ulduz, XP, ardıcıl günlər, Gizirdən Ordu generalına qədər hərbi rütbələr, təltiflər, həftəlik/aylıq reytinq, PDF sertifikatlı yarışlar, bölmə testləri, mövzu final testləri və real formatda sınaq imtahanı. Abunə modeli: pulsuz plan (Konstitusiya mövzusu) + Premium.
+Dövlət qulluğu test imtahanının **«Qanunvericilik»** fənninə (AC, BA, BB kateqoriyaları; **AB tezliklə**) Duolingo modelində hazırlıq: alt mövzulara (bölmələrə) bölünmüş qısa dərslər, aralıqlı təkrar (SRS), can yerinə paqonda 3 ulduz, XP, ardıcıl günlər, Gizirdən Ordu generalına qədər hərbi rütbələr, təltiflər, həftəlik/aylıq reytinq, PDF sertifikatlı yarışlar, bölmə testləri, mövzu final testləri və real formatda sınaq imtahanı. Abunə modeli: pulsuz plan (Konstitusiya mövzusu) + Premium. **Premium hazırda bağlıdır** (`premiumSettings.available = false`, `packages/core/src/gamification.ts`): hamı Gizir rütbəsində Konstitusiya mövzusunu tam keçə bilir, Premium imkanlarına (digər mövzular, sınaq imtahanı, zəif mövzular, tükənməyən ulduzlar, zabit rütbələri) basanda «Tezliklə» pəncərəsi açılır.
 
 Bu repozitoriya istifadəçi tətbiqi, redaktor/admin paneli, server API, Postgres sxemi və PDF materiallardan məzmun yaradan pipeline-dan ibarətdir. Hesablar və verilənlər bazası **Supabase** üzərindədir (Auth + Postgres). **Onlayn ödəniş hələ qoşulmayıb** (növbəti mərhələ, aşağıya bax).
 
@@ -12,11 +12,12 @@ packages/core      Domen mühərriki (TypeScript): SRS, ulduzlar, XP, ardıcıll
 apps/server        Hono + Postgres API: Supabase access token-lərinin yoxlanması, öyrənmə API-si, admin API-si,
                    məzmun idxalı, miqrasiyalar. İstehsalda veb tətbiqi də bu server verir.
 apps/web           React PWA (mobil-birinci). Supabase Auth (@supabase/supabase-js) + server API; demo rejimində hər şey brauzerdə.
-supabase/          profiles.sql: profiles cədvəli, qeydiyyat triggeri, RLS — Supabase SQL Editor-da bir dəfə işə salınır.
+supabase/          profiles.sql: profiles cədvəli, qeydiyyat triggeri, RLS; api-role.sql: serverin verilənlər bazası rolu.
 tools/content      Python pipeline: PDF → qanun maddələri, testlər, sual-cavab → mövzu/dərs/kart/sual; mətn təmizləmə və yoxlama alətləri.
 content/fixes      Hüquqi yoxlamadan keçmiş düzəlişlər: cavab açarları, sual mətnləri, kartlar, yazı səhvləri.
 content/build      Hazır məzmun paketi (content.json) və keyfiyyət hesabatı (report.md).
-scripts/           dev-db.sh: Docker-siz lokal Postgres 16; supabase-stub.sql: lokal testlər üçün auth sxeminin minimal əvəzi.
+scripts/           dev-db.sh: Docker-siz lokal Postgres 16; supabase-stub.sql: lokal testlər üçün auth sxeminin minimal əvəzi;
+                   vercel-output.mjs: Vercel üçün hazır yayım qovluğu (.vercel/output).
 ```
 
 ## Supabase qurulumu
@@ -26,9 +27,11 @@ scripts/           dev-db.sh: Docker-siz lokal Postgres 16; supabase-stub.sql: l
    - `public.profiles` (`id` → `auth.users.id`, `first_name`, `last_name`, `username` — unikal, kiçik hərflərlə, `updated_at`);
    - `on_auth_user_created` triggeri: qeydiyyatdan keçən kimi boş profil sətri yaranır;
    - RLS: hər kəs yalnız öz sətrini oxuyur və dəyişir, `anon` girişi yoxdur;
-   - `username_available(text)`: «Profilini tamamla» ekranında istifadəçi adını yoxlamaq üçün (yalnız daxil olmuş istifadəçilərə).
+   - `username_available(text)`: «Profilini tamamla» ekranında istifadəçi adını yoxlamaq üçün (yalnız daxil olmuş istifadəçilərə);
+   - `account_email_confirmed(uuid)`: server üçün e-poçtun təsdiqləndiyini bildirir (`auth` sxemi başqa rollara bağlıdır).
+   Sonra `supabase/api-role.sql` (parolu dəyişib): server `qanunhub_api` rolu ilə qoşulur, öz cədvəllərinin sahibidir, `profiles`-i yalnız oxuyur.
 3. **Auth**: Authentication → Sign In / Providers → Email aktiv, **Confirm email** açıq. Authentication → URL Configuration: *Site URL* = tətbiqin ünvanı (məs. `https://qanunhub.az`), *Redirect URLs*-ə `https://qanunhub.az/**` əlavə edin (təsdiq və şifrə bərpası linkləri `/` və `/sifre-yenile` ünvanlarına qayıdır). Email şablonlarını Azərbaycan dilinə çevirmək tövsiyə olunur; istehsalda öz SMTP provayderinizi qoşun.
-4. **Server**: `.env.example` → `.env`: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` (Project Settings → API) və `DATABASE_URL` (Project Settings → Database, session pooler). Server ilk başlanğıcda öz cədvəllərini (`users`, irəliləyiş, reytinq, məzmun …) eyni bazada yaradır və hamısında RLS-i açır — Data API onlara çata bilmir, server isə cədvəllərin sahibi kimi qoşulur.
+4. **Server**: `.env.example` → `.env`: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` (Project Settings → API) və `DATABASE_URL` = `postgres://qanunhub_api.<ref>:<parol>@aws-0-<region>.pooler.supabase.com:6543/postgres` (transaction pooler, `DATABASE_PREPARE=false`). Server ilk başlanğıcda öz cədvəllərini (`users`, irəliləyiş, reytinq, məzmun …) eyni bazada yaradır və hamısında RLS-i açır — Data API onlara çata bilmir, server isə cədvəllərin sahibi kimi qoşulur.
 5. **Admin**: `ADMIN_EMAIL`-dəki hesab ilk girişində admin olur; sonradan: `npm run cli -w @qanunhub/server -- set-role <email> admin`.
 
 Token-lər yeni layihələrdə asimmetrik açarla imzalanır və server onları `https://<ref>.supabase.co/auth/v1/.well-known/jwks.json` ilə yoxlayır (issuer `…/auth/v1`, audience `authenticated`, anonim sessiyalar qəbul edilmir). Köhnə HS256 «JWT secret»-lə işləyən layihədə `SUPABASE_JWT_SECRET` təyin edin.
@@ -88,7 +91,7 @@ npm run dev:web                  # Veb: http://localhost:5173 (/api serverə pro
 npm run build:demo               # apps/web/dist-demo/index.html
 ```
 
-Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir; Supabase əvəzinə hesablar, profillər və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Giriş, qeydiyyat, «Profilini tamamla» və şifrə bərpası istehsaldakı kimi işləyir (bərpa linki əvəzinə dərhal «Yeni şifrə» ekranı açılır). Giriş səhifəsində «Demo hesabla bax (Premium)» bir kliklə hazır Premium hesaba daxil edir. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
+Tək HTML fayl, serversiz işləyir: bütün məzmun içindədir; Supabase əvəzinə hesablar, profillər və irəliləyiş brauzerin `localStorage`-ında saxlanılır, ödəniş simulyasiya olunur. Giriş, qeydiyyat, «Profilini tamamla» və şifrə bərpası istehsaldakı kimi işləyir (bərpa linki əvəzinə dərhal «Yeni şifrə» ekranı açılır). Giriş səhifəsində «Demo hesabla bax» bir kliklə hazır hesaba daxil edir. Profil səhifəsində «admin hüququ ver» ilə redaktor panelini də yoxlamaq olar.
 
 ### Testlər
 
@@ -126,7 +129,7 @@ Statik hostinqdə (server olmadan) veb tətbiq Supabase ayarlarını `VITE_SUPAB
 - **Təkrar (SRS)**: SM-2 hibridi. Yeni sual 10 dəq → 1 gün → 3 gün → 7 gün; səhv cavab 10 dəqiqəyə qaytarır. İmtahan tarixi bilinirsə interval qalan günlərin yarısından uzun olmur. 4 dəfə səhv edilən sual «inadkar» sayılır.
 - **Paqonda 3 ulduz** (can, pulsuz plan): gündə 3; səhv cavabda biri sönür; bitəndə yeni dərslər 4 saat bağlanır; təkrarlar ulduz xərcləmir; 10 sualdan 8 düz → +1 ulduz (gündə ən çox 2). Premium-da ulduzlar tükənmir.
 - **XP**: dərs 10 + ilk cəhddə hər düz cavab 1 (ən çox 8) + səhvsiz dərsə 5; 7 gün ərzində ikinci dəfə keçilən dərs yarım, üçüncü dəfə 0 XP (dərsdə ən azı 3 yeni sual varsa, tam XP); təkrar 5 + hər düz cavab 1. Reytinqə gündə ən çox 600 XP; çox sürətli cavablar (botvari) reytinqə sayılmır.
-- **Reytinq**: həftəlik və aylıq, ümumi və kateqoriya üzrə, Bakı vaxtı ilə. İştirak Premium + təsdiqlənmiş email ilə; pulsuz istifadəçi «Premium ilə neçənci olardın» görür.
+- **Reytinq**: həftəlik və aylıq, ümumi və kateqoriya üzrə, Bakı vaxtı ilə. Təsdiqlənmiş e-poçtu olan hər öyrənən XP qazandıqca cədvələ düşür. Boş cədvəl görünməsin deyə hər dövr üçün 8 **nümunə istifadəçi** yaradılır (`apps/server/src/samples.ts`; ləqəblərində defis var, real istifadəçi adı ilə toqquşmur; UI-da «nümunə» kimi işarələnir; admin statistikasına daxil deyil).
 - **Hərbi rütbələr** (`packages/core/src/military.ts`): pulsuz planda hamı **Gizir**dir. Premium istifadəçi **Leytenant**dan başlayır və «xidmət balı» ilə yüksəlir: Baş leytenant 400, Kapitan 1000, Mayor 2000, Polkovnik-leytenant 3500, Polkovnik 5500; general rütbələri həm də ardıcıl gün tələb edir — General-mayor 8000 + 14 gün, General-leytenant 11500 + 21 gün, General-polkovnik 16000 + 30 gün, **Ordu generalı** (paqonda dövlət gerbi) 22000 + 45 gün. Xidmət balı = qazanılan XP × seriya əmsalı (30 günlük seriyada x2). Məşq edilməyən hər gün balın 5%-i (ən azı 80) silinir, ulduzların bitməsi (−40) və mətni oxumadan cavablamaq (−60) «məsuliyyətsizlik» sayılır; bal azaldıqca rütbə tədricən **Kiçik leytenant**a qədər enir. Rütbə adı profildə və reytinqdə ləqəbin yanında görünür.
 - **Təltiflər**: 12 nişan, medal və orden, hər biri I–III dərəcəli (dərslər, səhvsiz dərslər, bölmə və final testləri, 100% final, sınaqda keçid və 90%+, seriya, düzgün cavablar, yarışda ilk üçlük və qələbə, təsdiqlənən səhv bildirişi). Yeni təltif nəticə ekranında göstərilir.
 - **Yarışlar**: admin yaradır (ad, kateqoriya, başlanğıc və bitmə vaxtı, sual sayı, vaxt limiti). Eyni kateqoriyada hamıya eyni suallar düşür (mənbə və redaksiya suallarının qarışığı), bir cəhd verilir; bal bərabər olduqda tez bitirən irəlidə olur. Yarış bitəndə ilk üç yerə avtomatik **PDF sertifikat** (ad-soyad profildən, `QH-XXXX-XXXX` kodu ilə) və təltif verilir; sertifikatın həqiqiliyi giriş səhifəsində «Sertifikatı yoxla» ilə yoxlanılır.
@@ -197,9 +200,23 @@ Diqqət tələb edənlər:
 - **Qaralamalar**: cavab açarı tapılmayan (o cümlədən Kargüzarlıq «Test 2» faylı), fərqli fayllarda fərqli açarı olan və mətni bərpa edilə bilməyən suallar — admin panelində «Bayraq» filtri ilə.
 - **Hüquqşünasların yoxlaması** yenə tövsiyə olunur, xüsusən formativ suallar və qanunvericiliyə son dəyişikliklər üçün.
 
+## Yayım: Vercel + Supabase
+
+İstehsal sxemi: veb tətbiq Vercel CDN-dən statik verilir, `/api/*` bir Node.js funksiyasıdır (`apps/server/src/vercel.ts`, region `fra1` — Supabase `eu-central-1`-ə yaxın). Funksiya soyuq başlanğıcda miqrasiyaları tətbiq edir və paketdəki məzmunun versiyası bazadakından fərqlidirsə onu yükləyir (redaktorun düzəlişləri saxlanılır; eyni anda başlayan nüsxələr advisory lock ilə gözləyir).
+
+```bash
+SUPABASE_URL=https://<ref>.supabase.co npm run build:vercel     # .vercel/output
+```
+
+```bash
+npx vercel deploy --prebuilt --prod
+```
+
+Vercel layihəsinin mühit dəyişənləri: `DATABASE_URL` (yuxarıdakı pooler ünvanı), `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `ADMIN_EMAIL`. Supabase → Authentication → URL Configuration: *Site URL* = Vercel ünvanı, *Redirect URLs* = `<ünvan>/**`. Pulsuz Supabase planında standart SMTP yalnız komanda üzvlərinə məktub göndərir: ya öz SMTP-nizi qoşun, ya da *Confirm email*-i söndürün (onda reytinq dərhal açılır).
+
 ## Növbəti mərhələ: ödəniş
 
-Hazır olanlar: planlar (`monthly` 12.99 AZN, `exam3` 29.99 AZN / 3 ay), `subscriptions` və `payments` cədvəlləri, Premium-un verilməsi/uzadılması (`grantPremium`), admin panelində əl ilə Premium. `POST /api/billing/checkout` hazırda `501 NOT_IMPLEMENTED` qaytarır və istifadəçiyə «tezliklə» bildirişi göstərilir.
+Hazır olanlar: planlar (`monthly` 12.99 AZN, `exam3` 29.99 AZN / 3 ay), `subscriptions` və `payments` cədvəlləri, Premium-un verilməsi/uzadılması (`grantPremium`). Premium açılanda `premiumSettings.available = true` edilir; hazırda heç kim, admin də daxil, Premium imkanlarından istifadə edə bilmir. `POST /api/billing/checkout` hazırda `501 NOT_IMPLEMENTED` qaytarır və istifadəçiyə «tezliklə» bildirişi göstərilir.
 
 Qoşulma üçün lazım olanlar:
 

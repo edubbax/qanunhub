@@ -11,7 +11,7 @@ import type { Api, MetaDto } from './api/types';
 import { ApiError } from './api/types';
 import type { AuthBackend, AuthUser, Profile } from './auth/types';
 import { isProfileComplete } from './auth/types';
-import { ErrorBox, Splash, ToastHost } from './ui/components';
+import { ComingSoonHost, ErrorBox, Splash, ToastHost } from './ui/components';
 import { IconBolt, IconFlame, IconHome, IconMedal, IconPath, IconTrophy, IconUser } from './ui/icons';
 import { LifeStars } from './ui/insignia';
 import logoUrl from './assets/logo.png';
@@ -269,6 +269,7 @@ export function App({ api, auth }: { api: Api; auth: AuthBackend }) {
         {chrome && <TabBar />}
       </div>
       <ToastHost />
+      <ComingSoonHost />
     </AppCtx.Provider>
   );
 }

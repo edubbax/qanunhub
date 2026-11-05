@@ -879,7 +879,7 @@
  "karguzarliq-919e39-205": {
   "replace": [
    [
-    "məhv etməkdən ibarətdir. 206 “Kargüzarlığın aparılmasına dair Təlimat” a əsasən hansı zərflər açılmır? a) Təşkilata ünvanlanan korrespondensiya b) Şəxsi korrespondensiya c) Təşkilatın rəhbərinə ünvanlanan korrespondensiya d) Bütün zərflər açılır",
+    "məhv etməkdən ibarətdir. 206 “Kargüzarlığın aparılmasına dair Təlimat”a əsasən hansı zərflər açılmır? a) Təşkilata ünvanlanan korrespondensiya b) Şəxsi korrespondensiya c) Təşkilatın rəhbərinə ünvanlanan korrespondensiya d) Bütün zərflər açılır",
     "məhv etməkdən ibarətdir."
    ]
   ]
@@ -1285,12 +1285,42 @@
    ]
   ]
  },
- "konstitusiya-0e3efc-253": {
-  "replace": [
-   [
-    "bütövlüyünü n pozulmasına",
-    "bütövlüyünün pozulmasına"
-   ]
-  ]
+ "konstitusiya-bb196a-95": {
+  "options": [
+   "1,3",
+   "3,4",
+   "1,4",
+   "2,5"
+  ],
+  "expect": "2,5",
+  "note": "Maddə 53.II: siyasi əqidəsinə görə və AR-da cinayət sayılmayan əmələ görə təqib edilənlər; distractor 3,6 referred to a missing statement."
+ },
+ "nha-47e4c5-16": {
+  "statements": [
+   "AR Milli Məclisinin qərarları",
+   "AR Prezidentinin fərmanları",
+   "AR Prezidentinin sərəncamları",
+   "AR Nazirlər Kabinetinin qərarları",
+   "AR Nazirlər Kabinetinin sərəncamları",
+   "vətəndaşlıq vəziyyəti aktlarının dövlət qeydiyyatını həyata keçirən orqanların aktları"
+  ],
+  "expect": "1,3,5,6"
+ },
+ "ombudsman-37f090-29": {
+  "draft": true,
+  "note": "Statements merged in the source (7 referenced, 6 present); not reconstructable with certainty."
+ },
+ "mehkemeler-92e2c6-21": {
+  "options": [
+   "2, 4, 5",
+   "1, 2, 3",
+   "3, 4, 5",
+   "1, 3, 5"
+  ],
+  "note": "Distractor 2, 4, 6 referred to a missing statement."
+ },
+ "karguzarliq-919e39-226": {
+  "draft": true,
+  "note": "One statement is missing in the source (options reference 6 of 5)."
  }
 }

@@ -68,7 +68,7 @@ export function Profile() {
         <p className="small muted">
           Hər dərs və testdən gələn XP xidmət balına çevrilir; ardıcıl məşq etdikcə bal artır (30 günlük seriya ilə iki dəfə çox).
           Məşq etmədiyin hər gün rütbədən bal çıxılır və rütbə tədricən Kiçik leytenanta qədər enir. Ulduzların bitməsi və tələsik, oxumadan cavablar da bal aparır.
-          Pulsuz planda hamı Gizirdir; Premium ilə Leytenantdan başlayırsan.
+          Hazırda hamı Gizirdir; zabit rütbələri (Leytenantdan başlayaraq) Premium ilə açılacaq — tezliklə.
         </p>
         {ladder && (
           <div className="ladder">
@@ -82,7 +82,7 @@ export function Profile() {
                   <span className="stack" style={{ gap: 0 }}>
                     <b>{r.title}</b>
                     <span className="tiny muted">
-                      {r.code === 'gizir' ? 'Pulsuz plan' : r.code === 'kl' ? 'Uzun fasilədən sonra enilən ən aşağı rütbə' : r.code === 'l' ? 'Premium ilə başlanğıc rütbə' : `${r.minMerit} xidmət balı${r.minStreak ? ` · ${r.minStreak} günlük seriya` : ''}`}
+                      {r.code === 'gizir' ? 'Pulsuz plan' : r.code === 'kl' ? 'Uzun fasilədən sonra enilən ən aşağı rütbə' : r.code === 'l' ? 'Premium ilə başlanğıc rütbə (tezliklə)' : `${r.minMerit} xidmət balı${r.minStreak ? ` · ${r.minStreak} günlük seriya` : ''}`}
                     </span>
                   </span>
                   {current && <span className="chip primary">Sən</span>}
@@ -143,7 +143,7 @@ export function Profile() {
           {me.premium ? <span className="chip ok">Premium</span> : <span className="chip">Pulsuz</span>}
         </div>
         <p className="small muted">{me.premium ? `Premium ${formatDate(me.premiumUntil)} tarixinədək aktivdir. Bu ay seriyanı qoruyan günlər: ${me.freezesLeft}.` : 'Pulsuz planda Konstitusiya mövzusu açıqdır, paqonda gündə 3 ulduz var və rütbən Gizirdir.'}</p>
-        <button className={`btn ${me.premium ? 'secondary' : 'primary'} block`} onClick={() => nav({ name: 'premium' })}>{me.premium ? 'Planı idarə et' : 'Premium-a keç'}</button>
+        <button className="btn secondary block" onClick={() => nav({ name: 'premium' })}>Premium — tezliklə</button>
       </section>
 
       <section className="card stack">

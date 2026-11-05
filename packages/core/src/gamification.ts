@@ -108,6 +108,12 @@ export function visibleStreak(s: StreakState, now: number, premium: boolean): nu
   return premium && missed <= s.freezesLeft ? s.current : 0;
 }
 
+/**
+ * Premium is announced but not on sale yet: until payments open nobody has it, whatever premiumUntil says.
+ * Every learner is on the free plan (the Konstitusiya topic, three stars a day, the rank of Gizir).
+ */
+export const premiumSettings = { available: false };
+
 export function isPremium(u: Pick<UserRecord, 'premiumUntil'>, now: number): boolean {
-  return !!u.premiumUntil && u.premiumUntil > now;
+  return premiumSettings.available && !!u.premiumUntil && u.premiumUntil > now;
 }

@@ -756,13 +756,13 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
   }
   counters.correct = firstCorrect;
 
-  // Leaderboard eligibility: premium, verified, not banned, plausible timing, under the daily cap.
+  // Leaderboard eligibility: verified email, not banned, plausible timing, under the daily cap. Every plan takes part.
   const fast = s.suspicion > SUSPICION_LIMIT;
   let lbXp = 0;
-  if (xp > 0 && premium && u.emailVerified && !u.leaderboardBanned && !fast) {
+  if (xp > 0 && u.emailVerified && !u.leaderboardBanned && !fast) {
     lbXp = Math.max(0, Math.min(xp, XP.dailyLeaderboardCap - u.today.lbXp));
   }
-  const lbStatus: CompleteDto['leaderboard'] = lbXp > 0 ? 'counted' : xp <= 0 ? 'no_xp' : !premium ? 'not_premium'
+  const lbStatus: CompleteDto['leaderboard'] = lbXp > 0 ? 'counted' : xp <= 0 ? 'no_xp'
     : !u.emailVerified ? 'unverified' : u.leaderboardBanned ? 'banned' : fast ? 'too_fast' : 'daily_cap';
   if (xp > 0) {
     if (lbXp > 0) {
@@ -814,17 +814,17 @@ export async function getLeaderboard(ctx: EngineCtx, userId: string, period: Per
   const u = await loadUser(ctx, userId);
   const start = periodStartKey(period, ctx.now);
   const rows = await ctx.store.getLeaderboard(period, start, scope, 100);
-  const premium = isPremium(u, ctx.now);
-  const entry = premium ? await ctx.store.getLeaderboardEntry(period, start, scope, userId) : null;
+  const eligible = u.emailVerified && !u.leaderboardBanned;
+  const entry = eligible ? await ctx.store.getLeaderboardEntry(period, start, scope, userId) : null;
   let previewRank: number | null = null;
-  if (!premium) {
+  if (!eligible) {
     const xp = await ctx.store.sumXp(userId, dayStart(start));
     previewRank = xp > 0 ? await ctx.store.rankForXp(period, start, scope, xp) : null;
   }
   return {
     period, scope, periodStart: start, periodEnd: periodEnd(period, start), rows,
     me: entry ? { rank: entry.rank, xp: entry.xp } : null,
-    eligible: premium && !u.leaderboardBanned,
+    eligible,
     previewRank,
   };
 }

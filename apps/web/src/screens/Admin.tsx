@@ -57,7 +57,7 @@ export function Admin() {
       {tab === 'payments' && (
         <div className="card stack">
           <h2>Ödənişlər</h2>
-          <p className="muted">Onlayn ödəniş növbəti mərhələdə qoşulacaq. Sxemdə <code>subscriptions</code> və <code>payments</code> cədvəlləri artıq var. Hələlik Premium «İstifadəçilər» bölməsindən əl ilə verilir.</p>
+          <p className="muted">Onlayn ödəniş növbəti mərhələdə qoşulacaq. Sxemdə <code>subscriptions</code> və <code>payments</code> cədvəlləri artıq var. Premium hələ satışda deyil: istifadəçilər «Tezliklə» görür, hamı pulsuz plandadır.</p>
         </div>
       )}
     </main>
@@ -444,11 +444,7 @@ function Users() {
                   <td>{u.category ?? '—'}{u.subgroup ? ` · ${u.subgroup}` : ''}</td>
                   <td className="num">{u.xpTotal}</td>
                   <td>
-                    {u.premiumUntil && u.premiumUntil > Date.now() ? <span className="chip ok">{formatDate(u.premiumUntil)}</span> : <span className="chip">yox</span>}
-                    <div className="row" style={{ marginTop: 4 }}>
-                      <button className="btn ghost small" onClick={() => update(u, { premiumUntil: Math.max(Date.now(), u.premiumUntil ?? 0) + 30 * 86400_000 })}>+30 gün</button>
-                      {u.premiumUntil && <button className="btn ghost small" onClick={() => update(u, { premiumUntil: null })}>Ləğv</button>}
-                    </div>
+                    <span className="chip soon-chip">Tezliklə</span>
                   </td>
                   <td>
                     <select className="input" style={{ minHeight: 36, padding: '4px 8px' }} value={u.role} disabled={u.id === me?.id} onChange={(e) => update(u, { role: e.target.value as AdminUser['role'] })}>

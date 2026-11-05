@@ -15,7 +15,7 @@ export function RankHero({ me, compact = false, onPremium }: { me: MeDto; compac
           <span className="small">{me.fullName || me.nickname}</span>
           <span className="rank-title">{r.title}</span>
           {r.isGizir ? (
-            <span className="small">Premium ilə zabit rütbələri açılır{r.earned ? `: qazandığın rütbə — ${r.earned.title}` : ''}.</span>
+            <span className="small">Zabit rütbələri Premium ilə açılacaq — tezliklə{r.earned ? `. Qazandığın rütbə: ${r.earned.title}` : ''}.</span>
           ) : r.next ? (
             <span className="small">Növbəti: {r.next.title} · {Math.max(0, r.next.merit - r.merit)} xidmət balı{r.next.streak ? ` və ${r.next.streak} günlük seriya` : ''}</span>
           ) : (

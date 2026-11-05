@@ -9,7 +9,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import type { Category, ContentBundle, EngineCtx, Period, Scope, UserRecord } from '@qanunhub/core';
 import {
-  AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
+  AVAILABLE_CATEGORIES, AppError, SAMPLE_EMAIL_SUFFIX, CATEGORIES, COMING_SOON_CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
   grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
   adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
   startCompetition,
@@ -21,6 +21,7 @@ import { importBundle, rowToItem } from './content';
 import type { Sql, Tx } from './db';
 import { PgStore } from './pgStore';
 import { rateLimit } from './rateLimit';
+import { ensureSampleBoards } from './samples';
 import type { TokenVerifier } from './supabaseAuth';
 
 type Env = { Variables: { user: UserRecord | null; profileComplete: boolean } };
@@ -211,6 +212,7 @@ export function createApp(deps: AppDeps) {
     const period = (c.req.query('period') === 'month' ? 'month' : 'week') as Period;
     const scopeQ = c.req.query('scope') ?? 'ALL';
     const scope = (scopeQ === 'ALL' || (CATEGORIES as string[]).includes(scopeQ) ? scopeQ : 'ALL') as Scope;
+    await ensureSampleBoards(sql, now());
     return c.json(await run(c, (ctx, id) => getLeaderboard(ctx, id, period, scope)));
   });
 
@@ -234,7 +236,7 @@ export function createApp(deps: AppDeps) {
         count(*) filter (where last_seen_at > now() - interval '1 day')::int as active_day,
         count(*) filter (where last_seen_at > now() - interval '7 days')::int as active_week,
         count(*) filter (where created_at > now() - interval '7 days')::int as new_week
-      from users`;
+      from users where email not like ${'%' + SAMPLE_EMAIL_SUFFIX}`;
     const items = await sql`select status, count(*)::int as n from items group by status`;
     const flags = await sql`select f as flag, count(*)::int as n from items, unnest(flags) f group by f order by n desc`;
     const [r] = await sql`select count(*) filter (where status = 'open')::int as open from reports`;
@@ -381,7 +383,7 @@ export function createApp(deps: AppDeps) {
     const like = q ? `%${q}%` : null;
     const rows = await sql`
       select id, email, nickname, role, category, subgroup, premium_until, email_verified, leaderboard_banned, xp_total, created_at, last_seen_at
-      from users ${like ? sql`where email ilike ${like} or nickname ilike ${like}` : sql``}
+      from users where email not like ${'%' + SAMPLE_EMAIL_SUFFIX} ${like ? sql`and (email ilike ${like} or nickname ilike ${like})` : sql``}
       order by created_at desc limit 100`;
     return c.json(rows.map((r) => ({
       id: r.id, email: r.email, nickname: r.nickname, role: r.role, category: r.category, subgroup: r.subgroup,

@@ -15,7 +15,8 @@
     "typecheck": "tsc -p packages/core && tsc -p apps/server && tsc -p apps/web",
     "db:migrate": "npm run migrate -w @qanunhub/server",
     "content:import": "npm run import -w @qanunhub/server",
-    "start": "node apps/server/dist/index.js"
+    "start": "node apps/server/dist/index.js",
+    "build:vercel": "npm run build -w @qanunhub/web && node scripts/vercel-output.mjs"
   },
   "engines": {
     "node": ">=20"

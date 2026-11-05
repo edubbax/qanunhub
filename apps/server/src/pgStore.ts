@@ -3,7 +3,7 @@ import type {
   Certificate, Competition, CompetitionEntry, LeaderboardRow, LessonProgress, Period, Report, ReviewLog, Scope, Session,
   SrsState, Store, TopicFinal, UserRecord, XpEvent,
 } from '@qanunhub/core';
-import { displayRankCode, freshGame, periodStartKey } from '@qanunhub/core';
+import { SAMPLE_EMAIL_SUFFIX, displayRankCode, freshGame, periodStartKey } from '@qanunhub/core';
 import type { Db } from './db';
 
 type Row = Record<string, any>;
@@ -27,6 +27,7 @@ function rowToBoard(r: Row, now: number): LeaderboardRow {
   return {
     userId: r.user_id, nickname: r.nickname, xp: r.xp, correct: r.correct, answered: r.answered, reachedAt: ts(r.reached_at)!,
     rank: Number(r.rank), rankCode: displayRankCode({ premiumUntil: ts(r.premium_until), game: r.game }, now),
+    sample: String(r.email ?? '').endsWith(SAMPLE_EMAIL_SUFFIX) || undefined,
   };
 }
 
@@ -160,7 +161,7 @@ export class PgStore implements Store {
 
   async getLeaderboard(period: Period, start: string, scope: Scope, limit: number): Promise<LeaderboardRow[]> {
     const rows = await this.sql`
-      select l.user_id, u.nickname, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
+      select l.user_id, u.nickname, u.email, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
         row_number() over (order by l.xp desc, (case when l.answered > 0 then l.correct::float / l.answered else 0 end) desc, l.reached_at asc) as rank
       from leaderboard_scores l join users u on u.id = l.user_id
       where l.period = ${period} and l.period_start = ${start} and l.scope = ${scope} and l.xp > 0 and not u.leaderboard_banned
@@ -172,7 +173,7 @@ export class PgStore implements Store {
   async getLeaderboardEntry(period: Period, start: string, scope: Scope, userId: string): Promise<LeaderboardRow | null> {
     const [r] = await this.sql`
       select * from (
-        select l.user_id, u.nickname, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
+        select l.user_id, u.nickname, u.email, u.premium_until, u.game, l.xp, l.correct, l.answered, l.reached_at,
           row_number() over (order by l.xp desc, (case when l.answered > 0 then l.correct::float / l.answered else 0 end) desc, l.reached_at asc) as rank
         from leaderboard_scores l join users u on u.id = l.user_id
         where l.period = ${period} and l.period_start = ${start} and l.scope = ${scope} and l.xp > 0 and not u.leaderboard_banned

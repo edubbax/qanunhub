@@ -205,10 +205,17 @@ describe('learning flow', () => {
     expect(r.status).toBe(200);
   });
 
-  it('shows the free learner a preview of the leaderboard', async () => {
-    const lb = await c.get('/api/leaderboard?period=week&scope=BB');
-    expect(lb.json.eligible).toBe(false);
-    expect(lb.json.previewRank).toBe(1);
+  it('lists free learners on the leaderboard next to a few sample learners', async () => {
+    const lb = await c.get('/api/leaderboard?period=week&scope=ALL');
+    expect(lb.json.eligible).toBe(true);
+    const rows = lb.json.rows as { nickname: string; sample?: boolean; rankCode: string }[];
+    expect(rows.find((r) => r.nickname === 'aynur.e')).toMatchObject({ rankCode: 'gizir' });
+    expect(rows.filter((r) => r.sample)).toHaveLength(8);
+    expect(lb.json.me.rank).toBeGreaterThan(0);
+    // Seeding is idempotent and samples stay out of the admin lists.
+    await c.get('/api/leaderboard?period=week&scope=ALL');
+    const [n] = await sql`select count(*)::int as n from users where email like '%@sample.local'`;
+    expect(n.n).toBe(8);
   });
 
   it('returns a clear error for premium features and billing', async () => {
@@ -221,15 +228,18 @@ describe('admin', () => {
   let a: Client;
   let learner: Client;
 
-  it('lets an admin grant premium, which unlocks topics and the leaderboard', async () => {
+  it('keeps Premium closed: a premium date unlocks nothing and everyone stays Gizir', async () => {
     a = admin;
     learner = aynur;
     const users = await a.get('/api/admin/users?q=aynur');
-    const id = users.json[0].id;
-    expect((await a.patch(`/api/admin/users/${id}`, { premiumUntil: clock + 30 * 86400_000 })).status).toBe(200);
+    expect(users.json).toHaveLength(1);
+    expect((await a.patch(`/api/admin/users/${users.json[0].id}`, { premiumUntil: clock + 30 * 86400_000 })).status).toBe(200);
     const path = await learner.get('/api/path');
-    expect(path.json.topics[1].locked).toBe(false);
-    expect((await learner.get('/api/me')).json.rank.title).toBe('Leytenant');
+    expect(path.json.topics[1].locked).toBe(true);
+    const me = (await learner.get('/api/me')).json;
+    expect(me.premium).toBe(false);
+    expect(me.rank.title).toBe('Gizir');
+    expect((await learner.post('/api/sessions', { kind: 'mock' })).json.error.code).toBe('PREMIUM_REQUIRED');
   });
 
   it('edits an item, records the change and serves the new text', async () => {

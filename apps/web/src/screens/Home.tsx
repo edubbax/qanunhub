@@ -1,7 +1,7 @@
 import type { CompetitionDto } from '@qanunhub/core';
 import { useEffect, useState } from 'react';
 import { useApp } from '../app';
-import { ErrorBox, Progress, Spinner, ordinal, toast, untilText, useLoad } from '../ui/components';
+import { comingSoon, ErrorBox, Progress, Spinner, ordinal, toast, untilText, useLoad } from '../ui/components';
 import { IconAlert, IconBook, IconChevron, IconExam, IconMail, IconMedal, IconPlay, IconRepeat, IconTrophy, IconWeak } from '../ui/icons';
 import { LifeStars } from '../ui/insignia';
 import { RankHero } from '../ui/rank';
@@ -26,7 +26,7 @@ export function Home() {
 
   return (
     <main className="page stack loose">
-      <RankHero me={h.me} compact onPremium={() => nav({ name: 'premium' })} />
+      <RankHero me={h.me} compact onPremium={() => nav({ name: 'profile' })} />
 
       {!h.me.emailVerified && api.mode === 'server' && (
         <div className="banner warn">
@@ -56,9 +56,9 @@ export function Home() {
             <IconChevron />
           </button>
         ) : (
-          <button className="tile" onClick={() => nav({ name: premium ? 'path' : 'premium' })}>
+          <button className="tile" onClick={() => nav({ name: 'path' })}>
             <span className="ico"><IconBook /></span>
-            <span className="grow stack tight"><b>{premium ? 'Bütün dərslər keçilib' : 'Pulsuz mövzu bitdi'}</b><span className="small muted">{premium ? 'Bölmə və final testlərini, sınaq imtahanını yoxla.' : 'Qalan mövzular Premium planındadır.'}</span></span>
+            <span className="grow stack tight"><b>{premium ? 'Bütün dərslər keçilib' : 'Konstitusiya dərsləri keçilib'}</b><span className="small muted">{premium ? 'Bölmə və final testlərini, sınaq imtahanını yoxla.' : 'Bölmə testlərini və mövzu final testini yoxla. Qalan mövzular Premium ilə — tezliklə.'}</span></span>
             <IconChevron />
           </button>
         )}
@@ -116,22 +116,22 @@ export function Home() {
 
       <section className="stack">
         <h2 className="group-title">İmtahana hazırlıq</h2>
-        <button className="tile" onClick={() => nav(premium ? { name: 'session', kind: 'mock', back: { name: 'home' } } : { name: 'premium' })}>
+        <button className="tile" onClick={() => (premium ? nav({ name: 'session', kind: 'mock', back: { name: 'home' } }) : comingSoon('Sınaq imtahanı'))}>
           <span className="ico ok"><IconExam /></span>
           <span className="grow stack tight">
             <b>Sınaq imtahanı</b>
             <span className="small muted">{fmt ? `Real format: ${fmt.lawClosed} qapalı${fmt.lawOpen ? ` + ${fmt.lawOpen} açıq` : ''} tapşırıq, ${fmt.lawMax} bal, vaxtla` : 'Real formatda, vaxtla'}</span>
           </span>
-          {!premium ? <span className="chip">Premium</span> : <IconChevron />}
+          {!premium ? <span className="chip soon-chip">Tezliklə</span> : <IconChevron />}
         </button>
-        <button className="tile" onClick={() => nav({ name: premium ? 'weak' : 'premium' })}>
+        <button className="tile" onClick={() => (premium ? nav({ name: 'weak' }) : comingSoon('Zəif mövzular'))}>
           <span className="ico bad"><IconWeak /></span>
           <span className="grow stack tight"><b>Zəif mövzular</b><span className="small muted">Ən çox səhv etdiyin normalar üzrə gücləndirmə</span></span>
-          {!premium ? <span className="chip">Premium</span> : <IconChevron />}
+          {!premium ? <span className="chip soon-chip">Tezliklə</span> : <IconChevron />}
         </button>
         <button className="tile" onClick={() => nav({ name: 'leaderboard' })}>
           <span className="ico xp"><IconTrophy /></span>
-          <span className="grow stack tight"><b>Reytinq</b><span className="small muted">{premium ? 'Bu həftənin cədvəlində yerini gör' : 'Cədvələ baxa bilərsən, iştirak Premium ilədir'}</span></span>
+          <span className="grow stack tight"><b>Reytinq</b><span className="small muted">Bu həftənin cədvəlində yerini gör</span></span>
           <IconChevron />
         </button>
       </section>
@@ -139,7 +139,7 @@ export function Home() {
       {!premium && (
         <div className="banner">
           <IconAlert />
-          <div className="grow">Pulsuz planda Konstitusiya mövzusu tam açıqdır. Qalan mövzular, tükənməyən ulduzlar, zabit rütbələri və sınaq imtahanı Premium ilədir.</div>
+          <div className="grow">Konstitusiya mövzusu hamı üçün tam açıqdır. Qalan mövzular, tükənməyən ulduzlar, zabit rütbələri və sınaq imtahanı Premium ilə açılacaq — <b>tezliklə</b>.</div>
         </div>
       )}
     </main>

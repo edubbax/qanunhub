@@ -6,6 +6,7 @@ import type {
 } from './types';
 import { periodStartKey } from './time';
 import { GIZIR, MILITARY_RANKS } from './military';
+import { isPremium } from './gamification';
 
 interface BoardEntry { xp: number; correct: number; answered: number; reachedAt: number }
 
@@ -33,8 +34,7 @@ export function emptyMemoryData(): MemoryData {
 
 /** The rank shown next to a learner: the military rank on Premium, Gizir otherwise. */
 export function displayRankCode(u: Pick<UserRecord, 'premiumUntil' | 'game'>, now: number): string {
-  const premium = !!u.premiumUntil && u.premiumUntil > now;
-  if (!premium) return GIZIR.code;
+  if (!isPremium(u, now)) return GIZIR.code;
   return MILITARY_RANKS[Math.min(Math.max(u.game?.level ?? 1, 0), MILITARY_RANKS.length - 1)].code;
 }
 

@@ -46,8 +46,16 @@ export async function loadBundle(sql: Db): Promise<ContentBundle> {
  * Replaces the content tables with a bundle. Learner state references units by id, so ids must be
  * stable between builds; items edited by an editor (updated_by set) are kept unless `overwriteEdited`.
  */
-export async function importBundle(sql: Sql, b: ContentBundle, opts: { overwriteEdited?: boolean } = {}): Promise<{ topics: number; lessons: number; items: number; keptEdited: number }> {
+export async function importBundle(sql: Sql, b: ContentBundle, opts: { overwriteEdited?: boolean; onlyIfVersionDiffers: true }): Promise<{ topics: number; lessons: number; items: number; keptEdited: number } | null>;
+export async function importBundle(sql: Sql, b: ContentBundle, opts?: { overwriteEdited?: boolean }): Promise<{ topics: number; lessons: number; items: number; keptEdited: number }>;
+export async function importBundle(sql: Sql, b: ContentBundle, opts: { overwriteEdited?: boolean; onlyIfVersionDiffers?: boolean } = {}): Promise<{ topics: number; lessons: number; items: number; keptEdited: number } | null> {
   return sql.begin(async (tx) => {
+    if (opts.onlyIfVersionDiffers) {
+      // Several instances may start at once: one loads the bundle, the others wait here and then find it loaded.
+      await tx`select pg_advisory_xact_lock(7212001)`;
+      const [cur] = await tx`select value from content_meta where key = 'version'`;
+      if (cur?.value === b.version) return null;
+    }
     const edited = opts.overwriteEdited ? [] : await tx`select * from items where updated_by is not null`;
     const editedCards = opts.overwriteEdited ? [] : await tx`select * from cards where updated_by is not null`;
     await tx`delete from items`;

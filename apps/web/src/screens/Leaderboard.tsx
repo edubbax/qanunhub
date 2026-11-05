@@ -41,10 +41,9 @@ export function Leaderboard() {
               <IconLock />
               <div className="grow stack tight">
                 <span>
-                  {me?.premium ? 'Reytinqdə iştirak üçün email ünvanını təsdiqlə.' : 'Reytinqdə iştirak Premium planı ilədir.'}
+                  {me?.emailVerified ? 'Hesabın reytinqdə iştirakdan kənarlaşdırılıb.' : 'Reytinqdə iştirak üçün e-poçt ünvanını təsdiqlə.'}
                   {data.previewRank ? ` Bu dövrün XP-si ilə ${ordinal(data.previewRank)} yerdə olardın.` : ''}
                 </span>
-                {!me?.premium && <button className="btn primary small" style={{ alignSelf: 'flex-start' }} onClick={() => nav({ name: 'premium' })}>Premium-a bax</button>}
               </div>
             </div>
           )}

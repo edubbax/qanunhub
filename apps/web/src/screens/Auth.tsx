@@ -92,7 +92,7 @@ export function AuthScreen({ mode, onMode }: { mode: AuthMode; onMode: (m: AuthM
         <>
           {api.demo && (
             <button className="btn secondary block" disabled={demo.busy} onClick={() => demo.run(() => api.demo!.quickStart())}>
-              {demo.busy && <span className="btn-spinner" aria-hidden="true" />}Demo hesabla bax (Premium)
+              {demo.busy && <span className="btn-spinner" aria-hidden="true" />}Demo hesabla bax
             </button>
           )}
           {demo.error && <FormError>{demo.error}</FormError>}

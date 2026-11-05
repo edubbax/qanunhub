@@ -58,7 +58,7 @@ WORD_FIXES = {
     'fövqaladə': 'fövqəladə', 'müxtələf': 'müxtəlif', 'prosesual': 'prosessual', 'çıxdığə': 'çıxdığı', 'lcraçının': 'icraçının',
     'hakimiyətinin': 'hakimiyyətinin', 'təhlükəsiziliyinin': 'təhlükəsizliyinin', 'nüməyəndənin': 'nümayəndənin',
     'vsait': 'vəsait', 'səniddir': 'sənəddir', 'geçmiş': 'keçmiş', 'fəaliyyə': 'fəaliyyət', 'organ': 'orqan',
-    'həkimlərin': 'hakimlərin', 'leyhinə': 'əleyhinə',
+    'leyhinə': 'əleyhinə',
 }
 WORD_FIX_RE = re.compile(r'\b(' + '|'.join(WORD_FIXES) + r')\b', re.I)
 
@@ -72,7 +72,9 @@ def fix_quotes(text: str) -> str:
     """Quotes and spacing of the question texts: '”Hakimliyə”maddəsi' -> '“Hakimliyə” maddəsi',
     'Torpaq,xüsusi' -> 'Torpaq, xüsusi', 'bağlanılır.Heç' -> 'bağlanılır. Heç', '( Tam' -> '(Tam', 'edin :' -> 'edin:'."""
     text = re.sub(r'(^|[\s(])”(?=\S)', r'\1“', text)
-    text = re.sub(r'”(?=[A-Za-zƏəÖöÜüĞğÇçŞşİı])', '” ', text)
+    # A case ending after a quoted title stays attached: 'Qanun”a əsasən', 'Təlimat”ın'.
+    text = re.sub(r'” (a|ə|na|nə|da|də|dan|dən|un|ün|ın|in|nun|nün|nın|nin|ya|yə|nda|ndə|ndan|ndən|la|lə)(?=[\s,.;:])', r'”\1', text)
+    text = re.sub(r'”(?=[A-Za-zƏəÖöÜüĞğÇçŞşİı])(?!(?:a|ə|na|nə|da|də|dan|dən|un|ün|ın|in|nun|nün|nın|nin|ya|yə|nda|ndə|ndan|ndən|la|lə)(?=[\s,.;:]))', '” ', text)
     text = re.sub(r'(?<=[A-Za-zƏəÖöÜüĞğÇçŞşİı]),(?=[A-Za-zƏəÖöÜüĞğÇçŞşİı])', ', ', text)
     text = re.sub(r'(?<=[a-zəöüğçşı]{2})\.(?=[A-ZƏÖÜĞÇŞİ][a-zəöüğçşı])', '. ', text)
     text = re.sub(r'(?<=\d)\.(?=[A-ZƏÖÜĞÇŞİ][a-zəöüğçşı])', '. ', text)
@@ -264,14 +266,59 @@ CAP_SPLIT = re.compile(r'(?<![\w])([ÖÜ]) (?=[a-zəöüğçşı])')
 UMLAUT_SPLIT = re.compile(r'(?<![\w])([A-Za-zƏəÖöÜüĞğÇçŞşİı]*[öüÖÜ]) ([a-zəöüğçşı]+)')
 
 
+# Words broken by the source font that are too rare in the bundle for the vocabulary check above.
+SPLIT_FIXES = [
+    ('ö ldü rü lməsi', 'öldürülməsi'), ('gö rdü rmək', 'gördürmək'), ('ü zə çıxar', 'üzə çıxar'), ('hö kmə', 'hökmə'),
+    ('gü dən', 'güdən'), ('gü man', 'güman'), ('ö zəyi', 'özəyi'), ('bütövlüyü nü ', 'bütövlüyünü '), ('ö vdətnamə', 'övdətnamə'),
+    ('düzgünlüyü nü ', 'düzgünlüyünü '), ('mü d-dətinin', 'müddətinin'), ('Məhkəmə-Hü quq', 'Məhkəmə-Hüquq'),
+    ('bütövlüyünü n ', 'bütövlüyünün '), ('hökmü nə ', 'hökmünə '), ('mü hü mlü k', 'mühümlük'), ('bö lü şmə', 'bölüşmə'),
+    ('lü ğ ət', 'lüğət'), ('Bü tü n', 'Bütün'), ('bü tü n', 'bütün'), ('Bö yü k', 'Böyük'), ('Düzgünlü yü n', 'Düzgünlüyün'),
+    ('Gömrü k', 'Gömrük'), ('yerli ü zü nü idarə', 'yerli özünüidarə'), ('ü mumbəşəri', 'ümumbəşəri'), ('Ü mumbəşəri', 'Ümumbəşəri'),
+    ('124cü', '124-cü'), ('63cü', '63-cü'), ('sü rü lmüş', 'sürülmüş'), ('idarəetmənin bö lü məsi', 'idarəetmənin bölünməsi'),
+    ('hö kü mətdir', 'hökumətdir'), ('bü dcə', 'büdcə'), ('hü -ququ', 'hüququ'), ('üzvlü -yü ndə', 'üzvlüyündə'),
+    ('gö s-tərilən', 'göstərilən'), ('Düzgünlüyü n ', 'Düzgünlüyün '), ('dü zü n:', 'düzün:'),
+    (' 94 cü ', ' 94-cü '), ('Mü lkiProsessual', 'Mülki Prosessual'), ('Mü lki', 'Mülki'),
+]
+
+
+def fix_known_splits(text: str) -> str:
+    for old, new in SPLIT_FIXES:
+        text = text.replace(old, new)
+    return text
+
+
+WORD_TOKEN = re.compile(r'[A-Za-zƏəÖöÜüĞğÇçŞşİı]+|[^A-Za-zƏəÖöÜüĞğÇçŞşİı]+')
+FRAGMENT_END = re.compile(r'[öüÖÜğ]$')
+
+
 def join_umlaut_splits(text: str, vocab: Counter) -> str:
-    def rep(m: re.Match) -> str:
-        a, b = m.group(1), m.group(2)
-        joined = low(a + b)
-        if vocab[joined] >= 3 and vocab[joined] >= min(vocab[low(a)], vocab[low(b)]):
-            return a + b
-        return m.group(0)
-    return UMLAUT_SPLIT.sub(rep, text)
+    """Joins a word the font broke into 2-4 pieces after ö/ü/ğ ('Bü tü n', 'ö ldü rü lməsi', 'lü ğ ətlər') when the
+    whole word is common in the bundle and at least one piece is not a word of its own."""
+    parts = WORD_TOKEN.findall(text)
+    out: list = []
+    i = 0
+    while i < len(parts):
+        done = False
+        if FRAGMENT_END.search(parts[i]) and (i == 0 or not parts[i - 1][-1:].isalpha()):
+            for k in (4, 3, 2):
+                end = i + 2 * (k - 1)
+                if end >= len(parts):
+                    continue
+                words = parts[i:end + 1:2]
+                gaps = parts[i + 1:end:2]
+                if any(g != ' ' for g in gaps) or any(not FRAGMENT_END.search(w) and len(w) > 2 for w in words[:-1]):
+                    continue
+                joined = ''.join(words)
+                n = vocab[low(joined)]
+                if n >= 3 and n >= min(vocab[low(w)] for w in words):
+                    out.append(joined)
+                    i = end + 1
+                    done = True
+                    break
+        if not done:
+            out.append(parts[i])
+            i += 1
+    return ''.join(out)
 QWORD = re.compile(r'\b(hansı\w*|nə\w*|neçə\w*|necə\w*|kim\w*|hara\w*|niyə)\b', re.I)
 PREDICATE = re.compile(r'\s(aid deyil(?:dir)?|aiddir|doğru deyil(?:dir)?|yanlışdır|səhvdir|daxildir|daxil deyil)\?$')
 
@@ -352,14 +399,19 @@ def fix_continuation_titles(cards: list) -> None:
     for cs in by_lesson.values():
         current = None
         for c in sorted(cs, key=lambda x: x['order']):
+            # A card that opens with an article heading is that article's card: the heading becomes its title.
+            lead = re.match(r'(Maddə \d+(?:-\d+)?\.[^\n]*)\n', c['body'])
+            if lead:
+                c['title'] = lead.group(1).strip()
+                c['body'] = c['body'][lead.end():].lstrip()
             title = c.get('title') or ''
             if title.endswith('(davamı)') and current and _article_no(title) != _article_no(current):
                 c['title'] = f'{current} (davamı)'
             elif title and not title.endswith('(davamı)'):
                 current = title
-            heads = re.findall(r'(?:^|\n)(Maddə \d+(?:-\d+)?\.[^\n]*)', c['body'])
+            heads = re.findall(r'(?:^|\n)(Maddə \d+(?:-\d+)?\.[^\n]*|KEÇİD MÜDDƏALARI)(?=\n|$)', c['body'])
             if heads:
-                current = heads[-1].strip()
+                current = 'Keçid müddəaları' if heads[-1] == 'KEÇİD MÜDDƏALARI' else heads[-1].strip()
 
 
 def _stems(text: str) -> set:
@@ -482,7 +534,7 @@ def polish(bundle: dict, fixes_dir: str) -> list:
     vocab = build_vocab(texts)
 
     for c in bundle['cards']:
-        c['body'] = join_umlaut_splits(CAP_SPLIT.sub(r'\1', c['body']), vocab)
+        c['body'] = fix_known_splits(join_umlaut_splits(CAP_SPLIT.sub(r'\1', c['body']), vocab))
         if c.get('title'):
             c['title'] = join_umlaut_splits(c['title'], vocab)
         body = fix_splits(c['body'], vocab)
@@ -491,10 +543,12 @@ def polish(bundle: dict, fixes_dir: str) -> list:
             c['title'] = fix_splits(c['title'], vocab)
     for i in bundle['items']:
         # The PDF font splits words after Ö and Ü: 'Ö z', 'Ü mumi'.
-        i['stem'] = join_umlaut_splits(CAP_SPLIT.sub(r'\1', i['stem']), vocab)
-        i['options'] = [join_umlaut_splits(CAP_SPLIT.sub(r'\1', o), vocab) for o in i['options']]
+        i['stem'] = fix_known_splits(join_umlaut_splits(CAP_SPLIT.sub(r'\1', i['stem']), vocab))
+        i['options'] = [fix_known_splits(join_umlaut_splits(CAP_SPLIT.sub(r'\1', o), vocab)) for o in i['options']]
         if i.get('statements'):
-            i['statements'] = [join_umlaut_splits(CAP_SPLIT.sub(r'\1', x), vocab) for x in i['statements']]
+            i['statements'] = [fix_known_splits(join_umlaut_splits(CAP_SPLIT.sub(r'\1', x), vocab)) for x in i['statements']]
+        if i.get('explanation'):
+            i['explanation'] = fix_known_splits(i['explanation'])
         if i.get('pool', 'exam') == 'exam':
             i['stem'] = strip_tail_junk(i['stem'])
             i['options'] = [strip_tail_junk(o) for o in i['options']]
@@ -549,11 +603,17 @@ def polish(bundle: dict, fixes_dir: str) -> list:
     for c, pairs in late:
         c['body'] = _apply_replacements(c['body'], pairs, f"card {c['id']}", problems).strip()
     fix_continuation_titles(bundle['cards'])
+    for c in bundle['cards']:
+        c['body'] = fix_known_splits(c['body'])
+        c['title'] = fix_known_splits(c['title'])
     # Recall cards whose question could not be put back together (the answer has no final period, so the wrapped
     # question's first line cannot be told apart from it) are left out rather than shown with half a question.
     bundle['cards'] = [c for c in bundle['cards'] if c['kind'] != 'qa' or (
         re.match(r'[A-ZƏÖÜÇŞĞİ“"«(0-9]', c['title']) and c['title'].rstrip().endswith('?') and not PRIVATE.search(c['title']) and '\n' not in c['title'])]
     quote_thin_explanations(bundle)
+    for i in bundle['items']:
+        if i.get('explanation'):
+            i['explanation'] = fix_known_splits(i['explanation'])
 
     item_fixes = _load(os.path.join(fixes_dir, 'items.json'))
     by_item = {i['id']: i for i in bundle['items']}

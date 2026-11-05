@@ -1,7 +1,7 @@
 import type { PathLessonDto, PathSectionDto, PathTopicDto } from '@qanunhub/core';
 import { useState } from 'react';
 import { useApp } from '../app';
-import { ErrorBox, Progress, Spinner, untilText, useLoad } from '../ui/components';
+import { comingSoon, ErrorBox, Progress, Spinner, untilText, useLoad } from '../ui/components';
 import { IconCheck, IconDown, IconExam, IconLock, IconPlay } from '../ui/icons';
 
 export function PathScreen({ topicId }: { topicId?: string }) {
@@ -51,7 +51,7 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
         <span className="grow stack tight">
           <span className="row between">
             <b>{t.shortTitle}</b>
-            {t.comingSoon ? <span className="chip">Tezliklə</span> : t.locked ? <span className="chip"><IconLock />Premium</span> : t.free ? <span className="chip ok">Pulsuz</span> : null}
+            {t.comingSoon ? <span className="chip">Tezliklə</span> : t.locked ? <span className="chip soon-chip"><IconLock />Tezliklə</span> : t.free ? <span className="chip ok">Pulsuz</span> : null}
           </span>
           {empty ? (
             <span className="small muted">{t.note ?? 'Material hazırlanır.'}</span>
@@ -68,8 +68,8 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
             <div className="banner" style={{ marginBottom: 10 }}>
               <IconLock />
               <div className="grow stack tight">
-                <span>Bu mövzu Premium planına daxildir.</span>
-                <button className="btn primary small" style={{ alignSelf: 'flex-start' }} onClick={() => nav({ name: 'premium' })}>Planlara bax</button>
+                <span>Bu mövzu Premium planına daxildir. Premium tezliklə açılacaq; hazırda Konstitusiya mövzusu hamı üçün açıqdır.</span>
+                <button className="btn secondary small" style={{ alignSelf: 'flex-start' }} onClick={() => comingSoon(t.shortTitle)}>Premium — tezliklə</button>
               </div>
             </div>
           )}

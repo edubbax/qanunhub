@@ -7,3 +7,4 @@ dist-demo
 content/sources
 test-results
 __pycache__
+.vercel

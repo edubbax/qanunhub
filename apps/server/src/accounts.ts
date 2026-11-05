@@ -23,14 +23,15 @@ const UNIQUE_VIOLATION = '23505';
 const isUniqueViolation = (e: unknown) => (e as { code?: string })?.code === UNIQUE_VIOLATION;
 
 export async function hasAuthUsers(sql: Db): Promise<boolean> {
-  const [r] = await sql`select to_regclass('auth.users') is not null as ok`;
+  const [r] = await sql`select to_regprocedure('public.account_email_confirmed(uuid)') is not null as ok`;
   return !!r?.ok;
 }
 
 async function emailConfirmed(sql: Db, id: string, opts: AccountOptions): Promise<boolean> {
-  // Without auth.users (local development) Supabase is not in the loop; a valid token is all there is.
+  // Without Supabase (plain local Postgres) a valid token is all there is.
   if (!opts.authUsers) return true;
-  const [r] = await sql`select email_confirmed_at is not null as ok from auth.users where id = ${id}`;
+  // auth.users is not readable by the API role; supabase/profiles.sql exposes just this flag to it.
+  const [r] = await sql`select public.account_email_confirmed(${id}::uuid) as ok`;
   return !!r?.ok;
 }
 

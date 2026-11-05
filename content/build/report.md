@@ -1,4 +1,4 @@
-# Məzmun hesabatı (2026-10-30)
+# Məzmun hesabatı (2026-11-05)
 
 | Mövzu | Dərs | Vahid | Sual | Dərc olunub |
 |---|---:|---:|---:|---:|
@@ -27,7 +27,7 @@
 ## Bayraqlar
 
 - `no_key`: 30
-- `reviewed_out`: 17
+- `reviewed_out`: 19
 - `dup_options`: 4
 - `garbled`: 2
 - `stem_length`: 1

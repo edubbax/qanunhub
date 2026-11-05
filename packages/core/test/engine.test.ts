@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   AppError, ContentIndex, DAY, HOUR, MemoryStore, answer, complete, getHome, getLeaderboard, getPath, getWeakTopics,
   createCompetition, finishCompetitionNow, getCertificate, getMe, getStandings, grantPremium, listCompetitions, newUser,
-  seededRandom, startCompetition, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
+  premiumSettings, seededRandom, startCompetition, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
   type EngineCtx, type SessionDto,
 } from '../src';
 import { fixtureBundle, sectionedBundle } from './fixtures';
@@ -35,6 +35,8 @@ async function errorOf(p: Promise<unknown>): Promise<AppError> {
 }
 
 beforeEach(async () => {
+  // Most tests describe the paid mode for when Premium goes on sale; 'premium closed' covers launch.
+  premiumSettings.available = true;
   store = new MemoryStore();
   content = new ContentIndex(fixtureBundle());
   now = T0;
@@ -172,16 +174,43 @@ describe('premium features', () => {
 });
 
 describe('free plan leaderboard', () => {
-  it('shows a preview rank instead of listing the learner', async () => {
+  it('lists every learner with a verified email, whatever the plan', async () => {
     const s = await startLesson(ctx(), 'u1', 'k1');
     await answerAll(s);
     const r = await complete(ctx(), 'u1', s.id);
-    expect(r.leaderboardCounted).toBe(false);
-    expect(r.leaderboard).toBe('not_premium');
+    expect(r.leaderboardCounted).toBe(true);
+    const lb = await getLeaderboard(ctx(), 'u1', 'week', 'ALL');
+    expect(lb.eligible).toBe(true);
+    expect(lb.rows.map((x) => x.userId)).toEqual(['u1']);
+  });
+
+  it('shows an unverified learner a preview rank instead of listing them', async () => {
+    const u = (await store.getUser('u1'))!;
+    await store.saveUser({ ...u, emailVerified: false });
+    const s = await startLesson(ctx(), 'u1', 'k1');
+    await answerAll(s);
+    const r = await complete(ctx(), 'u1', s.id);
+    expect(r.leaderboard).toBe('unverified');
     const lb = await getLeaderboard(ctx(), 'u1', 'week', 'ALL');
     expect(lb.eligible).toBe(false);
     expect(lb.rows).toHaveLength(0);
     expect(lb.previewRank).toBe(1);
+  });
+});
+
+describe('premium closed (launch)', () => {
+  beforeEach(() => { premiumSettings.available = false; });
+
+  it('keeps everyone on the free plan as Gizir, even with a premium date set', async () => {
+    await grantPremium(ctx(), 'u1', now + 30 * DAY);
+    const me = await getMe(ctx(), 'u1');
+    expect(me.premium).toBe(false);
+    expect(me.rank.title).toBe('Gizir');
+    expect(me.hearts).not.toBeNull();
+    expect((await errorOf(startMock(ctx(), 'u1'))).code).toBe('PREMIUM_REQUIRED');
+    expect((await errorOf(getWeakTopics(ctx(), 'u1'))).code).toBe('PREMIUM_REQUIRED');
+    const path = await getPath(ctx(), 'u1');
+    expect(path.topics.filter((t) => !t.locked).map((t) => t.id)).toEqual(['konst']);
   });
 });
 

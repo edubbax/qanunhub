@@ -134,3 +134,20 @@ $$;
 
 revoke execute on function public.username_available(text) from public, anon;
 grant execute on function public.username_available(text) to authenticated;
+
+-- 5. E-mail confirmation for the API server ---------------------------------------------------------------------
+
+-- The QanunHub API needs one fact from auth.users: has this account confirmed its e-mail (the leaderboard, competitions
+-- and certificates open after that). The auth schema is not readable by other roles, so the answer comes from here.
+-- Only the server may call it; supabase/api-role.sql grants it to the server's database role.
+create or replace function public.account_email_confirmed(uid uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce((select u.email_confirmed_at is not null from auth.users u where u.id = uid), false);
+$$;
+
+revoke execute on function public.account_email_confirmed(uuid) from public, anon, authenticated;
