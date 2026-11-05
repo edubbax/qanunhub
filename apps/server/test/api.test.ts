@@ -30,7 +30,7 @@ beforeAll(async () => {
   await importBundle(sql, fixtureBundle());
   const content = new ContentCache(sql);
   await content.reload();
-  config.adminEmail = 'admin@qanunhub.az';
+  process.env.ADMIN_EMAIL = 'admin@qanunhub.az';
   app = createApp({ sql, content, now: () => clock, authUsers: true, verifyToken: createTokenVerifier({ supabaseUrl: SUPABASE_URL, jwtSecret: SECRET }) });
   admin = await account('admin@qanunhub.az', { first: 'Admin', last: 'QanunHub', username: 'admin' });
 });

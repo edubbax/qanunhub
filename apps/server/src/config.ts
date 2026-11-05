@@ -7,23 +7,47 @@ function bool(v: string | undefined, def: boolean): boolean {
 
 export const config = {
   /** The Supabase Postgres connection string (Project Settings -> Database), or a local Postgres in development. */
-  databaseUrl: process.env.DATABASE_URL ?? 'postgres://qanunhub:qanunhub@localhost:5432/qanunhub',
+  get databaseUrl(): string {
+    return process.env.DATABASE_URL ?? 'postgres://qanunhub:qanunhub@localhost:5432/qanunhub';
+  },
   /** false for Supabase's transaction pooler (port 6543), which does not support prepared statements. */
-  databasePrepare: bool(process.env.DATABASE_PREPARE, true),
-  port: Number(process.env.PORT ?? 8080),
-  appOrigin: process.env.APP_ORIGIN ?? 'http://localhost:5173',
+  get databasePrepare() {
+    return bool(process.env.DATABASE_PREPARE, true);
+  },
+  get port() {
+    return Number(process.env.PORT ?? 8080);
+  },
+  get appOrigin() {
+    return process.env.APP_ORIGIN ?? 'http://localhost:5173';
+  },
   /** https://<project-ref>.supabase.co */
-  supabaseUrl: (process.env.SUPABASE_URL ?? '').replace(/\/+$/, ''),
+  get supabaseUrl() {
+    return (process.env.SUPABASE_URL ?? '').replace(/\/+$/, '');
+  },
   /** The publishable (or legacy anon) key; handed to the browser through /api/config. */
-  supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY ?? '',
+  get supabasePublishableKey() {
+    return process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
+  },
   /** Only for projects still signing tokens with the legacy shared secret (HS256). Never sent to the browser. */
-  supabaseJwtSecret: process.env.SUPABASE_JWT_SECRET ?? '',
+  get supabaseJwtSecret() {
+    return process.env.SUPABASE_JWT_SECRET ?? '';
+  },
   /** When false, learners may change category at any time. */
-  categoryChangeLimit: bool(process.env.CATEGORY_CHANGE_LIMIT, true),
+  get categoryChangeLimit() {
+    return bool(process.env.CATEGORY_CHANGE_LIMIT, true);
+  },
   /** The account with this email becomes admin when it first signs in. */
-  adminEmail: (process.env.ADMIN_EMAIL ?? '').trim().toLowerCase(),
-  webDist: process.env.WEB_DIST ?? '',
+  get adminEmail() {
+    return (process.env.ADMIN_EMAIL ?? '').trim().toLowerCase();
+  },
+  get webDist() {
+    return process.env.WEB_DIST ?? '';
+  },
   /** content.json imported on start when the database has no content yet. */
-  contentSeed: process.env.CONTENT_SEED ?? '',
-  trustProxy: bool(process.env.TRUST_PROXY, false),
+  get contentSeed() {
+    return process.env.CONTENT_SEED ?? '';
+  },
+  get trustProxy() {
+    return bool(process.env.TRUST_PROXY, false);
+  },
 };

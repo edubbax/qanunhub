@@ -10,7 +10,7 @@ import { AppError } from './errors';
 import { EXAM_FORMATS, MOCK_MINUTES, findSubgroup, targetPercent } from './exam';
 import {
   HEARTS_EARN_MIN_CORRECT, HEARTS_MAX, XP, canEarnHeart, earnHeart, finalXp, freshHearts, freshStreak,
-  isPremium, lessonXp, loseHeart, normalizeHearts, reviewXp, touchStreak, visibleStreak,
+  isPremium, premiumSettings, lessonXp, loseHeart, normalizeHearts, reviewXp, touchStreak, visibleStreak,
 } from './gamification';
 import {
   AWARDS, GIZIR, MERIT_FLOOR, MILITARY_RANKS, PENALTY_OUT_OF_STARS, PENALTY_TOO_FAST, addMerit, applyDecay, bumpCounters,
@@ -132,7 +132,9 @@ function rankDto(ctx: EngineCtx, u: UserRecord): RankDto {
     inactiveDays: inactiveDays(u.streak, ctx.now), decayPerDay: decayPerDay(g),
   };
   if (!isPremium(u, ctx.now)) {
-    return { code: GIZIR.code, title: GIZIR.title, tier: GIZIR.tier, stars: GIZIR.stars, isGizir: true, ...base, earned: { code: r.code, title: r.title } };
+    // While Premium is closed no officer rank is shown at all, not even as "earned".
+    const earned = premiumSettings.available ? { code: r.code, title: r.title } : null;
+    return { code: GIZIR.code, title: GIZIR.title, tier: GIZIR.tier, stars: GIZIR.stars, isGizir: true, ...base, earned };
   }
   return { code: r.code, title: r.title, tier: r.tier, stars: r.stars, isGizir: false, ...base, earned: null };
 }
