@@ -1,0 +1,14 @@
+QanunHub — kompüterdə işə salmaq
+
+1. Node.js qurun (bir dəfə): https://nodejs.org → "LTS" versiyası.
+2. Bu qovluqda:
+   - Windows: QanunHub-baslat.bat faylına iki dəfə klikləyin.
+   - macOS: qanunhub-baslat.command faylına iki dəfə klikləyin
+     (ilk dəfə: sağ klik → Open).
+3. Qara pəncərədə "QanunHub hazırdır: http://localhost:3000" yazılanda brauzer özü açılır.
+   Açılmasa, brauzerdə http://localhost:3000 ünvanını yazın.
+   Pəncərəni bağlasanız, tətbiq dayanır.
+
+İnternet lazımdır: hesablar və irəliləyiş Supabase-dəki "qanun-hub" layihəsində saxlanılır.
+İlk açılışda məzmun bazaya yüklənir (1–2 dəqiqə).
+Ayarlar release/.env faylındadır (verilənlər bazasının parolu da oradadır — başqası ilə paylaşmayın).
