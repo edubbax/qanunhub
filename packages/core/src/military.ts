@@ -17,7 +17,10 @@ export interface MilitaryRank {
   minStreak: number;
 }
 
-export const GIZIR: MilitaryRank = { code: 'gizir', title: 'Gizir', tier: 'nco', stars: 2, minMerit: 0, minStreak: 0 };
+// Warrant officers wear no stars: red-piped boards with a red chevron and yellow bars (two for Gizir, three for Baş gizir).
+export const GIZIR: MilitaryRank = { code: 'gizir', title: 'Gizir', tier: 'nco', stars: 0, minMerit: 0, minStreak: 0 };
+/** Shown on the rank ladder between Gizir and Kiçik leytenant; not part of the merit climb. */
+export const BAS_GIZIR: MilitaryRank = { code: 'bg', title: 'Baş gizir', tier: 'nco', stars: 0, minMerit: 0, minStreak: 0 };
 
 /** Ordered from the lowest. Index 1 (Leytenant) is where a new premium learner starts. */
 export const MILITARY_RANKS: MilitaryRank[] = [
@@ -45,7 +48,9 @@ export const PENALTY_OUT_OF_STARS = 40;
 export const PENALTY_TOO_FAST = 60;
 
 export function rankByCode(code: string): MilitaryRank | null {
-  return code === GIZIR.code ? GIZIR : MILITARY_RANKS.find((r) => r.code === code) ?? null;
+  if (code === GIZIR.code) return GIZIR;
+  if (code === BAS_GIZIR.code) return BAS_GIZIR;
+  return MILITARY_RANKS.find((r) => r.code === code) ?? null;
 }
 
 export function freshGame(now: number): GameState {

@@ -1,5 +1,5 @@
 // Shoulder boards for the military ranks, the three-star "lives" board and award medals, drawn as SVG.
-import { GIZIR, MILITARY_RANKS, ROMAN, rankByCode, type MilitaryRank } from '@qanunhub/core';
+import { BAS_GIZIR, GIZIR, MILITARY_RANKS, ROMAN, rankByCode, type MilitaryRank } from '@qanunhub/core';
 import { useId } from 'react';
 
 const GOLD = '#c9a646';
@@ -24,87 +24,113 @@ const OLIVE_LIGHT = '#767847';
 const OLIVE_DARK = '#3f4023';
 const STAR = '#f4c430';
 const STAR_EDGE = '#a7791a';
+const STAR_DARK = '#d29a1a';
+const CHEVRON = '#b8262c';
 const PIPING = '#c8282e';
 
-/** The state emblem on the Army General's board: an eight-pointed star over a blue-red-green ring with a flame. */
+/** Leaves along an arc (a U opening upward when `ry` < 1), the wreath of the senior officers and of the state emblem. */
+function Leaves({ cx, cy, w, from, to, fill, edge, size = 3.2, ry = 0.7, n = 8 }: { cx: number; cy: number; w: number; from: number; to: number; fill: string; edge: string; size?: number; ry?: number; n?: number }) {
+  const out = [];
+  for (let i = 0; i <= n; i++) {
+    const th = (from + ((to - from) * i) / n) * (Math.PI / 180);
+    const x = cx + w * Math.cos(th);
+    const y = cy + w * ry * Math.sin(th);
+    const rot = (Math.atan2(ry * Math.cos(th), -Math.sin(th)) * 180) / Math.PI;
+    out.push(<ellipse key={i} cx={x} cy={y} rx={size} ry={size * 0.48} transform={`rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})`} fill={fill} stroke={edge} strokeWidth={0.4} />);
+  }
+  return <g>{out}</g>;
+}
+
+/** An eight-pointed star with a light and a dark half on every ray, as on the regulation boards. */
+function FacetStar({ cx, cy, r, inner = 0.55 }: { cx: number; cy: number; r: number; inner?: number }) {
+  const pt = (rad: number, deg: number) => `${(cx + rad * Math.cos((deg * Math.PI) / 180)).toFixed(2)},${(cy + rad * Math.sin((deg * Math.PI) / 180)).toFixed(2)}`;
+  const rays = [];
+  for (let i = 0; i < 8; i++) {
+    const tip = -90 + i * 45;
+    rays.push(
+      <g key={i}>
+        <polygon points={`${cx},${cy} ${pt(r, tip)} ${pt(r * inner, tip - 22.5)}`} fill={STAR} />
+        <polygon points={`${cx},${cy} ${pt(r, tip)} ${pt(r * inner, tip + 22.5)}`} fill={STAR_DARK} />
+      </g>,
+    );
+  }
+  return (
+    <g>
+      <path d={starPath(cx, cy, r, 8, inner)} fill="none" stroke={STAR_EDGE} strokeWidth={0.5} strokeLinejoin="round" />
+      {rays}
+    </g>
+  );
+}
+
+/** The state emblem on the Army General's board: white eight-pointed star with a flame on a blue, red and green ring,
+ *  a green laurel branch on one side and a golden wheat ear on the other. */
 function Emblem({ cx, cy, r }: { cx: number; cy: number; r: number }) {
-  const arc = (from: number, to: number, rad: number) => {
-    const a = (from - 90) * (Math.PI / 180);
-    const b = (to - 90) * (Math.PI / 180);
-    return `M${cx + rad * Math.cos(a)},${cy + rad * Math.sin(a)} A${rad},${rad} 0 0 1 ${cx + rad * Math.cos(b)},${cy + rad * Math.sin(b)}`;
-  };
+  const flame = `M${cx},${cy - r * 0.4} C${cx + r * 0.27},${cy - r * 0.06} ${cx + r * 0.17},${cy + r * 0.26} ${cx},${cy + r * 0.3} C${cx - r * 0.17},${cy + r * 0.26} ${cx - r * 0.27},${cy - r * 0.06} ${cx},${cy - r * 0.4}Z`;
   return (
     <g>
-      <path d={starPath(cx, cy, r, 8, 0.78)} fill={STAR} stroke={STAR_EDGE} strokeWidth={0.8} />
-      <circle cx={cx} cy={cy} r={r * 0.62} fill="#fff" />
-      <path d={arc(-60, 60, r * 0.55)} stroke="#00a3d8" strokeWidth={r * 0.14} fill="none" />
-      <path d={arc(60, 180, r * 0.55)} stroke="#e4002b" strokeWidth={r * 0.14} fill="none" />
-      <path d={arc(180, 300, r * 0.55)} stroke="#2e9a3c" strokeWidth={r * 0.14} fill="none" />
-      <path d={starPath(cx, cy, r * 0.42, 8, 0.7)} fill="#fff" stroke={STAR_EDGE} strokeWidth={0.5} />
-      <path d={`M${cx},${cy - r * 0.3} C${cx + r * 0.2},${cy - r * 0.04} ${cx + r * 0.12},${cy + r * 0.2} ${cx},${cy + r * 0.22} C${cx - r * 0.12},${cy + r * 0.2} ${cx - r * 0.2},${cy - r * 0.04} ${cx},${cy - r * 0.3}Z`} fill="#e64a3b" />
-      <path d={`M${cx - r * 0.85},${cy + r * 0.55} Q${cx},${cy + r * 1.15} ${cx + r * 0.85},${cy + r * 0.55}`} stroke="#d9a520" strokeWidth={r * 0.12} fill="none" strokeLinecap="round" />
+      <Leaves cx={cx} cy={cy} w={r * 1.1} from={96} to={168} fill="#2f7d3a" edge="#1b4d22" size={r * 0.2} ry={1} n={6} />
+      <Leaves cx={cx} cy={cy} w={r * 1.1} from={12} to={84} fill="#d8a21f" edge="#8f6a10" size={r * 0.2} ry={1} n={6} />
+      <circle cx={cx} cy={cy} r={r} fill="#b08a1c" />
+      <circle cx={cx} cy={cy} r={r * 0.92} fill="#35b3e0" />
+      <circle cx={cx} cy={cy} r={r * 0.72} fill="#d6313b" />
+      <path d={starPath(cx, cy, r * 0.72, 8, 0.62)} fill="#3c9d46" transform={`rotate(22.5 ${cx} ${cy})`} />
+      <path d={starPath(cx, cy, r * 0.74, 8, 0.46)} fill="#fff" />
+      <path d={flame} fill="#e23d33" />
+      <path d={`M${cx},${cy - r * 0.2} C${cx + r * 0.08},${cy - r * 0.02} ${cx + r * 0.05},${cy + r * 0.14} ${cx},${cy + r * 0.17} C${cx - r * 0.05},${cy + r * 0.14} ${cx - r * 0.08},${cy - r * 0.02} ${cx},${cy - r * 0.2}Z`} fill="#fff" opacity="0.7" />
     </g>
   );
 }
 
-/** The crescent of the senior officers' boards, horns up. */
-function Crescent({ cx, cy, w }: { cx: number; cy: number; w: number }) {
-  return (
-    <path
-      d={`M${cx - w},${cy - w * 0.35} A${w},${w} 0 0 0 ${cx + w},${cy - w * 0.35} A${w},${w * 0.5} 0 0 1 ${cx - w},${cy - w * 0.35}Z`}
-      fill={STAR} stroke={STAR_EDGE} strokeWidth={0.7}
-    />
-  );
-}
-
-/** The generals' crossed sabres over a crescent. */
-function Sabres({ cx, cy, w }: { cx: number; cy: number; w: number }) {
-  const blade = (dir: 1 | -1) => (
-    <g>
-      <path d={`M${cx - dir * w},${cy + w * 0.35} Q${cx - dir * w * 0.1},${cy + w * 0.1} ${cx + dir * w * 0.95},${cy - w * 0.75}`} stroke={STAR} strokeWidth={1.8} fill="none" strokeLinecap="round" />
-      <path d={`M${cx - dir * w * 0.82},${cy + w * 0.05} L${cx - dir * w * 0.62},${cy + w * 0.45}`} stroke={STAR_EDGE} strokeWidth={1.4} strokeLinecap="round" />
-    </g>
-  );
+/** The gold laurel wreath of the senior officers' boards, under the stars. */
+function Wreath({ cx, cy, w }: { cx: number; cy: number; w: number }) {
   return (
     <g>
-      <Crescent cx={cx} cy={cy + w * 0.35} w={w * 0.9} />
-      {blade(1)}
-      {blade(-1)}
+      <Leaves cx={cx} cy={cy - w * 0.25} w={w} from={12} to={168} fill={STAR} edge={STAR_EDGE} size={w * 0.27} />
+      <circle cx={cx} cy={cy + w * 0.62} r={w * 0.16} fill={STAR} stroke={STAR_EDGE} strokeWidth={0.5} />
     </g>
   );
 }
 
-interface Layout { stars: { y: number; r: number }[]; device?: 'crescent' | 'sabres' | 'emblem' }
+interface Layout { stars: { y: number; r: number }[]; device?: 'wreath' | 'emblem' }
 
-/** Star positions from the bottom of the board up, as on the regulation boards. */
+/** Star positions as on the regulation boards: juniors from the bottom up, seniors above the wreath, generals in the field. */
 function layout(rank: MilitaryRank): Layout {
   const col = (ys: number[], r: number) => ys.map((y) => ({ y, r }));
   switch (rank.code) {
-    case 'gizir': return { stars: col([112, 94], 5.5) };
-    case 'kl': return { stars: col([100], 6.8) };
-    case 'l': return { stars: col([112, 90], 6.8) };
-    case 'bl': return { stars: col([122, 100, 78], 6.8) };
-    case 'kapitan': return { stars: col([126, 104, 82, 60], 6.8) };
-    case 'mayor': return { stars: col([104], 8.5), device: 'crescent' };
-    case 'pl': return { stars: col([104, 81], 8.5), device: 'crescent' };
-    case 'polkovnik': return { stars: col([104, 81, 58], 8.5), device: 'crescent' };
-    case 'gm': return { stars: col([98], 9.5), device: 'sabres' };
-    case 'gl': return { stars: col([98, 73], 9.5), device: 'sabres' };
-    case 'gp': return { stars: col([98, 73, 48], 9.5), device: 'sabres' };
-    case 'og': return { stars: col([50], 12), device: 'emblem' };
+    case 'kl': return { stars: col([112], 9.5) };
+    case 'l': return { stars: col([112, 88], 9.5) };
+    case 'bl': return { stars: col([124, 100, 76], 9.5) };
+    case 'kapitan': return { stars: col([128, 104, 80, 56], 9.5) };
+    case 'mayor': return { stars: col([96], 10) };
+    case 'pl': return { stars: col([96, 72], 10) };
+    case 'polkovnik': return { stars: col([96, 72, 48], 10) };
+    case 'gm': return { stars: col([75], 11) };
+    case 'gl': return { stars: col([62, 96], 11) };
+    case 'gp': return { stars: col([48, 75, 102], 11) };
+    case 'og': return { stars: col([74], 14) };
     default: return { stars: [] };
   }
 }
 
-/** A vertical shoulder board for a rank code ("gizir", "l", "polkovnik", "og", ...). */
+const POINTED = 'M6,40 L25,8 Q30,3.5 35,8 L54,40 L54,142 Q54,146 50,146 L10,146 Q6,146 6,142 Z';
+const FLAT = 'M6,15 L17,4 L43,4 L54,15 L54,142 Q54,146 50,146 L10,146 Q6,146 6,142 Z';
+const ARCH = 'M6,30 A24,26 0 0 1 54,30 L54,142 Q54,146 50,146 L10,146 Q6,146 6,142 Z';
+const GEN_FIELD = 'M15,42 Q15,24 30,11 Q45,24 45,42 L45,111 L30,123 L15,111 Z';
+const GEN_BRAID = 'M10.5,32 A19.5,22 0 0 1 49.5,32 L49.5,141 L10.5,141 Z';
+
+/** A vertical shoulder board for a rank code ("gizir", "bg", "l", "polkovnik", "og", ...). */
 export function Epaulette({ code, size = 48, title }: { code: string; size?: number; title?: string }) {
   const id = useId().replace(/:/g, '');
   const rank = rankByCode(code) ?? GIZIR;
-  const general = rank.tier === 'general' || rank.tier === 'army';
+  const nco = rank.tier === 'nco';
+  const general = rank.tier === 'general';
+  const army = rank.tier === 'army';
   const { stars, device } = layout(rank);
-  const outline = 'M7,26 Q7,6 30,4 Q53,6 53,26 L53,142 Q53,146 49,146 L11,146 Q7,146 7,142 Z';
-  const inner = 'M10.5,26.5 Q10.5,9.5 30,7.5 Q49.5,9.5 49.5,26.5 L49.5,142.5 L10.5,142.5 Z';
   const label = title ?? rank.title;
+  const boardPath = nco ? FLAT : general || army ? ARCH : POINTED;
+  const bg = rank.code === 'bg';
+  const buttonY = nco ? 22 : general ? 25 : army ? 19 : 24;
+  const buttonR = army ? 6 : 7;
   return (
     <svg viewBox="0 0 60 150" width={size * (60 / 150)} height={size} role="img" aria-label={label} className="epaulette">
       <title>{label}</title>
@@ -114,18 +140,41 @@ export function Epaulette({ code, size = 48, title }: { code: string; size?: num
           <stop offset="0.5" stopColor={OLIVE_LIGHT} />
           <stop offset="1" stopColor={OLIVE_DARK} />
         </linearGradient>
+        <radialGradient id={`b${id}`} cx="0.4" cy="0.35" r="0.75">
+          <stop offset="0" stopColor="#ffe873" />
+          <stop offset="0.6" stopColor="#f1bf1c" />
+          <stop offset="1" stopColor="#c99410" />
+        </radialGradient>
+        <clipPath id={`c${id}`}><path d={boardPath} /></clipPath>
       </defs>
-      <path d={outline} fill={`url(#f${id})`} stroke={OLIVE_DARK} strokeWidth="1.5" />
-      {general && <path d={inner} fill="none" stroke={PIPING} strokeWidth="2.2" />}
-      {rank.code === 'gizir' && <rect x="9" y="132" width="42" height="5" fill={STAR} opacity="0.9" />}
-      <circle cx="30" cy="20" r="4.6" fill={OLIVE} stroke={STAR_EDGE} strokeWidth="1.2" />
-      <path d={starPath(30, 20, 2.6, 8, 0.6)} fill={STAR} />
-      {stars.map((s, i) => (
-        <path key={i} d={starPath(30, s.y, s.r, 8, 0.6)} fill={STAR} stroke={STAR_EDGE} strokeWidth="0.7" />
+      {general ? (
+        <g>
+          <path d={ARCH} fill={STAR} stroke={PIPING} strokeWidth="2.4" />
+          <path d={GEN_BRAID} fill="none" stroke={STAR_EDGE} strokeWidth="5" strokeDasharray="2.6 2.2" opacity="0.7" />
+          <path d={GEN_FIELD} fill={`url(#f${id})`} stroke={STAR_EDGE} strokeWidth="0.8" />
+          <path d="M16,110.5 L30,122 L44,110.5" stroke="#f4f1ea" strokeWidth="1.8" fill="none" />
+          <path d="M16,115 Q30,143 44,115 Q30,130 16,115Z" fill="#e6b422" stroke={STAR_EDGE} strokeWidth="0.6" />
+          <path d={starPath(19.5, 133, 2.7, 5, 0.45)} fill="#f4f1ea" />
+          <path d={starPath(40.5, 133, 2.7, 5, 0.45)} fill="#f4f1ea" />
+        </g>
+      ) : (
+        <path d={boardPath} fill={`url(#f${id})`} stroke={nco || army ? PIPING : OLIVE_DARK} strokeWidth={nco ? 2.4 : army ? 2.2 : 1.5} />
+      )}
+      {nco && (
+        <g clipPath={`url(#c${id})`}>
+          <path d={bg ? 'M3,68 L30,98 L57,68' : 'M3,78 L30,108 L57,78'} stroke={CHEVRON} strokeWidth="5.6" fill="none" />
+          {(bg ? [101, 113, 125] : [113, 125]).map((y) => (
+            <rect key={y} x="2" y={y} width="56" height="9" fill="#f1d414" />
+          ))}
+        </g>
+      )}
+      <circle cx="30" cy={buttonY} r={buttonR} fill={`url(#b${id})`} stroke="#b9890e" strokeWidth="0.9" />
+      {!nco && <circle cx="30" cy={buttonY} r={buttonR * 0.55} fill="none" stroke="#b9890e" strokeWidth="0.6" opacity="0.7" />}
+      {stars.map((st, i) => (
+        <FacetStar key={i} cx={30} cy={st.y} r={st.r} inner={army ? 0.5 : 0.56} />
       ))}
-      {device === 'crescent' && <Crescent cx={30} cy={130} w={13} />}
-      {device === 'sabres' && <Sabres cx={30} cy={124} w={14} />}
-      {device === 'emblem' && <Emblem cx={30} cy={104} r={17} />}
+      {device === undefined && rank.tier === 'senior' && <Wreath cx={30} cy={126} w={13} />}
+      {army && <Emblem cx={30} cy={112} r={17} />}
     </svg>
   );
 }
@@ -185,4 +234,4 @@ export function Medal({ shape, color, tier, earned, size = 56, title }: { shape:
   );
 }
 
-export { MILITARY_RANKS, GIZIR };
+export { MILITARY_RANKS, GIZIR, BAS_GIZIR };

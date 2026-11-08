@@ -5,7 +5,7 @@ import { useApp } from '../app';
 import { formatDate, Modal, Progress, toast } from '../ui/components';
 import { IconDown, IconFlame, IconLogout, IconSettings, IconShield } from '../ui/icons';
 import { ProfileForm } from './CompleteProfile';
-import { Epaulette, GIZIR, MILITARY_RANKS, Medal } from '../ui/insignia';
+import { BAS_GIZIR, Epaulette, GIZIR, MILITARY_RANKS, Medal } from '../ui/insignia';
 import { RankHero } from '../ui/rank';
 
 type Theme = 'auto' | 'light' | 'dark';
@@ -72,17 +72,17 @@ export function Profile() {
         </p>
         {ladder && (
           <div className="ladder">
-            {[GIZIR, ...MILITARY_RANKS].map((r, i) => {
+            {[GIZIR, BAS_GIZIR, ...MILITARY_RANKS].map((r, i) => {
               const current = r.code === me.rank.code;
               const myLevel = MILITARY_RANKS.findIndex((x) => x.code === (me.rank.isGizir ? me.rank.earned?.code : me.rank.code));
-              const above = i - 1 > myLevel && r.code !== 'gizir';
+              const above = r.code === 'gizir' ? false : r.code === 'bg' ? me.rank.isGizir : i - 2 > myLevel;
               return (
                 <div key={r.code} className={`ladder-row ${current ? 'current' : ''} ${above ? 'above' : ''}`}>
-                  <Epaulette code={r.code} size={56} />
+                  <Epaulette code={r.code} size={78} />
                   <span className="stack" style={{ gap: 0 }}>
                     <b>{r.title}</b>
                     <span className="tiny muted">
-                      {r.code === 'gizir' ? 'Pulsuz plan' : r.code === 'kl' ? 'Uzun fasilədən sonra enilən ən aşağı rütbə' : r.code === 'l' ? 'Premium ilə başlanğıc rütbə (tezliklə)' : `${r.minMerit} xidmət balı${r.minStreak ? ` · ${r.minStreak} günlük seriya` : ''}`}
+                      {r.code === 'gizir' ? 'Pulsuz plan' : r.code === 'bg' ? 'Gizirdən sonrakı rütbə (Premium ilə — tezliklə)' : r.code === 'kl' ? 'Uzun fasilədən sonra enilən ən aşağı rütbə' : r.code === 'l' ? 'Premium ilə başlanğıc rütbə (tezliklə)' : `${r.minMerit} xidmət balı${r.minStreak ? ` · ${r.minStreak} günlük seriya` : ''}`}
                     </span>
                   </span>
                   {current && <span className="chip primary">Sən</span>}

@@ -326,7 +326,7 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.45; }
 .rank-line .epaulette { flex: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25)); }
 .rank-title { font-family: var(--f-law); font-weight: 600; font-size: 1.3rem; line-height: 1.15; }
 .ladder { display: flex; flex-direction: column; }
-.ladder-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+.ladder-row { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 4px; border-bottom: 1px solid var(--line); }
 .ladder-row:last-child { border-bottom: 0; }
 .ladder-row.current { background: var(--primary-soft); border-radius: 10px; border-bottom-color: transparent; }
 .ladder-row.above { opacity: 0.62; }
