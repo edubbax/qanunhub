@@ -75,6 +75,13 @@ export function Home() {
             <IconChevron />
           </button>
         )}
+        {h.drillCount > 0 && (
+          <button className="tile" onClick={() => nav({ name: 'session', kind: 'drill', back: { name: 'home' } })}>
+            <span className="ico xp"><IconExam /></span>
+            <span className="grow stack tight"><b>Rəqəmlər və müddətlər</b><span className="small muted">Qanunun öz mətnindən 10 sual: müddətlər, səs sayları, faizlər · ulduz xərcləmir</span></span>
+            <IconChevron />
+          </button>
+        )}
         <div className="card flat stack tight">
           <div className="row between"><span className="small"><b>Gündəlik hədəf</b> · {h.me.dailyGoal} dəq</span><span className="small muted num">{h.me.todayXp} XP bu gün</span></div>
           <Progress value={goalPct} tone="xp" />

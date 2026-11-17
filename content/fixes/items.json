@@ -121,7 +121,8 @@
    3
   ],
   "publish": true,
-  "note": "m. 56: seçkilərdə iştirak hüququ məhdudlaşdırılmır, III hissə yalnız seçilmək hüququnu məhdudlaşdırır"
+  "note": "açar D; izah əlavə edildi",
+  "explanation": "Konstitusiyanın 56-cı maddəsi: fəaliyyət qabiliyyətsizliyi məhkəmə ilə təsdiq olunmuş şəxslərin bu hüququ ümumiyyətlə yoxdur, III hissədə sadalananların isə yalnız seçilmək hüququ məhdudlaşdırıla bilər. Seçkilərdə iştirak (seçmək) hüququ heç kəs üçün məhdudlaşdırılmır."
  },
  "konstitusiya-b61376-138": {
   "answer": [
@@ -135,9 +136,14 @@
    [
     "Hər bir kəsin",
     "Hər kəsin"
+   ],
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
    ]
   ],
-  "expect": "Hər kəsin"
+  "expect": "Hər kəsin",
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
  },
  "konstitusiya-b61376-176": {
   "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq nə müqəddəsdir?"
@@ -250,7 +256,14 @@
   "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq kim Azərbaycan Respublikasının Prezidenti seçilə bilər?"
  },
  "konstitusiya-b61376-270": {
-  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Prezidenti necə seçilir?"
+  "stem": "Azərbaycan Respublikasının Konstitusiyasına uyğun olaraq Azərbaycan Respublikasının Prezidenti necə seçilir?",
+  "replace": [
+   [
+    "Majoritar seçki sistemi ilə, ümumi",
+    "Ümumi"
+   ]
+  ],
+  "note": "m. 101 I: «majoritar seçki sistemi» ifadəsi Konstitusiyada yoxdur — açar qanun mətninə uyğunlaşdırıldı"
  },
  "konstitusiya-b61376-320": {
   "options": [
@@ -919,7 +932,8 @@
     "tarixi ərəb və kiril əlifbalarından xüsusi hallarda (lüğətlərdə, elmi nəşrlərdə ədəbiyyat göstəricisində və s.) istifadə oluna bilər"
    ]
   ],
-  "note": "m. 15: yalnız elmi nəşrlər deyil, lüğətlər də"
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir",
+  "draft": true
  },
  "dovlet-dili-70dcfa-13": {
   "draft": true,
@@ -943,7 +957,8 @@
     "Dövlət qulluqçusu onun xidməti vəzifəsinə aid olmadığı hallarda dövlət orqanlarının və onların rəhbərlərinin fəaliyyəti ilə əlaqədar tənqidi ictimai mülahizələrdən çəkinməlidir, qanunsuz fəaliyyət istisna olmaqla, bu qayda elmi-pedaqoji fəaliyyəti ilə bağlı çıxışlarına və elmi yazılarına"
    ]
   ],
-  "note": "Açar variant m. 6.1-in tam mətninə gətirildi"
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur",
+  "draft": true
  },
  "etik-ae27a1-17": {
   "replace": [
@@ -952,7 +967,8 @@
     "sərəncamında olan məlumatların qanunvericiliklə müəyyən olunmuş qaydada əldə olunması və yayılması mümkünlüyünü təmin etməli, habelə dövlət orqanında"
    ]
   ],
-  "note": "Açar variant m. 17-nin tam mətninə gətirildi"
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur",
+  "draft": true
  },
  "etik-ae27a1-3": {
   "draft": true,
@@ -1023,7 +1039,15 @@
   "expect": "1 yanvar 2005-ci il"
  },
  "informasiya-1fa27c-12": {
-  "stem": "İnformasiya sahibləri kimlərdir?"
+  "stem": "İnformasiya sahibləri kimlərdir?",
+  "options": [
+   "Dövlət orqanları, bələdiyyələr, ictimai funksiyalı şəxslər",
+   "Yalnız dövlət orqanları",
+   "Yalnız hüquqi şəxslər",
+   "Yalnız fiziki şəxslər"
+  ],
+  "expect": "Dövlət orqanları, bələdiyyələr, ictimai funksiyalı şəxslər",
+  "note": "m. 9.1.2: müəyyən fiziki şəxslər də informasiya sahibidir; D «Yalnız» ilə yanlış edildi"
  },
  "informasiya-1fa27c-18": {
   "stem": "Sorğu hansı hallarda qeydə alınmır?"
@@ -1243,7 +1267,9 @@
   ]
  },
  "nha-47e4c5-41": {
-  "stem": "Normativ hüquqi aktların rekvizitlərinə hansı daxildir?"
+  "stem": "Normativ hüquqi aktların rekvizitlərinə hansı daxildir?",
+  "draft": true,
+  "note": "m. 28: məcburi rekvizitlər siyahısı variantlarla uyğun gəlmir; sual qanunla yoxlanıla bilmir"
  },
  "melumat-azadligi-cc47c1-14-06d8": {
   "stem": "Şəxsiyyət barədə məlumata nə aiddir?"
@@ -1275,15 +1301,26 @@
     "müvafiq hərəkat (hərəkətsizlik)",
     "müvafiq hərəkət (hərəkətsizlik)"
    ]
-  ]
+  ],
+  "answer": [
+   0
+  ],
+  "expect": "inzibati aktın qəbul edilməsi və ya müvafiq hərəkətin edilməsi ilə bağlı inzibati orqana müraciət etmiş və ya barəsində inzibati akt qəbul edilmiş və ya müvafiq hərəkət (hərəkətsizlik) edilmiş şəxs və yaxud inzibati orqan tərəfindən qəbul edilməsi nəzərdə tutulan və ya qəbul edilmiş inzibati aktın və ya inzibati orqanın hərəkətinin hüquqlarına və ya qanunla qorunan maraqlarına birbaşa təsir etdiyi və ya təsir edə biləcəyi və öz vəsatətinə əsasən və ya xidməti vəzifəsindən irəli gələn hallarda inzibati orqanın təşəbbüsü ilə inzibati icraata cəlb edilən hər hansı fiziki və ya hüquqi şəxs;",
+  "explanation": "Qanunun 2.0.3-cü maddəsi: maraqlı şəxs inzibati icraata cəlb edilən hər hansı fiziki və ya hüquqi şəxsdir.",
+  "note": "m. 2.0.3: açar C («yalnız hüquqi şəxs») idi — düzgün cavab A"
  },
  "mehkemeler-5efa8e-17": {
   "replace": [
    [
     "istifad məcburidir",
     "istifadəsi məcburidir"
+   ],
+   [
+    "istifadə edilə bilə və",
+    "istifadə edilə bilər və"
    ]
-  ]
+  ],
+  "note": "OCR"
  },
  "konstitusiya-bb196a-95": {
   "options": [
@@ -1322,5 +1359,1471 @@
  "karguzarliq-919e39-226": {
   "draft": true,
   "note": "One statement is missing in the source (options reference 6 of 5)."
+ },
+ "dovlet-qullugu-c0655e-30": {
+  "replace": [
+   [
+    "1-ci kateqoriya dövlət orqanları aparatlarının rəhbərləri",
+    "2-ci kateqoriya dövlət orqanları aparatlarının rəhbərləri"
+   ]
+  ],
+  "note": "m. 11.1.2.17: 1-ci kateqoriya orqanların aparat rəhbərləri də birinci təsnifatdadır; ikinci doğru variant üçüncü təsnifatdan (11.1.4.11) əvəz edildi"
+ },
+ "dovlet-qullugu-c0655e-31": {
+  "replace": [
+   [
+    "apellyasiya məhkəmələri aparatlarının rəhbərləri",
+    "apellyasiya məhkəmələrinin aparatlarında struktur bölmə (şöbə) rəhbərlərinin müavinləri"
+   ]
+  ],
+  "note": "m. 11.1.3.11: apellyasiya məhkəmələri aparatlarının rəhbərləri də ikinci təsnifatdadır; variant dördüncü təsnifatdan (11.1.5.9) götürüldü"
+ },
+ "dovlet-qullugu-c0655e-32": {
+  "replace": [
+   [
+    "Müvafiq icra hakimiyyəti orqanları yanında yaradılan dövlət agentliklərinin rəhbərləri",
+    "Azərbaycan Respublikası Prezidentinin köməkçisi"
+   ],
+   [
+    "2-ci kateqoriya dövlət orqanları aparatlarının rəhbərləri",
+    "1-ci kateqoriya dövlət orqanlarında mütəxəssis"
+   ]
+  ],
+  "note": "m. 11.1.4.11 və 11.1.4.14: A və C də üçüncü təsnifatdadır; birinci (11.1.2.2) və dördüncü (11.1.5.1) təsnifatdan variantlarla əvəz edildi"
+ },
+ "dovlet-qullugu-c0655e-35": {
+  "replace": [
+   [
+    "5-ci kateqoriya dövlət orqanlarının rəhbərlərinin müavinləri",
+    "3-cü kateqoriya dövlət orqanlarında struktur bölmə (şöbə) rəhbəri"
+   ]
+  ],
+  "note": "m. 11.1.7.4: 5-ci kateqoriya orqan rəhbərlərinin müavinləri də altıncı təsnifatdadır; variant beşinci təsnifatdan (11.1.6.4)"
+ },
+ "dovlet-qullugu-c0655e-155": {
+  "replace": [
+   [
+    "Stajçı kimi və sınaq müddəti ilə dövlət qulluğuna qəbul edilmiş şəxslərə",
+    "Xidməti fəaliyyəti əvvəlki təqvim ilində “yaxşı” qiymətləndirilmiş dövlət qulluqçularına"
+   ]
+  ],
+  "note": "m. 30-1.2: stajçılar və sınaq müddətində olanlar da qiymətləndirilmir; ikinci doğru variant əvəz edildi"
+ },
+ "dovlet-qullugu-c0655e-189": {
+  "replace": [
+   [
+    "7-ci maddəsinin 21-ci hissəsində",
+    "7-ci maddəsinin 2-1-ci hissəsində"
+   ]
+  ],
+  "note": "m. 17.8: Əmək Məcəlləsinin 7-ci maddəsinin 2-1-ci hissəsi"
+ },
+ "dovlet-qullugu-c0655e-33": {
+  "replace": [
+   [
+    "Müvafiq icra hakimiyyəti orqanı rəhbərinin müşaviri",
+    "Azərbaycan Respublikası Prezidentinin Administrasiyasında mütəxəssis"
+   ]
+  ],
+  "note": "m. 11.1.5.7: müvafiq icra hakimiyyəti orqanları rəhbərlərinin müşavirləri də dördüncü təsnifatdadır; variant üçüncü təsnifatdan (11.1.4.1)"
+ },
+ "etik-b3cc18-18": {
+  "replace": [
+   [
+    "iştiraka. ərdə",
+    "iştiraka."
+   ]
+  ],
+  "note": "PDF qalığı silindi; açar m. 18 ilə təsdiqlənib"
+ },
+ "etik-ae27a1-36": {
+  "replace": [
+   [
+    "fəaliyyəti ilə əlaqədar tənqidi",
+    "fəaliyyəti ilə əlaqədar (qanunsuz fəaliyyət istisna olmaqla) tənqidi"
+   ]
+  ],
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-1": {
+  "replace": [
+   [
+    "alması və ya bu barədə təklif və ya vədi qəbul etməsi",
+    "alması"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-8": {
+  "replace": [
+   [
+    "əlli beş manatdan artıq",
+    "əlli manatdan artıq"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-9": {
+  "replace": [
+   [
+    "Risklərin idarə edilməsi prosesinə xüsusi bilik tələb edən sahələr üzrə",
+    "Risklərin idarə edilməsi prosesinə yalnız dövlət qulluqçusu olan"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-13": {
+  "replace": [
+   [
+    "qanunla müəyyən edilmiş qaydada intizam, mülki-hüquqi",
+    "qanunla müəyyən edilmiş qaydada mülki-hüquqi"
+   ],
+   [
+    "mülki-hüquqi, yaxud inzibati və ya cinayət",
+    "mülki-hüquqi"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-14": {
+  "replace": [
+   [
+    "iyirmi iş günü müddətində araşdırmalı",
+    "on iş günü müddətində araşdırmalı"
+   ],
+   [
+    "məlumat verənə bildirməlidir",
+    "məlumat verən şəxsin rəhbərinə bildirməlidir"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-32": {
+  "replace": [
+   [
+    "qarşılığında vəzifəli",
+    "qarşılığında yalnız dövlət qulluqçusu olan vəzifəli"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-37": {
+  "replace": [
+   [
+    "maddi və sair nemətləri istəməsi",
+    "maddi və sair nemətlər, imtiyazlar və ya güzəştləri istəməsi"
+   ],
+   [
+    "istifadə edərək qanunsuz olaraq",
+    "istifadə edərək"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-48": {
+  "replace": [
+   [
+    "törətmiş hüquqi şəxslər barəsində qanunla müəyyən edilmiş qaydada cərimə tətbiq edilir",
+    "törətmiş hüquqi şəxslər barəsində heç bir tədbir tətbiq edilmir"
+   ]
+  ],
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur",
+  "draft": true
+ },
+ "korrupsiya-1cbcce-19": {
+  "draft": true,
+  "note": "C və D açarla mənaca eynidir (sinonim fərqlər)"
+ },
+ "korrupsiya-1cbcce-20": {
+  "draft": true,
+  "note": "Bütün yanlış variantlar mənaca doğru ifadələrdir"
+ },
+ "korrupsiya-1cbcce-23": {
+  "draft": true,
+  "note": "Variantlar yalnız sinonimlərlə fərqlənir (5/beş, ərzində/müddətində)"
+ },
+ "korrupsiya-1cbcce-35": {
+  "draft": true,
+  "note": "Variantlar yalnız sinonimlərlə fərqlənir (dövri/mütəmadi)"
+ },
+ "korrupsiya-1cbcce-36": {
+  "draft": true,
+  "note": "Bütün variantlar mənaca eynidir (digər/başqa, olunmuş/edilmiş)"
+ },
+ "korrupsiya-1cbcce-50": {
+  "draft": true,
+  "note": "B və D açarla mənaca eynidir"
+ },
+ "melumat-azadligi-d961e5-11": {
+  "stem": "Alınması məhdudlaşdırılan məlumat haqqında hansı müddəa Qanuna uyğun deyil?",
+  "note": "Sual mətni variantlara uyğunlaşdırıldı: ətraf mühitə dair informasiya yalnız qanunvericiliklə müəyyən edilmiş hallarda məhdudlaşdırılır (m. 10)"
+ },
+ "melumat-azadligi-cc47c1-28": {
+  "replace": [
+   [
+    "şəxsiyyətin, cəmiyyətin və respublikanın təhlükəsizliyinin qorunması",
+    "məlumatın yalnız dövlət orqanları tərəfindən yayılması"
+   ]
+  ],
+  "note": "D «respublikanın/dövlətin» fərqi ilə mənaca doğru idi (m. 5)"
+ },
+ "melumat-azadligi-cc47c1-36": {
+  "replace": [
+   [
+    "terror aktlanna",
+    "terror aktlarına"
+   ]
+  ],
+  "note": "OCR xətası düzəldildi; açar m. 10 ilə təsdiqlənib"
+ },
+ "melumat-azadligi-cc47c1-47": {
+  "replace": [
+   [
+    "müqavilə AR qanunvericiliyə uyğun bağlanır",
+    "müqavilə inzibati qanunvericiliyə uyğun bağlanır"
+   ]
+  ],
+  "note": "D («AR qanunvericiliyinə») mülki qanunvericiliyi də əhatə etdiyi üçün doğru sayıla bilərdi"
+ },
+ "informasiya-1fa27c-28": {
+  "stem": "Fərdi məlumatları əks etdirən sənədlərdə hansı qeyd aparılır?",
+  "replace": [
+   [
+    "Fərd məlumatlar”",
+    "Fərdi məlumatlar”"
+   ]
+  ],
+  "note": "Yazı xətaları düzəldildi (m. 36)"
+ },
+ "nha-47e4c5-2": {
+  "replace": [
+   [
+    "4.1-ci izlə maddəsində",
+    "4.1-ci maddəsində"
+   ],
+   [
+    "müəyyən, formalı",
+    "müəyyən formalı"
+   ],
+   [
+    "Referendum volu ilə",
+    "Referendum yolu ilə"
+   ],
+   [
+    "\"Normativ hüquqi aktlar haqqında \"AR konstitusiya qanununa",
+    "«Normativ hüquqi aktlar haqqında» AR Konstitusiya Qanununa"
+   ]
+  ],
+  "note": "OCR qalıqları təmizləndi; açar m. 1.0.3"
+ },
+ "nha-47e4c5-17": {
+  "replace": [
+   [
+    "müvafiq normativ akt əsasında qəbul edilməlidir və onun müvafiq normasına istinad etməlidir",
+    "müvafiq qanun əsasında qəbul edilməlidir və AR Prezidentinin fərmanına istinad etməlidir"
+   ]
+  ],
+  "note": "A açardan yalnız «hüquqi» sözü ilə fərqlənirdi; mənaca yanlış edildi (m. 3)"
+ },
+ "nha-47e4c5-19": {
+  "draft": true,
+  "note": "Dörd variantın dördü də qanuna uyğundur (m. 4.2–4.4, 1.0.27) — «doğru deyil» sualının cavabı yoxdur"
+ },
+ "nha-47e4c5-25": {
+  "replace": [
+   [
+    "Kabinetinin qərarları iz",
+    "Kabinetinin qərarları"
+   ]
+  ],
+  "note": "OCR qalığı; açar m. 3.3"
+ },
+ "nha-47e4c5-29": {
+  "options": [
+   "Qüvvəsi bir və ya bir neçə dövlət orqanının çərçivəsi ilə məhdudlaşan normativ hüquqi akt",
+   "Qüvvəsi bütün ölkə ərazisinə şamil edilən normativ hüquqi akt",
+   "Qüvvəsi bir və ya bir neçə təsərrüfat subyektinin çərçivəsi ilə məhdudlaşan normativ hüquqi akt",
+   "Heç biri"
+  ],
+  "expect": "Qüvvəsi bir və ya bir neçə dövlət orqanının çərçivəsi ilə məhdudlaşan normativ hüquqi akt",
+  "note": "B («bir dövlət orqanının») da lokal akt tərifinə düşürdü (m. 1.0.21)"
+ },
+ "dovlet-dili-70dcfa-34": {
+  "draft": true,
+  "note": "Açar Qanun mətnində olmayan şərhə («Dil komissiyası ilə razılaşdırılmaqla Nazirlər Kabineti», «mərhələli prosedur») əsaslanır; m. 1 yalnız «müvafiq icra hakimiyyəti orqanı» deyir"
+ },
+ "inzibati-icraat-9e6177-39": {
+  "draft": true,
+  "note": "Anonim ərizə də m. 30.2.2 və 34.1.3 əsasında baxılmamış saxlanıla bilər; açar yalnız «olmadıqda/qeyd olunmadıqda» fərqinə əsaslanır — birmənalı deyil"
+ },
+ "ombudsman-37f090-4": {
+  "replace": [
+   [
+    "Müvəkkilin fəalivvəti",
+    "Müvəkkilin fəaliyyəti"
+   ]
+  ],
+  "note": "OCR; açar m. 1 ilə təsdiqlənib"
+ },
+ "ombudsman-37f090-12": {
+  "replace": [
+   [
+    "veni Müvəkkilin",
+    "yeni Müvəkkilin"
+   ]
+  ],
+  "note": "OCR; açar m. 4 (iki dəfə)"
+ },
+ "ombudsman-37f090-23": {
+  "replace": [
+   [
+    "ictimai əhəmivvət",
+    "ictimai əhəmiyyət"
+   ]
+  ],
+  "note": "OCR; açar m. 12 («razılığı ilə»)"
+ },
+ "ombudsman-37f090-26": {
+  "replace": [
+   [
+    "müvəqqəti saxlama verlərinin",
+    "müvəqqəti saxlama yerlərinin"
+   ]
+  ],
+  "note": "OCR; açar m. 12.2"
+ },
+ "mehkemeler-92e2c6-19": {
+  "replace": [
+   [
+    "İnzibati-iqtisadi məhkəmələr",
+    "İnzibati məhkəmələr"
+   ]
+  ],
+  "note": "m. 19 (cari redaksiya): inzibati-iqtisadi məhkəmələr ləğv edilib, yerinə inzibati və kommersiya məhkəmələri; açar B bu düzəlişlə doğrudur"
+ },
+ "mehkemeler-92e2c6-8": {
+  "replace": [
+   [
+    "təkbaşına və üç hakimdən ibarət tərkibdə",
+    "təkbaşına və ya beş hakimdən ibarət tərkibdə"
+   ]
+  ],
+  "note": "A «və/və ya» fərqi ilə birmənalı deyildi"
+ },
+ "mehkemeler-92e2c6-9": {
+  "replace": [
+   [
+    "üç və daha çox hakimdən",
+    "beş və ya daha çox hakimdən"
+   ]
+  ],
+  "note": "C («üç və daha çox») açarla mənaca eyni idi"
+ },
+ "mehkemeler-92e2c6-27": {
+  "replace": [
+   [
+    "qanunveridliklə",
+    "qanunvericiliklə"
+   ],
+   [
+    "vətəndaşlann",
+    "vətəndaşların"
+   ]
+  ],
+  "note": "OCR; açar m. 3"
+ },
+ "mehkemeler-92e2c6-30": {
+  "replace": [
+   [
+    "xarici vətəndaşlann",
+    "xarici vətəndaşların"
+   ]
+  ],
+  "note": "OCR; açar m. 10"
+ },
+ "elektron-imza-36e8ad-5": {
+  "options": [
+   "Yalnız gücləndirilmiş imza",
+   "Yalnız sertifikatlaşdırılmış imza",
+   "Yalnız gücləndirilmiş imza və sertifikatlaşdırılmış imza vasitələri",
+   "Yalnız kağız daşıyıcılar"
+  ],
+  "expect": "Yalnız gücləndirilmiş imza və sertifikatlaşdırılmış imza vasitələri",
+  "note": "Variant mətnləri bərpa edildi (m. 6)"
+ },
+ "remzler-9d4278-30": {
+  "draft": true,
+  "note": "Mənbə kartında m. 7.2 təhrif olunub («orqanın (Prezident) müəyyən etdiyi orqan (Prezident)»); düzgün subyekt etibarlı müəyyən edilə bilmir"
+ },
+ "karguzarliq-919e39-63": {
+  "answer": [
+   0
+  ],
+  "expect": "Müstəqil sənəd olaraq müşayiət məktubu ilə göndərilən əlavələr",
+  "note": "Təlimat, 43-cü bənd: bütün zəruri elementlər yalnız müşayiət məktubu ilə göndərilən müstəqil əlavələrdə olmalıdır (açar «Hamısı» idi)"
+ },
+ "karguzarliq-919e39-95": {
+  "options": [
+   "Bir qayda olaraq, sənədlərin mətnləri bir hissədən ibarət olur",
+   "Bir qayda olaraq, sənədlərin mətnləri dörd hissədən ibarət olur",
+   "Bir qayda olaraq, sənədlərin mətnləri üç hissədən ibarət olur",
+   "Bir qayda olaraq, sənədlərin mətnləri iki hissədən ibarət olur"
+  ],
+  "expect": "Bir qayda olaraq, sənədlərin mətnləri iki hissədən ibarət olur",
+  "note": "Variant mətnləri tamamlandı"
+ },
+ "karguzarliq-919e39-113": {
+  "replace": [
+   [
+    "Razılaşdırma struktur daxilində və ya müxtəlif təşkilatlar arasında",
+    "Razılaşdırma yalnız təşkilat daxilində"
+   ]
+  ],
+  "note": "C («struktur daxilində») açarla mənaca eyni idi"
+ },
+ "karguzarliq-919e39-119": {
+  "options": [
+   "Sənədlə əlaqədar qeydlər ayrıca vərəqdə yazılır, bu zaman vizada imza, vəzifə, adı və soyadı, tarix göstərilir və «Qeydlər əlavə olunur» yazılır.",
+   "Sənədlə əlaqədar qeydlər ayrıca vərəqdə yazılır, bu zaman vizada imza, adı, soyadı və ata adı, tarix göstərilir və «Qeydlər əlavə olunur» yazılır.",
+   "Sənədlə əlaqədar qeydlər ayrıca vərəqdə yazılır, bu zaman vizada imza, adı və soyadı, tarix göstərilir və «Qeydlər əlavə olunur» yazılır.",
+   "Sənədlə əlaqədar qeydlər ayrıca vərəqdə yazılır, bu zaman vizada imza, vəzifə və tarix göstərilir və «Qeydlər əlavə olunur» yazılır."
+  ],
+  "expect": "Sənədlə əlaqədar qeydlər ayrıca vərəqdə yazılır, bu zaman vizada imza, adı və soyadı, tarix göstərilir və «Qeydlər əlavə olunur» yazılır.",
+  "note": "Pozulmuş mötərizələr təmizləndi; açar Təlimatdakı vizanın formasına uyğundur"
+ },
+ "karguzarliq-919e39-236": {
+  "options": [
+   "1, 2, 4, 5, 6;",
+   "2, 3, 5, 6;",
+   "1, 2, 6, 7;",
+   "2, 3, 6, 7, 8;"
+  ],
+  "expect": "2, 3, 5, 6;",
+  "note": "Təlimat, 34-cü bənd: soldan 25, sağdan ən azı 8, yuxarıdan 20, aşağıdan (A4) ən azı 19 mm; «sağdan 10 mm» norma deyil, açardan çıxarıldı"
+ },
+ "konstitusiya-b61376-87": {
+  "replace": [
+   [
+    "Uşaqlara qayğı göstərmək, onları tərbiyə etmək valideynlərin borcudur.",
+    "Uşaqlara qayğı göstərmək, onları tərbiyə etmək valideynlərin hüququ deyil, yalnız borcudur."
+   ]
+  ],
+  "note": "m. 34 IV: «həm hüququ, həm də borcudur» — 4-cü bənd natamam idi (doğru sayıla bilərdi), indi açıq-aydın yanlışdır; açar C"
+ },
+ "konstitusiya-b61376-144": {
+  "replace": [
+   [
+    "Hər bir şəxs dövlət orqanlarının, siyasi partiyaların, hüquqi şəxslərin, bələdiyyələrin və vəzifəli şəxslərin hərəkətlərindən və hərəkətsizliyindən inzibati qaydada və məhkəməyə şikayət edə bilər.",
+    "Hər kəs dövlət orqanlarının, siyasi partiyaların, hüquqi şəxslərin, bələdiyyələrin və vəzifəli şəxslərin hərəkətlərindən və hərəkətsizliyindən yalnız məhkəməyə şikayət edə bilər."
+   ]
+  ],
+  "explanation": "Konstitusiyanın 60-cı maddəsinin IV hissəsinə görə şikayət həm inzibati qaydada, həm də məhkəməyə verilə bilər; «yalnız məhkəməyə» ifadəsi yanlışdır.",
+  "note": "m. 60: dörd variantın dördü də qanuna uyğun idi («Hər bir şəxs» = «Hər kəs»); D yanlış ediləcək şəkildə düzəldildi"
+ },
+ "konstitusiya-b61376-345": {
+  "replace": [
+   [
+    "Ali təhsilli bütün şəxslər",
+    "Ali təhsilli şəxslər"
+   ]
+  ],
+  "note": "m. 121: «bütün» sözü bəndi yanlış edirdi; açar B (1,2,3)"
+ },
+ "konstitusiya-b61376-463": {
+  "replace": [
+   [
+    "Uşaqların qayğısına qalmaq və onları tərbiyə etmək valideynlərin hüququdur.",
+    "Uşaqların qayğısına qalmaq və onları tərbiyə etmək yalnız dövlətin borcudur."
+   ]
+  ],
+  "note": "m. 17 II / m. 34 IV: tərbiyə həm də valideynlərin hüququdur — C doğru sayıla bilərdi; indi yanlışdır"
+ },
+ "konstitusiya-bb196a-117": {
+  "replace": [
+   [
+    "Hər bir vətəndaşın hüququdur.",
+    "Hər kəsin hüququdur."
+   ]
+  ],
+  "note": "m. 54 II: D («Hər bir vətəndaşın hüququdur») açarla eyni məna daşıyırdı"
+ },
+ "konstitusiya-bb196a-229": {
+  "answer": [
+   3
+  ],
+  "expect": "hamısı",
+  "note": "m. 98-1 I: Konstitusiya Məhkəməsi, Ali Məhkəmə və Mərkəzi Bankın İdarə Heyəti — üçü də (açar C idi)",
+  "explanation": "Konstitusiyanın 98-1-ci maddəsi üç orqanı sadalayır: Konstitusiya Məhkəməsi, Ali Məhkəmə və Mərkəzi Bankın İdarə Heyəti."
+ },
+ "konstitusiya-bb196a-17": {
+  "draft": true,
+  "note": "m. 97 yalnız qanunlar (14 gün) və təcili qanun layihələri (24 saat) üçündür; sualın ifadəsi ikimənalıdır — A da müdafiə oluna bilər"
+ },
+ "konstitusiya-bb196a-144": {
+  "draft": true,
+  "note": "Yayım Şurası Konstitusiyada yoxdur — mövzu materialı ilə yoxlanıla bilmir"
+ },
+ "konstitusiya-bb196a-94": {
+  "explanation": "Konstitusiyanın 156-cı maddəsi: iki dəfə səsə qoyulan «qanunlar» deyil, Konstitusiyaya əlavələr haqqında Konstitusiya qanunlarıdır.",
+  "note": "açar A; izah əlavə edildi"
+ },
+ "konstitusiya-bb196a-222": {
+  "explanation": "Konstitusiyanın 95-ci maddəsinin I hissəsinin 6-cı bəndi ilə Milli Məclis müvəkkili qərarla seçir; «İnsan hüquqları üzrə müvəkkil haqqında» Konstitusiya Qanununun 2.1-ci maddəsinə görə 83 səs çoxluğu tələb olunur.",
+  "note": "açar B; Konstitusiya qanunu m. 2.1 ilə təsdiq"
+ },
+ "konstitusiya-bb196a-293": {
+  "explanation": "Konstitusiya (m. 142) yalnız bələdiyyələrin statusunun əsaslarını müəyyən edir; statusun özü «Bələdiyyələrin statusu haqqında» Qanunla tənzimlənir.",
+  "note": "açar A; izah əlavə edildi"
+ },
+ "inzibati-icraat-9e6177-35": {
+  "answer": [
+   0
+  ],
+  "expect": "İnzibati orqan vəsatəti qəbul etməyə və icraat materiallarına əlavə etməyə borcludur",
+  "explanation": "Qanunun 31-ci maddəsi: ərizə həmin gün qeydiyyata alınır (31.1), arayış ən geci üç gün müddətində verilir (31.2), vəsatət qəbul edilib icraat materiallarına əlavə edilir (31.3).",
+  "note": "m. 31: açar C («ən geci üç gün içində qeydiyyata») yanlış idi — qanunda «həmin gün»; düzgün cavab A (31.3)"
+ },
+ "konstitusiya-b61376-141": {
+  "replace": [
+   [
+    "Hər bir şəxs istənilən birlik",
+    "Yalnız Azərbaycan Respublikasının vətəndaşları istənilən birlik"
+   ]
+  ],
+  "note": "m. 58 II: A («Hər bir şəxs» = «Hər kəs») da doğru idi; A yanlış edildi, açar C"
+ },
+ "ombudsman-37f090-39": {
+  "replace": [
+   [
+    "şikayətçi ərizə ilə tələb etdiyi hallarda",
+    "yalnız məhkəmənin qərarı olduqda"
+   ]
+  ],
+  "note": "m. 9.5: A («tələb etdiyi») açarla (D, «xahiş etdiyi») eyni mənada idi"
+ },
+ "ombudsman-37f090-19": {
+  "replace": [
+   [
+    "Ərizəçinin tələbi ilə Müvəkkil onun barəsində məlumatları gizli saxlamalıdır.",
+    "Müvəkkil ərizəçi barəsində məlumatları heç bir halda gizli saxlaya bilməz."
+   ],
+   [
+    "tərtib edilmə veri",
+    "tərtib edilmə yeri"
+   ],
+   [
+    "siibutlu",
+    "sübutlu"
+   ]
+  ],
+  "note": "m. 9.5: D («tələbi ilə») da doğru idi; D yanlış edildi, açar C (m. 9.4)"
+ },
+ "ombudsman-37f090-5-99af": {
+  "stem": "İnsan hüquqlarının pozulmasına dair şikayətdə əks etdirilmiş halların araşdırılması və milli preventiv mexanizmin funksiyalarının həyata keçirilməsi zamanı Müvəkkilin hansı hüquqları vardır?",
+  "note": "Sualın mətni əvvəlki sualın qalığı ilə qarışmışdı (OCR); açar m. 12"
+ },
+ "melumat-azadligi-d961e5-14": {
+  "draft": true,
+  "note": "m. 13: dörd variantın dördü də qanunda var — «daxil deyil» sualının cavabı yoxdur"
+ },
+ "konstitusiya-bb196a-280": {
+  "explanation": "Konstitusiyanın 107-ci maddəsi: Prezident 95 səs çoxluğu ilə qəbul olunmuş qərar əsasında vəzifədən «kənarlaşdırıla bilər» — D variantındakı «kənarlaşdırılır» ifadəsi tam düzgün deyil.",
+  "note": "açar D; izah əlavə edildi"
+ },
+ "dovlet-qullugu-c0655e-41": {
+  "draft": true,
+  "note": "m. 15.2 və 1.1.3: and yalnız ilk dəfə DAİMİ qulluğa qəbulda içilir — sınaq müddəti ilə qəbul edilən (B) də and içmir; iki cavab"
+ },
+ "konstitusiya-b61376-53": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-61": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-77": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-101": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-103": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-140": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-147": {
+  "replace": [
+   [
+    "Hər bir şəxsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«Hər bir şəxsin» = «Hər kəsin» (sinonim) — iki doğru cavab var idi; distraktor dəyişdirildi"
+ },
+ "konstitusiya-0e3efc-63": {
+  "replace": [
+   [
+    "hər bir şəxsin",
+    "yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "«hər bir şəxsin» = «hər kəsin» — distraktor dəyişdirildi"
+ },
+ "konstitusiya-b61376-146": {
+  "replace": [
+   [
+    "Hər kəsin",
+    "Yalnız əcnəbilərin və vətəndaşlığı olmayan şəxslərin"
+   ]
+  ],
+  "note": "m. 61 III «Hər bir şəxsin»; «Hər kəsin» sinonim idi — distraktor dəyişdirildi"
+ },
+ "etik-ae27a1-19": {
+  "draft": true,
+  "note": "B və D açarın yalnız sadalama sırası dəyişdirilmiş variantıdır — eyni məna, üç doğru cavab"
+ },
+ "konstitusiya-b61376-34": {
+  "replace": [
+   [
+    "Azərbaycanın bütün əhalisi arasında ümumxalq səsverməsi keçirmək yolu ilə",
+    "referendum keçirilmədən"
+   ]
+  ],
+  "note": "«ümumxalq səsverməsi» = «referendum» (m. 2) — D açarla eyni idi"
+ },
+ "konstitusiya-b61376-40": {
+  "replace": [
+   [
+    "xələl gətirmədən Azərbaycan dövlətinə",
+    "xələl gətirmədən bələdiyyələrə"
+   ]
+  ],
+  "note": "«Azərbaycan dövlətinə» = «Azərbaycan Respublikasına» — B açarla eyni idi"
+ },
+ "konstitusiya-b61376-306": {
+  "explanation": "Konstitusiyanın 108-1-ci maddəsi yalnız Birinci vitse-prezidenti və onun ailəsini nəzərdə tutur; «vitse-prezidentin» təhlükəsizliyi barədə belə müddəa yoxdur.",
+  "note": "açar D; izah"
+ },
+ "konstitusiya-bb196a-32": {
+  "replace": [
+   [
+    "xələl gətirmədən Azərbaycan Dövlətinə mənsubdur",
+    "xələl gətirmədən bələdiyyələrə mənsubdur"
+   ]
+  ],
+  "note": "«Azərbaycan Dövlətinə» = «Azərbaycan Respublikasına» — A açarla eyni idi"
+ },
+ "konstitusiya-bb196a-111": {
+  "replace": [
+   [
+    "piketlər düzəltmək azadlığı vardır",
+    "piketlər düzəltmək hüququ yalnız müvafiq dövlət orqanlarının icazəsi olduqda vardır"
+   ]
+  ],
+  "note": "m. 49: C yalnız «hüququ»→«azadlığı» ilə fərqlənirdi (eyni məna)"
+ },
+ "etik-ae27a1-1": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-4": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-5": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-7": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-8": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-9": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-10": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-11": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-12": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-13": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-14": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-15": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-16": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-18": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-20": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-21": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-22": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-23": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-24": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-25": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-26": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-27": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-28": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-30": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-31": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-32": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-33": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-34": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-37": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-38": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-39": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-40": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "etik-ae27a1-2": {
+  "draft": true,
+  "note": "Qəliz tipli test: variantlar eyni qanun cümlələrinin yenidən düzülüşüdür, bir neçəsi eyni dərəcədə doğrudur — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-qullugu-4122f4-19": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-2": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-3": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-4": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-5": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-6": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-7": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-10": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-15": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-16": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-17": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-18": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-21": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-22": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-24": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-26": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-27": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-28": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-29": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-31": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-33": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-34": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-40": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-43": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-44": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-45": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-47": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-49": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-1": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-2": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-9": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-10": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-12": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-13": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-16": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-22": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-27": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-28": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-30": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-1": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-2": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-4": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-8": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-15": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-30": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-ce84ad-37": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-7": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-8": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-14": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-21": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "korrupsiya-1cbcce-25": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "melumat-azadligi-d961e5-21": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "muraciet-299788-2": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-2": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-15": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-16": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-17": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-26": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-32": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "dovlet-dili-70dcfa-40": {
+  "draft": true,
+  "note": "Qəliz tipli test (yenidən ifadə edilmiş variantlar): distraktorların bir qismi açarın sinonim/sıra dəyişikliyidir — tək düzgün cavab təmin olunmur"
+ },
+ "nha-47e4c5-12": {
+  "replace": [
+   [
+    "onları təsdiq edən normativ aktın",
+    "onlara istinad edən sonrakı normativ hüquqi aktın"
+   ]
+  ],
+  "note": "A («normativ aktın») açarla demək olar eyni idi — distraktor dəyişdirildi"
+ },
+ "nha-47e4c5-15": {
+  "replace": [
+   [
+    "nəzərdə iz tutulan",
+    "nəzərdə tutulan"
+   ]
+  ],
+  "note": "OCR qalığı («iz») açarda idi"
+ },
+ "nha-47e4c5-46": {
+  "replace": [
+   [
+    "gün soma",
+    "gün sonra"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "nha-47e4c5-50": {
+  "replace": [
+   [
+    "MİHO-nun normativ",
+    "Mərkəzi icra hakimiyyəti orqanlarının normativ"
+   ]
+  ],
+  "note": "qısaltma açıldı"
+ },
+ "nha-47e4c5-6": {
+  "replace": [
+   [
+    "hüqııqi",
+    "hüquqi"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "inzibati-icraat-9e6177-12": {
+  "replace": [
+   [
+    "amal",
+    "əməl"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "ombudsman-37f090-27": {
+  "replace": [
+   [
+    "təqib edilməsi qadağandır",
+    "təqib edilməsi yalnız Müvəkkilin razılığı ilə mümkündür"
+   ]
+  ],
+  "note": "A («qadağandır») açarla («yolverilməzdir») eyni mənada idi"
+ },
+ "ombudsman-37f090-37": {
+  "replace": [
+   [
+    "məlum olduğu andan bir il",
+    "məlum olduğu gündən üç ay"
+   ]
+  ],
+  "note": "A («andan») açarla («gündən») praktik olaraq eyni idi"
+ },
+ "ombudsman-37f090-30": {
+  "replace": [
+   [
+    "kitavət",
+    "kifayət"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "mehkemeler-92e2c6-14": {
+  "replace": [
+   [
+    "mülıakiməsi",
+    "mühakiməsi"
+   ],
+   [
+    "asdı",
+    "asılı"
+   ],
+   [
+    "bir əcnəbınm",
+    "bir əcnəbinin"
+   ],
+   [
+    "Respublikasmda",
+    "Respublikasında"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "mehkemeler-92e2c6-6": {
+  "replace": [
+   [
+    "xarid dövlətlərin",
+    "xarici dövlətlərin"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "mehkemeler-92e2c6-20": {
+  "replace": [
+   [
+    "yanlış olam seçin",
+    "yanlış olanı seçin"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "mehkemeler-92e2c6-25": {
+  "replace": [
+   [
+    "hansı əyin: doğrudur",
+    "hansı doğrudur"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "karguzarliq-919e39-193": {
+  "replace": [
+   [
+    "apanlmış",
+    "aparılmış"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "karguzarliq-919e39-184": {
+  "replace": [
+   [
+    "apanlan",
+    "aparılan"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "karguzarliq-919e39-156": {
+  "replace": [
+   [
+    "adı vərəqdə",
+    "adi vərəqdə"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "dovlet-qullugu-c0655e-139": {
+  "replace": [
+   [
+    "elmi dərəcənin, dövlət təltifinin olması və attestasiyadan müvəffəqiyyətlə keçmə",
+    "elmi dərəcənin və ya elmi adın, dövlət təltifinin olması və attestasiyadan üç dəfə müvəffəqiyyətlə keçmə"
+   ]
+  ],
+  "note": "m. 32-1.8: açar qanun mətninə uyğunlaşdırıldı"
+ },
+ "melumat-azadligi-cc47c1-16": {
+  "replace": [
+   [
+    "əldə edilən məlumatlar əyin:",
+    "əldə edilən məlumatlar"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "melumat-azadligi-cc47c1-23": {
+  "replace": [
+   [
+    "müradət",
+    "müraciət"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "melumat-azadligi-cc47c1-30": {
+  "replace": [
+   [
+    "məhdudlaşdınlan",
+    "məhdudlaşdırılan"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "melumat-azadligi-cc47c1-46": {
+  "replace": [
+   [
+    "orqanlannın",
+    "orqanlarının"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "nha-47e4c5-49": {
+  "replace": [
+   [
+    "AR Konstitusiyası ilə ziddiyyət təşkil edə bilər",
+    "AR normativ hüquqi aktları ilə ziddiyyət təşkil edə bilər"
+   ]
+  ],
+  "explanation": "«Normativ hüquqi aktlar haqqında» Konstitusiya Qanununun 4-cü maddəsi: 4.1.1-ci maddədə göstərilən Konstitusiya Məhkəməsinin qərarları istisna olmaqla, normativ xarakterli aktlar normativ hüquqi aktlarla ziddiyyət təşkil edə bilməz.",
+  "note": "Sual mətni qanuna uyğunlaşdırıldı: istisna Konstitusiya ilə deyil, normativ hüquqi aktlarla ziddiyyətə aiddir"
+ },
+ "dovlet-sirri-481696-18": {
+  "replace": [
+   [
+    "buraxmaqdan icra imtina",
+    "buraxmaqdan imtina"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "informasiya-1fa27c-8": {
+  "replace": [
+   [
+    "bələdiyyə və hüquqi, üçün fiziki şəxslər",
+    "bələdiyyə orqanları, hüquqi və fiziki şəxslər"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "nha-47e4c5-48": {
+  "explanation": "Konstitusiya Qanununun 4.1-ci maddəsinin siyahısında Mərkəzi Seçki Komissiyası, maliyyə bazarları tənzimləyicisi (Mərkəzi Bank), Məhkəmə-Hüquq Şurası var; Hesablama Palatası yoxdur."
+ },
+ "dovlet-dili-70dcfa-1": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-3": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-4": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-5": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-6": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-9": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-10": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-11": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-12": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-18": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-19": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-20": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-22": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-24": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-25": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-27": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-28": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-29": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-30": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-31": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-33": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-35": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-36": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-37": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-38": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "dovlet-dili-70dcfa-39": {
+  "draft": true,
+  "note": "Qəliz tipli test: açar variantına qanunda olmayan əlavə iddialar qoşulub — qanunla təsdiqlənmir"
+ },
+ "konstitusiya-b61376-50": {
+  "explanation": "Bu müddəa Konstitusiyada yoxdur — o, «Azərbaycan Respublikasında dövlət dili haqqında» Qanunun 1.1-ci maddəsindədir. Konstitusiyanın 21-ci maddəsi yalnız dövlət dilini, onun inkişafını və digər dillərin sərbəst işlədilməsini nəzərdə tutur.",
+  "note": "açar B; izah"
+ },
+ "konstitusiya-bb196a-164": {
+  "explanation": "Bu müddəa Konstitusiyada yoxdur — o, «Azərbaycan Respublikasında dövlət dili haqqında» Qanunun 1.1-ci maddəsindədir. Konstitusiyanın 21-ci maddəsi yalnız dövlət dilini, onun inkişafını və digər dillərin sərbəst işlədilməsini nəzərdə tutur.",
+  "note": "açar B; izah"
+ },
+ "elektron-imza-5c7db5-22": {
+  "draft": true,
+  "note": "m. 9.7: siyahı kartda natamamdır; A və C eyni əlaməti («vergi borcu») ehtiva edir — tək cavab təsdiqlənmir"
+ },
+ "ombudsman-37f090-36": {
+  "draft": true,
+  "note": "m. 8.1 ərizəçiləri sadalayır; Dövlət Qulluğunu İdarəetmə Şurasının statusu ilə bağlı cavab birmənalı deyil"
+ },
+ "ombudsman-37f090-2-2cfb": {
+  "draft": true,
+  "note": "m. 8.1: Dövlət Qulluğunu İdarəetmə Şurasının ərizəçi kimi göstərilməsi qanunla birbaşa təsdiqlənmir"
+ },
+ "mehkemeler-92e2c6-1": {
+  "replace": [
+   [
+    "Qanıınu",
+    "Qanunu"
+   ]
+  ],
+  "note": "OCR"
+ },
+ "konstitusiya-0e3efc-241": {
+  "explanation": "Konstitusiyanın 133-cü maddəsinə görə Prezident Baş prokuroru yalnız Milli Məclisin razılığı ilə vəzifəyə təyin və vəzifədən azad edir; D variantında bu şərt yoxdur.",
+  "note": "açar D; izah"
+ },
+ "konstitusiya-b61376-56": {
+  "replace": [
+   [
+    "Kişi ilə qadının bərabər hüquqları və azadlıqları vardır",
+    "Kişi ilə qadının hüquqları və azadlıqları qanunla fərqli müəyyən edilə bilər"
+   ]
+  ],
+  "explanation": "Konstitusiyanın 25-ci maddəsinin II hissəsi: kişi ilə qadının eyni hüquqları və azadlıqları vardır.",
+  "note": "«bərabər» = «eyni» — «doğru olmayan» açar əslində doğru idi; açar yanlış edildi"
+ },
+ "konstitusiya-bb196a-11": {
+  "draft": true,
+  "note": "m. 127–128: «daimidir» qanundakı «səlahiyyətləri müddətində dəyişilməzdirlər» ilə yaxındır, «bitərəfdir» isə qanunda hərfən yoxdur — cavab birmənalı deyil"
+ },
+ "konstitusiya-bb196a-8": {
+  "explanation": "Konstitusiyanın 8-ci maddəsi: Prezident Azərbaycan Respublikasının TƏRƏFDAR ÇIXDIĞI beynəlxalq müqavilələrə riayət olunmasının təminatçısıdır — bütün beynəlxalq müqavilələrin deyil.",
+  "note": "açar B; izah"
  }
 }

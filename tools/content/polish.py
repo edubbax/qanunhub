@@ -287,6 +287,29 @@ def fix_known_splits(text: str) -> str:
     return text
 
 
+# The source PDFs carry the author's notes inside the law text: who the "competent executive body" is in practice
+# ('müvafiq icra hakimiyyəti orqanı (Nazirlər Kabineti)') and memory codes ('(MATE)', 'KOLLİZİYA'). The notes are
+# kept, because they help, but marked so a learner never reads them as words of the law; the codes are dropped.
+NOTE_BODIES = (r'Prezident|Nazirlər Kabineti|Nazrilər Kabineti|DİM|Dil komissiyası|Qurum|Nazirliyi|Apellyasiya Şurası'
+               r'|Mərkəzi Seçki Komissiyası|İşlər İdarəsi')
+NOTE_AFTER = re.compile(r'(?P<pre>(?:orqanı|orqanının|orqanları|orqanlarının|orqan|qurum|\(qurum\)|\(qurumun\)|komissiya|tərəfindən) )'
+                        r'\((?!qurum\)|qurumun\))(?P<note>[^()]{2,120}?)\)')
+MEMORY_CODES = [(re.compile(r'\((Dil komissiyası ilə razılaşdırılmaqla Na(?:zir|zri)lər Kabineti tərəfindən)\)'), r'[izah: \1]'),
+                (re.compile(r'\s*\((?:MATE|HOT|@)\)'), ''), (re.compile(r'\s*KOLLİZİYA\b'), ''),
+                (re.compile(r'\s*Viza – SAİT Qrif \(Razılaşdırma, Təsdiqetmə\) – Vəsait İmza – VSAİ Surət qeydi – Vəsait\+M'), '')]
+
+
+def mark_annotations(text: str) -> str:
+    def note(m: re.Match) -> str:
+        n = m.group('note')
+        return m.group('pre') + (f'[izah: {n}]' if re.search(NOTE_BODIES, n) and not re.search(r'\d', n) else f'({n})')
+    for _ in range(3):  # notes can follow each other: 'orqan (qurum) (Nazirlər Kabineti)'
+        text = NOTE_AFTER.sub(note, text)
+    for rx, rep in MEMORY_CODES:
+        text = rx.sub(rep, text)
+    return text
+
+
 WORD_TOKEN = re.compile(r'[A-Za-zƏəÖöÜüĞğÇçŞşİı]+|[^A-Za-zƏəÖöÜüĞğÇçŞşİı]+')
 FRAGMENT_END = re.compile(r'[öüÖÜğ]$')
 
@@ -606,6 +629,8 @@ def polish(bundle: dict, fixes_dir: str) -> list:
     for c in bundle['cards']:
         c['body'] = fix_known_splits(c['body'])
         c['title'] = fix_known_splits(c['title'])
+        if c['kind'] == 'law':
+            c['body'] = mark_annotations(c['body'])
     # Recall cards whose question could not be put back together (the answer has no final period, so the wrapped
     # question's first line cannot be told apart from it) are left out rather than shown with half a question.
     bundle['cards'] = [c for c in bundle['cards'] if c['kind'] != 'qa' or (

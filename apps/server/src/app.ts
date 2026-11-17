@@ -10,7 +10,7 @@ import { z } from 'zod';
 import type { Category, ContentBundle, EngineCtx, Period, Scope, UserRecord } from '@qanunhub/core';
 import {
   AVAILABLE_CATEGORIES, AppError, SAMPLE_EMAIL_SUFFIX, CATEGORIES, COMING_SOON_CATEGORIES, EXAM_FORMATS, SUBGROUPS, answer, complete, getHome, getLeaderboard, getMe, getPath, getWeakTopics,
-  grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
+  grantPremium, isAppError, reportItem, startFinal, startLesson, startMock, startDrill, startReview, startSection, startWeak, updateProfile,
   adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
   startCompetition,
 } from '@qanunhub/core';
@@ -166,7 +166,7 @@ export function createApp(deps: AppDeps) {
   app.get('/api/path', async (c) => c.json(await run(c, (ctx, id) => getPath(ctx, id))));
 
   app.post('/api/sessions', async (c) => {
-    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'section', 'final', 'mock', 'competition']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional(), sectionId: z.string().max(80).optional(), competitionId: z.string().max(80).optional() }));
+    const b = await body(c, z.object({ kind: z.enum(['lesson', 'review', 'weak', 'drill', 'section', 'final', 'mock', 'competition']), lessonId: z.string().max(80).optional(), topicId: z.string().max(80).optional(), sectionId: z.string().max(80).optional(), competitionId: z.string().max(80).optional() }));
     const u = requireUser(c);
     rateLimit(`session:${u.id}`, 60, 60 * 60_000, now());
     return c.json(await run(c, (ctx, id) => {
@@ -174,6 +174,7 @@ export function createApp(deps: AppDeps) {
         case 'lesson': return startLesson(ctx, id, b.lessonId ?? '');
         case 'review': return startReview(ctx, id);
         case 'weak': return startWeak(ctx, id, b.topicId ?? '');
+        case 'drill': return startDrill(ctx, id, b.topicId);
         case 'section': return startSection(ctx, id, b.sectionId ?? '');
         case 'competition': return startCompetition(ctx, id, b.competitionId ?? '');
         case 'final': return startFinal(ctx, id, b.topicId ?? '');

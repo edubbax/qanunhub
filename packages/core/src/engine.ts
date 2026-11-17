@@ -5,7 +5,7 @@ import type {
   PathTopicDto, ProfilePatch, QuestionDto, RankDto, ReviewEntryDto, SessionDto, WeakTopicDto,
 } from './api';
 import { SESSION_TITLES } from './api';
-import type { ContentIndex } from './content';
+import { poolOf, type ContentIndex } from './content';
 import { AppError } from './errors';
 import { EXAM_FORMATS, MOCK_MINUTES, findSubgroup, targetPercent } from './exam';
 import {
@@ -41,6 +41,9 @@ export const LESSON_QUESTIONS = 10;
 /** A rerun that introduces at least this many new units earns full XP (big lessons take several runs). */
 export const NEW_UNITS_FOR_FULL_XP = 3;
 export const LESSON_REVIEW_TAIL = 3;
+/** Number drills mixed into a lesson check, and questions in a numbers drill session. */
+export const LESSON_DRILLS = 2;
+export const DRILL_QUESTIONS = 10;
 export const REVIEW_QUESTIONS = 10;
 export const FINAL_QUESTIONS = 20;
 export const SECTION_QUESTIONS = 10;
@@ -189,10 +192,11 @@ export async function getHome(ctx: EngineCtx, userId: string): Promise<HomeDto> 
   const me = meDto(ctx, u, p);
   const cat = u.category;
   if (!cat) {
-    return { me, dueCount: 0, nextLesson: null, readiness: 0, targetPercent: 80, examDaysLeft: null, topicsTotal: 0, topicsPassed: 0, learnedUnits: 0, totalUnits: 0 };
+    return { me, dueCount: 0, nextLesson: null, readiness: 0, targetPercent: 80, examDaysLeft: null, topicsTotal: 0, topicsPassed: 0, learnedUnits: 0, totalUnits: 0, drillCount: 0 };
   }
-  const units = ctx.content.unitsForCategory(cat);
-  const unitIds = new Set(units.map((x) => x.id));
+  const all = ctx.content.unitsForCategory(cat);
+  const unitIds = new Set(all.map((x) => x.id));
+  const units = all.filter((x) => poolOf(x) !== 'drill');
   const dueCount = [...p.srs.values()].filter((s) => unitIds.has(s.unitId) && s.dueAt <= ctx.now).length;
   let nextLesson: HomeDto['nextLesson'] = null;
   for (const t of ctx.content.topicsFor(cat)) {
@@ -210,6 +214,7 @@ export async function getHome(ctx: EngineCtx, userId: string): Promise<HomeDto> 
     topicsPassed: topics.filter((t) => p.finals.get(t.id)?.passedAt).length,
     learnedUnits: units.filter((x) => isLearned(p.srs.get(x.id), ctx.now)).length,
     totalUnits: units.length,
+    drillCount: drillUnits(ctx, u, cat).length,
   };
 }
 
@@ -347,6 +352,7 @@ function questionDto(ctx: EngineCtx, q: SessionQuestion): QuestionDto {
     statements: item.type === 'single' ? item.statements : undefined,
     options: q.perm.map((i) => item.options[i]),
     points: item.points, requeue: q.requeue, topicTitle: topic?.shortTitle ?? '',
+    ...(item.format && item.format !== 'mcq' ? { format: item.format } : {}),
   };
 }
 
@@ -400,17 +406,25 @@ export async function startLesson(ctx: EngineCtx, userId: string, lessonId: stri
     ...shuffle(units.filter((x) => !p.srs.has(x.id)), ctx.random),
     ...units.filter((x) => p.srs.has(x.id)).sort((a, b) => retrievability(p.srs.get(a.id), ctx.now) - retrievability(p.srs.get(b.id), ctx.now)),
   ].slice(0, LESSON_QUESTIONS);
-  const tail = dueUnits(ctx, cat, p.srs, new Set(units.map((x) => x.id))).slice(0, LESSON_REVIEW_TAIL);
+  // A couple of number drills from this lesson's law text, the ones the learner has not seen first.
+  const drills = ctx.content.unitsForLesson(lessonId, 'drill').filter((x) => x.categories.includes(cat));
+  const drillPick = [...shuffle(drills.filter((x) => !p.srs.has(x.id)), ctx.random), ...shuffle(drills.filter((x) => p.srs.has(x.id)), ctx.random)]
+    .slice(0, LESSON_DRILLS);
+  const inLesson = new Set([...units, ...drills].map((x) => x.id));
+  const tail = dueUnits(ctx, cat, p.srs, inLesson).slice(0, LESSON_REVIEW_TAIL);
 
   const s = newSession(ctx, u, 'lesson', { lessonId, topicId: lesson.topicId });
-  for (const unit of [...shuffle(ordered, ctx.random), ...tail]) {
+  for (const unit of [...shuffle([...ordered, ...drillPick], ctx.random), ...tail]) {
     const item = pickItem(ctx, unit.id, p.srs.get(unit.id)?.lastItemId ?? null);
     if (item) s.questions.push({ ...makeQuestion(ctx, s.questions.length, item, false), isNew: !p.srs.has(unit.id) });
   }
   if (s.questions.length === 0) throw new AppError('NOT_FOUND', 'Bu dərsdə hələ sual yoxdur.');
   await ctx.store.saveSession(s);
   const topic = ctx.content.topicById.get(lesson.topicId)!;
-  const cards: CardDto[] = ctx.content.cards(lessonId).map((c) => ({ id: c.id, kind: c.kind, title: c.title, body: c.body, ref: c.ref }));
+  const cards: CardDto[] = ctx.content.cards(lessonId).map((c) => ({
+    id: c.id, kind: c.kind, title: c.title, body: c.body, ref: c.ref,
+    ...(c.facts?.length ? { facts: c.facts } : {}), ...(c.heat != null ? { heat: c.heat, examCount: c.examCount ?? 0 } : {}),
+  }));
   return sessionDto(ctx, s, u, lesson.title, topic.shortTitle, cards);
 }
 
@@ -459,6 +473,33 @@ export async function startWeak(ctx: EngineCtx, userId: string, topicId: string)
   }
   await ctx.store.saveSession(s);
   return sessionDto(ctx, s, u, `Gücləndirmə: ${topic.shortTitle}`, `${s.questions.length} sual`, []);
+}
+
+/** Number drills the learner may take: from the topics open to them, in their category. */
+function drillUnits(ctx: EngineCtx, u: UserRecord, cat: Category): Unit[] {
+  return ctx.content.topicsFor(cat).filter((t) => topicAccessible(ctx, t.id, u)).flatMap((t) => ctx.content.unitsForTopic(t.id, cat, 'drill'));
+}
+
+/** Numbers drill: deadlines, vote counts and terms from the law text. Due drills first, then new ones, then the weakest. */
+export async function startDrill(ctx: EngineCtx, userId: string, topicId?: string): Promise<SessionDto> {
+  const u = await loadUser(ctx, userId);
+  const cat = requireCategory(u);
+  const p = await loadProgress(ctx, userId);
+  let units = drillUnits(ctx, u, cat);
+  if (topicId) units = units.filter((x) => x.topicId === topicId);
+  if (units.length === 0) throw new AppError('NOTHING_TO_REVIEW', 'Açıq mövzularda rəqəm məşqi hələ yoxdur.');
+  const due = units.filter((x) => (p.srs.get(x.id)?.dueAt ?? Infinity) <= ctx.now);
+  const fresh = shuffle(units.filter((x) => !p.srs.has(x.id)), ctx.random);
+  const weak = units.filter((x) => p.srs.has(x.id) && !due.includes(x))
+    .sort((a, b) => retrievability(p.srs.get(a.id), ctx.now) - retrievability(p.srs.get(b.id), ctx.now));
+  const picked = [...due, ...fresh, ...weak].slice(0, DRILL_QUESTIONS);
+  const s = newSession(ctx, u, 'drill', { topicId: topicId ?? null });
+  for (const unit of shuffle(picked, ctx.random)) {
+    const item = pickItem(ctx, unit.id, p.srs.get(unit.id)?.lastItemId ?? null);
+    if (item) s.questions.push({ ...makeQuestion(ctx, s.questions.length, item, false), isNew: !p.srs.has(unit.id) });
+  }
+  await ctx.store.saveSession(s);
+  return sessionDto(ctx, s, u, 'Rəqəmlər və müddətlər', `${s.questions.length} sual · qanunun öz mətnindən`, []);
 }
 
 export async function startFinal(ctx: EngineCtx, userId: string, topicId: string): Promise<SessionDto> {
@@ -716,7 +757,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
         bestCorrect: Math.max(prev?.bestCorrect ?? 0, firstCorrect), lastCompletedAt: ctx.now, recent: [...recent, ctx.now].slice(-5),
       });
     }
-  } else if (s.kind === 'review' || s.kind === 'weak') {
+  } else if (s.kind === 'review' || s.kind === 'weak' || s.kind === 'drill') {
     xp = reviewXp(firstCorrect);
     if (!premium && first.length >= 10 && firstCorrect >= HEARTS_EARN_MIN_CORRECT && canEarnHeart(u.hearts)) {
       u.hearts = earnHeart(u.hearts);
@@ -801,7 +842,7 @@ export async function complete(ctx: EngineCtx, userId: string, sessionId: string
       change: rankAfter.isGizir || u.game.level === levelBefore ? null : u.game.level > levelBefore ? 'up' : 'down',
     },
     awards: bumped.gained,
-    review: s.kind === 'lesson' ? [] : reviewEntries(ctx, s),
+    review: s.kind === 'lesson' ? reviewEntries(ctx, s).filter((x) => !x.correct) : reviewEntries(ctx, s),
     leaderboardCounted: lbXp > 0,
     leaderboard: lbStatus,
   };

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   AppError, ContentIndex, DAY, HOUR, MemoryStore, answer, complete, getHome, getLeaderboard, getPath, getWeakTopics,
   createCompetition, finishCompetitionNow, getCertificate, getMe, getStandings, grantPremium, listCompetitions, newUser,
-  premiumSettings, seededRandom, startCompetition, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
+  premiumSettings, seededRandom, startCompetition, startDrill, startFinal, startLesson, startMock, startReview, startSection, updateProfile,
   type EngineCtx, type SessionDto,
 } from '../src';
 import { fixtureBundle, sectionedBundle } from './fixtures';
@@ -314,5 +314,70 @@ describe('ranks, awards and competitions', () => {
     expect(after[0].my?.certificateCode).toBe(done.winners[0].certificateCode);
     const me = await getMe(ctx(), 'u1');
     expect(me.awards.find((a) => a.id === 'champion')?.tier).toBe(1);
+  });
+});
+
+/** The fixture with Lesson 2.0 content: law card facts and heat, and number drills built from lesson k1's law text. */
+function drillBundle() {
+  const b = sectionedBundle();
+  b.cards = b.cards.map((c) => (c.id === 'c1' ? { ...c, facts: ['Qanunlar 14 gün müddətində imzalanır.'], heat: 2 as const, examCount: 4 } : c));
+  for (let i = 0; i < 3; i++) {
+    b.units.push({ id: `k1z${i}`, topicId: 'konst', lessonId: 'k1', categories: ['AB', 'AC', 'BA', 'BB'], importance: 2, pool: 'drill' });
+    b.items.push({
+      id: `k1z${i}-v0`, unitId: `k1z${i}`, topicId: 'konst', lessonId: 'k1', categories: ['AB', 'AC', 'BA', 'BB'], type: 'single',
+      format: 'cloze', stem: 'Boşluğu qanunun mətninə uyğun doldur: «Qanunlar _____ müddətində imzalanır.»',
+      options: ['14 gün', '7 gün', '10 gün', '15 gün'], answer: [0], points: 1, explanation: 'Qanunun mətni: «Qanunlar 14 gün müddətində imzalanır.»',
+      status: 'published', flags: ['generated'], pool: 'drill',
+    });
+  }
+  return b;
+}
+
+describe('lesson system 2.0', () => {
+  beforeEach(() => {
+    content = new ContentIndex(drillBundle());
+  });
+
+  it('mixes two number drills into the lesson check and sends card facts and exam heat', async () => {
+    const s = await startLesson(ctx(), 'u1', 'k1');
+    const stored = (await store.getSession(s.id))!;
+    const drills = stored.questions.filter((q) => q.unitId.startsWith('k1z'));
+    expect(drills).toHaveLength(2);
+    expect(s.questions.filter((q) => q.format === 'cloze')).toHaveLength(2);
+    expect(s.cards[0]).toMatchObject({ facts: ['Qanunlar 14 gün müddətində imzalanır.'], heat: 2, examCount: 4 });
+  });
+
+  it('returns the mistakes of a lesson with the law quote for the recap', async () => {
+    const s = await startLesson(ctx(), 'u1', 'k1');
+    await answerAll(s, [s.questions[0].qid]);
+    const r = await complete(ctx(), 'u1', s.id);
+    expect(r.completed).toBe(true);
+    expect(r.review.length).toBe(1);
+    expect(r.review.every((x) => !x.correct)).toBe(true);
+  });
+
+  it('runs a numbers drill over the open topics, without spending stars', async () => {
+    const s = await startDrill(ctx(), 'u1');
+    expect(s.kind).toBe('drill');
+    expect(s.hearts).toBeNull();
+    expect(s.questions).toHaveLength(3);
+    expect(s.questions.every((q) => q.format === 'cloze')).toBe(true);
+    await answerAll(s, [s.questions[0].qid]);
+    const r = await complete(ctx(), 'u1', s.id);
+    expect(r.kind).toBe('drill');
+    expect(r.review).toHaveLength(3);
+    const home = await getHome(ctx(), 'u1');
+    expect(home.drillCount).toBe(3);
+  });
+
+  it('keeps number drills out of section tests and the readiness score', async () => {
+    const lesson = await startLesson(ctx(), 'u1', 'k1');
+    await answerAll(lesson);
+    await complete(ctx(), 'u1', lesson.id);
+    const sec = await startSection(ctx(), 'u1', 'konst-s01');
+    const stored = (await store.getSession(sec.id))!;
+    expect(stored.questions.some((q) => q.unitId.startsWith('k1z'))).toBe(false);
+    const home = await getHome(ctx(), 'u1');
+    expect(home.totalUnits).toBe(content.unitsForCategory('BB').filter((u) => u.pool !== 'drill').length);
   });
 });

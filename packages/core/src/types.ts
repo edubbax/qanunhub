@@ -10,8 +10,11 @@ export const COMING_SOON_CATEGORIES: Category[] = CATEGORIES.filter((c) => !AVAI
 
 export type ItemType = 'single' | 'multi';
 export type ItemStatus = 'draft' | 'review' | 'published' | 'flagged';
-/** exam = questions from the official sources (section tests, finals, mock exams); formative = editors' lesson checks. */
-export type ItemPool = 'exam' | 'formative';
+/** exam = questions from the official sources (section tests, finals, mock exams); formative = editors' lesson checks;
+ *  drill = number drills built from the law text itself (lesson checks and the numbers drill only). */
+export type ItemPool = 'exam' | 'formative' | 'drill';
+/** How a question is shown: a normal test question, or a sentence of the law with one number left blank. */
+export type ItemFormat = 'mcq' | 'cloze';
 
 export interface Topic {
   id: string;
@@ -54,6 +57,9 @@ export interface Card {
   title?: string;
   body: string;               // plain text with line breaks
   ref?: string;
+  facts?: string[];           // sentences with numbers, deadlines and votes worth learning word for word
+  heat?: 0 | 1 | 2 | 3;       // how often the exam asks about this text (0 = never seen, 3 = very often)
+  examCount?: number;         // exam questions matched to this card
 }
 
 export interface Unit {
@@ -88,6 +94,7 @@ export interface Item {
   status: ItemStatus;
   flags: string[];            // QA flags from the content pipeline
   pool?: ItemPool;            // missing = exam
+  format?: ItemFormat;        // missing = mcq
 }
 
 export interface ContentBundle {
@@ -198,7 +205,7 @@ export interface ReviewLog {
   at: number;
 }
 
-export type SessionKind = 'lesson' | 'review' | 'weak' | 'section' | 'final' | 'mock' | 'competition';
+export type SessionKind = 'lesson' | 'review' | 'weak' | 'drill' | 'section' | 'final' | 'mock' | 'competition';
 
 export interface SessionQuestion {
   qid: number;

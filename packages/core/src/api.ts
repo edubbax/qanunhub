@@ -1,6 +1,6 @@
 // Data transfer objects shared by the server, the HTTP client and the in-browser demo.
 import type { RankTier } from './military';
-import type { CardKind, Category, ItemType, LeaderboardRow, Period, Role, Scope, SessionKind } from './types';
+import type { CardKind, Category, ItemFormat, ItemType, LeaderboardRow, Period, Role, Scope, SessionKind } from './types';
 
 export interface HeartsDto {
   current: number;
@@ -72,6 +72,7 @@ export interface HomeDto {
   topicsPassed: number;
   learnedUnits: number;
   totalUnits: number;
+  drillCount: number;         // number drills open to the learner
 }
 
 export type LessonState = 'locked' | 'available' | 'done';
@@ -131,6 +132,9 @@ export interface CardDto {
   title?: string;
   body: string;
   ref?: string;
+  facts?: string[];
+  heat?: 0 | 1 | 2 | 3;
+  examCount?: number;
 }
 
 export interface QuestionDto {
@@ -142,6 +146,7 @@ export interface QuestionDto {
   points: number;
   requeue: boolean;
   topicTitle: string;
+  format?: ItemFormat;
 }
 
 export interface SessionDto {
@@ -242,6 +247,7 @@ export const SESSION_TITLES: Record<SessionKind, string> = {
   lesson: 'Dərs',
   review: 'Təkrar',
   weak: 'Gücləndirmə',
+  drill: 'Rəqəm məşqi',
   section: 'Bölmə testi',
   competition: 'Yarış',
   final: 'Mövzu final testi',

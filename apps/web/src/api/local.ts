@@ -7,7 +7,7 @@ import { ApiError } from './types';
 import {
   AVAILABLE_CATEGORIES, AppError, CATEGORIES, COMING_SOON_CATEGORIES, ContentIndex, EXAM_FORMATS, MemoryStore, SAMPLE_EMAIL_SUFFIX, SUBGROUPS, answer, complete, emptyMemoryData,
   getHome, getLeaderboard, getMe, getPath, getWeakTopics, grantPremium, isAppError, newUser, periodStartKey, dayStart, randomId,
-  reportItem, startFinal, startLesson, startMock, startReview, startSection, startWeak, updateProfile,
+  reportItem, startFinal, startLesson, startMock, startDrill, startReview, startSection, startWeak, updateProfile,
   adminCompetitions, createCompetition, finishCompetitionNow, getCertificate, getStandings, listCompetitions, recordConfirmedReport,
   startCompetition, type Competition,
   type Card, type Category, type ContentBundle, type EngineCtx, type Item, type MemoryData, type SessionKind,
@@ -382,6 +382,7 @@ export async function localApi(loadBundle: () => Promise<ContentBundle>): Promis
         case 'lesson': return startLesson(c, id, ref.lessonId ?? '');
         case 'review': return startReview(c, id);
         case 'weak': return startWeak(c, id, ref.topicId ?? '');
+        case 'drill': return startDrill(c, id, ref.topicId);
         case 'section': return startSection(c, id, ref.sectionId ?? '');
         case 'competition': return startCompetition(c, id, ref.competitionId ?? '');
         case 'final': return startFinal(c, id, ref.topicId ?? '');

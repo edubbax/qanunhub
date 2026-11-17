@@ -1,6 +1,8 @@
-// Lesson / review / section test / final / mock player: cards → questions with feedback (or exam mode) → result.
+// Lesson / review / drill / section test / final / mock player.
+// A lesson runs intro → learn (law cards with the numbers, deadlines and organs marked, key facts, exam heat) →
+// mixed check (test questions and number drills) → recap (key facts and mistakes with the law's words).
 import type { AnswerDto, CardDto, CompleteDto, HeartsDto, QuestionDto, ReviewEntryDto, SessionDto } from '@qanunhub/core';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Route } from '../app';
 import { useApp } from '../app';
 import { ApiError } from '../api/types';
@@ -17,7 +19,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
   const back: Route = route.back ?? { name: 'home' };
   const [session, setSession] = useState<SessionDto | null>(null);
   const [error, setError] = useState<ApiError | null>(null);
-  const [phase, setPhase] = useState<'cards' | 'quiz' | 'result'>('cards');
+  const [phase, setPhase] = useState<'intro' | 'cards' | 'quiz' | 'result'>('cards');
   const [cardIdx, setCardIdx] = useState(0);
   const [queue, setQueue] = useState<QuestionDto[]>([]);
   const [pos, setPos] = useState(0);
@@ -36,7 +38,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
         setSession(s);
         setQueue(s.questions);
         setHearts(s.hearts);
-        setPhase(s.cards.length ? 'cards' : 'quiz');
+        setPhase(s.kind === 'lesson' && s.cards.length ? 'intro' : s.cards.length ? 'cards' : 'quiz');
         if (s.timeLimitSec) deadline.current = Date.now() + s.timeLimitSec * 1000;
       },
       (e) => alive && setError(e instanceof ApiError ? e : new ApiError('ERR', String(e), 0)),
@@ -64,7 +66,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
 
   const answeredCount = pos;
   const total = queue.length;
-  const progress = phase === 'cards' ? 0 : phase === 'result' ? 100 : (answeredCount / Math.max(1, total)) * 100;
+  const progress = phase === 'intro' || phase === 'cards' ? 0 : phase === 'result' ? 100 : (answeredCount / Math.max(1, total)) * 100;
 
   return (
     <>
@@ -76,6 +78,8 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
           {hearts && <span className="stat hearts"><LifeStars current={hearts.current} max={hearts.max} size={24} /></span>}
         </div>
       )}
+
+      {phase === 'intro' && <LessonIntro session={session} onStart={() => setPhase('cards')} onSkip={() => setPhase('quiz')} />}
 
       {phase === 'cards' && (
         <Cards
@@ -109,7 +113,7 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
       )}
       {phase === 'quiz' && !queue[pos] && <div className="session-body"><Spinner /></div>}
 
-      {phase === 'result' && result && <Result r={result} back={back} />}
+      {phase === 'result' && result && <Result r={result} back={back} cards={session.kind === 'lesson' ? session.cards : []} />}
 
       {heartsOut && phase === 'quiz' && (
         <Modal>
@@ -198,12 +202,19 @@ function Cards({ title, subtitle, cards, idx, setIdx, onDone }: { title: string;
           ) : (
             <>
               {c.title && <div className="head">{c.title}</div>}
-              <div className="body">{c.body}</div>
+              {c.heat != null && c.heat >= 2 && <HeatBadge heat={c.heat} count={c.examCount ?? 0} />}
+              <div className="body"><Marked text={c.body} /></div>
             </>
           )}
         </article>
+        {c.facts && c.facts.length > 0 && (
+          <aside className="facts">
+            <b>Yadda saxla</b>
+            <ul>{c.facts.map((f, i) => <li key={i}><Marked text={f} /></li>)}</ul>
+          </aside>
+        )}
         {c.kind === 'qa' && <p className="tiny muted">Əvvəlcə cavabı özün xatırlamağa çalış, sonra yoxla.</p>}
-        {c.kind === 'law' && <p className="tiny muted">Mənbə: qanunun mətni. Rəsmi redaksiya e-qanun.az-dadır.</p>}
+        {c.kind === 'law' && <p className="tiny muted">Mənbə: qanunun mətni. <span className="hl-num">Rəqəmlər</span>, <span className="hl-org">orqanlar</span> və <span className="hl-mod">qadağalar</span> rənglə seçilib; [izah: …] qanunun sözü deyil, müəllif qeydidir. Rəsmi redaksiya e-qanun.az-dadır.</p>}
       </main>
       <div className="sheet">
         <div className="sheet-inner">
@@ -278,7 +289,12 @@ function QuestionView({ session, q, index, total, onAnswered, onNext, isLast }: 
           <span className="tiny muted">{q.requeue ? 'Təkrar · ' : ''}{q.topicTitle} · {index + 1}/{total}</span>
           {q.points > 1 && <span className="chip xp">{q.points} bal</span>}
         </div>
-        <p className="stem">{q.stem}</p>
+        {q.format === 'cloze' ? (
+          <>
+            <span className="chip num">Rəqəm məşqi · qanunun mətni</span>
+            <p className="stem cloze"><ClozeStem text={q.stem} /></p>
+          </>
+        ) : <p className="stem">{q.stem}</p>}
         {q.statements && q.statements.length > 0 && (
           <ol className="statements">{q.statements.map((s, i) => <li key={i}><b>{i + 1}.</b><span>{s}</span></li>)}</ol>
         )}
@@ -377,11 +393,11 @@ const LB_NOTES: Partial<Record<CompleteDto['leaderboard'], string>> = {
   banned: 'Hesabın reytinqdə iştirakdan kənarlaşdırılıb.',
 };
 
-function Result({ r, back }: { r: CompleteDto; back: Route }) {
+function Result({ r, back, cards }: { r: CompleteDto; back: Route; cards: CardDto[] }) {
   const { nav } = useApp();
   const exam = r.kind === 'final' || r.kind === 'mock' || r.kind === 'section' || r.kind === 'competition';
   const mistakes = r.review.filter((x) => !x.correct);
-  const title = !r.completed ? 'Dərs dayandı' : r.kind === 'competition' ? 'Yarış cəhdin qeydə alındı' : exam ? (r.passed ? 'Keçdin!' : 'Keçid balı toplanmadı') : r.kind === 'lesson' ? 'Dərs bitdi!' : 'Təkrar bitdi!';
+  const title = !r.completed ? 'Dərs dayandı' : r.kind === 'competition' ? 'Yarış cəhdin qeydə alındı' : exam ? (r.passed ? 'Keçdin!' : 'Keçid balı toplanmadı') : r.kind === 'lesson' ? 'Dərs bitdi!' : r.kind === 'drill' ? 'Məşq bitdi!' : 'Təkrar bitdi!';
   return (
     <main className="page no-tabs stack loose">
       <section className="result-hero">
@@ -426,6 +442,15 @@ function Result({ r, back }: { r: CompleteDto; back: Route }) {
       {LB_NOTES[r.leaderboard] && <div className="banner warn"><IconAlert />{LB_NOTES[r.leaderboard]}</div>}
       {r.kind === 'mock' && <p className="small muted">Sınaq yalnız qanunvericilik bölməsini (40 tapşırıq) ölçür. Real imtahanda keçid balı dörd fənnin cəmi üzrə hesablanır.</p>}
 
+      {r.kind === 'lesson' && r.completed && cards.some((c) => c.facts?.length) && (
+        <section className="stack">
+          <h2>Dərsin əsas faktları</h2>
+          <aside className="facts">
+            <ul>{cards.flatMap((c) => (c.facts ?? []).map((f, i) => <li key={`${c.id}-${i}`}><Marked text={f} />{c.ref ? <span className="tiny muted"> · {c.ref}</span> : null}</li>))}</ul>
+          </aside>
+        </section>
+      )}
+
       {r.review.length > 0 && (exam || mistakes.length > 0) && (
         <section className="stack">
           <h2>{exam ? 'Cavabların təhlili' : 'Səhv etdiyin suallar'}</h2>
@@ -468,4 +493,79 @@ function ReviewItem({ x }: { x: ReviewEntryDto }) {
       {x.explanation && <p className="tiny muted">{x.explanation}{x.ref ? ` · ${x.ref}` : ''}</p>}
     </article>
   );
+}
+
+// ---------------------------------------------------------------- lesson 2.0 helpers
+
+function LessonIntro({ session, onStart, onSkip }: { session: SessionDto; onStart: () => void; onSkip: () => void }) {
+  const law = session.cards.filter((c) => c.kind === 'law');
+  const facts = session.cards.reduce((a, c) => a + (c.facts?.length ?? 0), 0);
+  const hot = law.filter((c) => (c.heat ?? 0) >= 2).length;
+  const drills = session.questions.filter((q) => q.format === 'cloze').length;
+  const minutes = Math.max(3, Math.round(session.cards.length * 0.8 + session.questions.length * 0.5));
+  return (
+    <>
+      <main className="session-body stack loose">
+        <div className="stack tight">
+          <span className="tiny muted">{session.subtitle}</span>
+          <h1>{session.title}</h1>
+          <p className="muted">Təxminən {minutes} dəqiqə</p>
+        </div>
+        <ol className="lesson-steps">
+          <li><b>Öyrən</b><span>{law.length} maddə{facts ? ` · ${facts} əsas fakt` : ''}{hot ? ` · ${hot} maddə imtahanda tez-tez soruşulur` : ''}</span></li>
+          <li><b>Yoxla</b><span>{session.questions.length} sual{drills ? `, onlardan ${drills}-i qanunun mətnindən rəqəm məşqi` : ''}</span></li>
+          <li><b>Yekun</b><span>Əsas faktlar və səhv etdiyin suallar qanunun sözləri ilə</span></li>
+        </ol>
+        <p className="small muted">Qanunun mətnində rəqəmlər, müddətlər, orqanlar və qadağalar rənglə seçilir — imtahanda ən çox onlar soruşulur.</p>
+      </main>
+      <div className="sheet">
+        <div className="sheet-inner">
+          <button className="btn primary block" onClick={onStart}>Başla</button>
+          <button className="btn ghost small" onClick={onSkip}>Mətni bilirəm, suallara keç</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function HeatBadge({ heat, count }: { heat: number; count: number }) {
+  return (
+    <span className={`heat h${heat}`} title={`Bu mətnə aid ${count} imtahan sualı var`}>
+      <span style={{ width: 16, display: 'inline-flex' }}><IconFlame /></span>
+      {heat >= 3 ? 'İmtahanın sevimlisi' : 'İmtahanda tez-tez soruşulur'} · {count} sual
+    </span>
+  );
+}
+
+const NUM_WORDS = 'on beş|bir|iki|üç|dörd|beş|altı|yeddi|səkkiz|doqquz|on|iyirmi|otuz|qırx|əlli|altmış|doxsan|yüz';
+const UNIT = '(?:iş günü|təqvim günü|gün|həftə|ay|il|saat|faiz|səs çoxluğu|deputat|nəfər|hakim|manat)\\p{L}*';
+const NB = '(?<![\\p{L}\\d])'; // no letter or digit right before
+const NA = '(?![\\p{L}])';     // no letter right after
+const MARK = new RegExp(
+  '(\\[izah: [^\\]]+\\])'
+  + `|(${NB}(?:\\d{1,3}(?:[.,]\\d+)?|${NUM_WORDS})(?:-\\p{L}+)?\\s+${UNIT}|${NB}(?:ən geci|dərhal|gec olmayaraq)${NA})`
+  + `|(${NB}(?:Milli Məclis|Prezident|Konstitusiya Məhkəməsi|Ali Məhkəmə|Nazirlər Kabineti|Baş prokuror|Mərkəzi Bank|Müvəkkil|Prokurorluq|apellyasiya məhkəmələri)\\p{L}*)`
+  + `|(${NB}(?:qadağandır|yol verilmir|bilməz|bilməzlər|yalnız|məcburidir)${NA})`,
+  'gu',
+);
+
+/** Law text with numbers and deadlines, organs, prohibitions and author's notes marked. */
+function Marked({ text }: { text: string }) {
+  const out: ReactNode[] = [];
+  let last = 0;
+  let k = 0;
+  for (const m of text.matchAll(MARK)) {
+    if (m.index! > last) out.push(text.slice(last, m.index));
+    const cls = m[1] ? 'hl-note' : m[2] ? 'hl-num' : m[3] ? 'hl-org' : 'hl-mod';
+    out.push(<span key={k++} className={cls}>{m[0]}</span>);
+    last = m.index! + m[0].length;
+  }
+  out.push(text.slice(last));
+  return <>{out}</>;
+}
+
+function ClozeStem({ text }: { text: string }) {
+  const [pre, post] = text.split('_____');
+  if (post === undefined) return <>{text}</>;
+  return <>{pre}<span className="blank" aria-label="boşluq">______</span>{post}</>;
 }
