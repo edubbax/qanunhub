@@ -68,7 +68,7 @@ const RANKS: [string, string][] = [
 const END = '<' + '/script>';
 const BANNER_DOC =
   '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}body{display:flex;justify-content:center;overflow:hidden}</style></head><body>' +
-  '<!--MilliNet --> <script type="text/javascript" src="https://millinet.az/site.php?id=842">' + END +
+  '<!--MilliNet --> <script type="text/javascript" src="https://millinet.az/">' + END +
   '<script>(function(){var send=function(){parent.postMessage({qhBannerHeight:Math.ceil(document.body.getBoundingClientRect().height)},"*")};' +
   'if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);addEventListener("load",send);setInterval(send,1500);})();' + END +
   '</body></html>';
