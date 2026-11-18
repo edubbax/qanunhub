@@ -11,6 +11,7 @@ export function rowToItem(r: Row): Item {
     stem: r.stem, ...(r.statements ? { statements: r.statements } : {}), options: r.options, answer: r.answer,
     points: r.points, ...(r.explanation ? { explanation: r.explanation } : {}), ...(r.ref ? { ref: r.ref } : {}),
     ...(r.source ? { source: r.source } : {}), status: r.status, flags: r.flags, pool: r.pool,
+    ...(r.format ? { format: r.format } : {}),
   };
 }
 
@@ -36,7 +37,8 @@ export async function loadBundle(sql: Db): Promise<ContentBundle> {
       id: r.id, topicId: r.topic_id, ...(r.section_id ? { sectionId: r.section_id } : {}), order: r.sort, title: r.title, refs: r.refs,
       categories: r.categories, estMinutes: r.est_minutes,
     })),
-    cards: cards.map((r) => ({ id: r.id, lessonId: r.lesson_id, order: r.sort, kind: r.kind, ...(r.title ? { title: r.title } : {}), body: r.body, ...(r.ref ? { ref: r.ref } : {}) })),
+    cards: cards.map((r) => ({ id: r.id, lessonId: r.lesson_id, order: r.sort, kind: r.kind, ...(r.title ? { title: r.title } : {}), body: r.body, ...(r.ref ? { ref: r.ref } : {}),
+      ...(r.facts ? { facts: r.facts } : {}), ...(r.heat != null ? { heat: r.heat } : {}), ...(r.exam_count != null ? { examCount: r.exam_count } : {}) })),
     units: units.map((r) => ({ id: r.id, topicId: r.topic_id, lessonId: r.lesson_id, categories: r.categories, importance: r.importance, pool: r.pool })),
     items: items.map(rowToItem),
   };
@@ -75,7 +77,8 @@ export async function importBundle(sql: Sql, b: ContentBundle, opts: { overwrite
       await tx`insert into lessons ${tx(c.map((l) => ({ id: l.id, topic_id: l.topicId, section_id: l.sectionId ?? null, sort: l.order, title: l.title, refs: l.refs, categories: l.categories, est_minutes: l.estMinutes })))}`;
     }
     for (const c of chunk(b.cards)) {
-      await tx`insert into cards ${tx(c.map((x) => ({ id: x.id, lesson_id: x.lessonId, sort: x.order, kind: x.kind, title: x.title ?? null, body: x.body, ref: x.ref ?? null })))}`;
+      await tx`insert into cards ${tx(c.map((x) => ({ id: x.id, lesson_id: x.lessonId, sort: x.order, kind: x.kind, title: x.title ?? null, body: x.body, ref: x.ref ?? null,
+        facts: x.facts ? tx.json(x.facts) : null, heat: x.heat ?? null, exam_count: x.examCount ?? null })))}`;
     }
     for (const c of chunk(b.units)) {
       await tx`insert into units ${tx(c.map((u) => ({ id: u.id, topic_id: u.topicId, lesson_id: u.lessonId, categories: u.categories, importance: u.importance, pool: u.pool ?? 'exam' })))}`;
@@ -85,7 +88,7 @@ export async function importBundle(sql: Sql, b: ContentBundle, opts: { overwrite
         id: i.id, unit_id: i.unitId, topic_id: i.topicId, lesson_id: i.lessonId, categories: i.categories, type: i.type, stem: i.stem,
         statements: i.statements ? tx.json(i.statements) : null, options: tx.json(i.options), answer: tx.json(i.answer), points: i.points,
         explanation: i.explanation ?? null, ref: i.ref ?? null, source: i.source ? tx.json(i.source as any) : null, status: i.status, flags: i.flags,
-        pool: i.pool ?? 'exam',
+        pool: i.pool ?? 'exam', format: i.format ?? null,
       })))}`;
     }
     let keptEdited = 0;
