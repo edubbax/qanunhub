@@ -1,5 +1,5 @@
 // App shell. The user flow follows Supabase Auth (onAuthStateChange):
-//   signed out            -> AuthScreen (e-mail and password: sign in, sign up, forgotten password)
+//   signed out            -> Landing at "/" (the public front page), AuthScreen on the sign-in pages
 //   password-reset link   -> NewPassword
 //   profile not complete  -> CompleteProfile (first name, last name, unique username); the app stays closed
 //   no category chosen    -> Onboarding (category, subgroup, exam date)
@@ -27,16 +27,17 @@ import { Weak } from './screens/Weak';
 import { Profile as ProfileScreen } from './screens/Profile';
 import { Premium } from './screens/Premium';
 import { Admin } from './screens/Admin';
+import { Landing } from './screens/Landing';
 
 export type Route =
-  | { name: 'login' } | { name: 'register' } | { name: 'forgot' }
+  | { name: 'landing' } | { name: 'login' } | { name: 'register' } | { name: 'forgot' }
   | { name: 'onboarding' } | { name: 'home' } | { name: 'path'; topicId?: string }
   | { name: 'session'; kind: SessionKind; lessonId?: string; topicId?: string; sectionId?: string; competitionId?: string; back?: Route }
   | { name: 'leaderboard' } | { name: 'weak' } | { name: 'profile' } | { name: 'premium' } | { name: 'admin' }
   | { name: 'competitions' } | { name: 'competition'; id: string } | { name: 'certificate'; code?: string };
 
 const PATHS: Record<string, string> = {
-  login: '/giris', register: '/qeydiyyat', forgot: '/sifre-unutdum',
+  landing: '/', login: '/giris', register: '/qeydiyyat', forgot: '/sifre-unutdum',
   onboarding: '/baslangic', home: '/bu-gun', path: '/yol', leaderboard: '/reytinq', weak: '/zeif', profile: '/profil',
   premium: '/premium', admin: '/admin', competitions: '/yarislar', certificate: '/sertifikat',
 };
@@ -97,7 +98,7 @@ type Account =
 
 export function App({ api, auth }: { api: Api; auth: AuthBackend }) {
   const useHistory = api.mode === 'server';
-  const [route, setRoute] = useState<Route>(() => (useHistory ? routeFromUrl() : { name: 'home' }));
+  const [route, setRoute] = useState<Route>(() => (useHistory ? routeFromUrl() : { name: 'landing' }));
   const [session, setSession] = useState<Session>({ status: 'loading' });
   const [recovery, setRecovery] = useState(() => useHistory && window.location.pathname === RECOVERY_PATH);
   const [account, setAccount] = useState<Account>({ step: 'idle' });
@@ -209,7 +210,7 @@ export function App({ api, auth }: { api: Api; auth: AuthBackend }) {
   useEffect(() => {
     if (!me) return;
     if (!me.category && route.name !== 'onboarding') nav({ name: 'onboarding' }, true);
-    else if (me.category && (AUTH_ROUTES.has(route.name) || route.name === 'onboarding')) nav({ name: 'home' }, true);
+    else if (me.category && (AUTH_ROUTES.has(route.name) || route.name === 'onboarding' || route.name === 'landing')) nav({ name: 'home' }, true);
   }, [me, route.name, nav]);
 
   const ctx = useMemo<Ctx | null>(
@@ -227,6 +228,14 @@ export function App({ api, auth }: { api: Api; auth: AuthBackend }) {
   if (route.name === 'certificate') {
     // Public: anyone can check a certificate code, signed in or not.
     screen = <CertificateCheck code={route.code} />;
+  } else if (session.status === 'out' && route.name === 'landing') {
+    // The front page is full width, outside the phone-sized shell.
+    return (
+      <AppCtx.Provider value={ctx}>
+        <Landing onStart={() => nav({ name: 'register' })} onLogin={() => nav({ name: 'login' })} />
+        <ToastHost />
+      </AppCtx.Provider>
+    );
   } else if (session.status === 'out') {
     const mode: AuthMode = route.name === 'register' ? 'register' : route.name === 'forgot' ? 'forgot' : 'login';
     screen = <AuthScreen mode={mode} onMode={(m) => nav({ name: m }, true)} />;

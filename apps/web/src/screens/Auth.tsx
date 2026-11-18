@@ -96,6 +96,7 @@ export function AuthScreen({ mode, onMode }: { mode: AuthMode; onMode: (m: AuthM
             </button>
           )}
           {demo.error && <FormError>{demo.error}</FormError>}
+          <button className="link-btn" onClick={() => nav({ name: 'landing' })}>Ana səhifə</button>
           <button className="link-btn" onClick={() => nav({ name: 'certificate' })}>Sertifikatı yoxla</button>
           {api.mode === 'demo' && <p className="tiny muted center">Demo versiya: hesablar və məlumatlar yalnız bu brauzerdə saxlanılır.</p>}
         </>
