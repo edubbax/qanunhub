@@ -57,10 +57,12 @@ writeFileSync(join(fn, '.vc-config.json'), JSON.stringify({
 
 const csp = [
   "default-src 'self'",
+  "script-src 'self' https://millinet.az https://*.millinet.az",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data:",
-  `connect-src 'self'${supabaseUrl ? ' ' + new URL(supabaseUrl).origin : ''}`,
+  "img-src 'self' data: https:",
+  "frame-src https:",
+  `connect-src 'self'${supabaseUrl ? ' ' + new URL(supabaseUrl).origin : ''} https://millinet.az https://*.millinet.az`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

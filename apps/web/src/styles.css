@@ -669,7 +669,8 @@ input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px var(--surface) inset; -w
   .lp-ph-left { left: -4%; } .lp-ph-right { right: -4%; }
 }
 
-.lp-millinet { display: inline-block; line-height: 0; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.15s ease, box-shadow 0.15s ease; }
-.lp-millinet:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.lp-millinet:focus-visible { outline: none; box-shadow: var(--ring); }
+.lp-ad { text-align: center; width: 100%; }
+.lp-ad:not(.on) { height: 0; overflow: hidden; margin-top: -10px; }
+.lp-millinet { display: inline-block; border-radius: 12px; overflow: hidden; line-height: 0; box-shadow: var(--shadow); }
 .lp-millinet img { display: block; width: 200px; height: auto; max-width: 70vw; }
+.lp-ad iframe { display: block; width: 100%; max-width: 1160px; margin-inline: auto; border: 0; background: transparent; }
