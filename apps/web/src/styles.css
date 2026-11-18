@@ -668,3 +668,9 @@ input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px var(--surface) inset; -w
   .lp-ph-mid { width: 180px !important; }
   .lp-ph-left { left: -4%; } .lp-ph-right { right: -4%; }
 }
+
+.lp-ad { background: var(--surface); border-top: 1px solid var(--line); padding: 12px 20px 20px; text-align: center; }
+.lp-ad:not(.on) { padding: 0; border: 0; }
+.lp-ad:not(.on) .lp-ad-label { display: none; }
+.lp-ad-label { display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.lp-ad iframe { display: block; width: 100%; max-width: 1160px; margin-inline: auto; border: 0; background: transparent; }

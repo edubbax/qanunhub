@@ -1,6 +1,6 @@
 // The public front page: what QanunHub is, how a lesson works, why it sticks, and a way in.
 // Shown at "/" to visitors who are not signed in; signed-in learners go straight to the app.
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import logoUrl from '../assets/logo.png';
 import homeShot from '../assets/landing/home.webp';
 import cardShot from '../assets/landing/m-card.webp';
@@ -60,6 +60,40 @@ const RANKS: [string, string][] = [
   ['mayor', 'Mayor'], ['pl', 'Polkovnik-leytenant'], ['polkovnik', 'Polkovnik'], ['gm', 'General-mayor'], ['gl', 'General-leytenant'],
   ['gp', 'General-polkovnik'], ['og', 'Ordu generalı'],
 ];
+
+
+// The MilliNet ad banner. The partner's script is loaded inside a sandboxed iframe (no same-origin access), so it
+// can run but cannot read the learner's session. The frame reports its content height so it fits the banner.
+const END = '<' + '/script>';
+const BANNER_DOC =
+  '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}body{display:flex;justify-content:center;overflow:hidden}</style></head><body>' +
+  '<!--MilliNet --> <script type="text/javascript" src="https://millinet.az/banner.js?id=842">' + END +
+  '<script>(function(){var send=function(){parent.postMessage({qhBannerHeight:Math.ceil(document.body.getBoundingClientRect().height)},"*")};' +
+  'if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);addEventListener("load",send);setInterval(send,1500);})();' + END +
+  '</body></html>';
+
+function MilliNetBanner() {
+  const frame = useRef<HTMLIFrameElement>(null);
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (e.source !== frame.current?.contentWindow) return;
+      const h = (e.data as { qhBannerHeight?: unknown } | null)?.qhBannerHeight;
+      if (typeof h === 'number' && Number.isFinite(h)) setHeight(Math.max(0, Math.min(Math.round(h), 400)));
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+  return (
+    <aside className={`lp-ad ${height > 0 ? 'on' : ''}`} aria-label="Reklam">
+      <span className="lp-ad-label">Reklam</span>
+      <iframe
+        ref={frame} title="Reklam" srcDoc={BANNER_DOC} style={{ height }}
+        sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
+      />
+    </aside>
+  );
+}
 
 export function Landing({ onStart, onLogin }: Props) {
   const go = (id: string) => (e: React.MouseEvent) => {
@@ -196,6 +230,7 @@ export function Landing({ onStart, onLogin }: Props) {
           <p className="lp-small">© {new Date().getFullYear()} QanunHub · Qanunların rəsmi mətni: e-qanun.az</p>
         </div>
       </footer>
+      <MilliNetBanner />
     </div>
   );
 }
