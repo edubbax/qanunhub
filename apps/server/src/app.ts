@@ -91,7 +91,7 @@ export function createApp(deps: AppDeps) {
     c.header('Referrer-Policy', 'same-origin');
     c.header('X-Frame-Options', 'DENY');
     if (!c.req.path.startsWith('/api')) {
-      c.header('Content-Security-Policy', `default-src 'self'; script-src 'self' https://millinet.az https://*.millinet.az; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https:; connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin}` : ''} https://millinet.az https://*.millinet.az; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`);
+      c.header('Content-Security-Policy', `default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin}` : ''}; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`);
     }
   });
 
