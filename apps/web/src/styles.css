@@ -671,6 +671,6 @@ input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px var(--surface) inset; -w
 
 .lp-ad { background: var(--surface); border-top: 1px solid var(--line); padding: 12px 20px 20px; text-align: center; }
 .lp-ad:not(.on) { padding: 0; border: 0; }
-.lp-ad:not(.on) .lp-ad-label { display: none; }
-.lp-ad-label { display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.lp-millinet { display: inline-block; border-radius: 12px; overflow: hidden; line-height: 0; box-shadow: var(--shadow); }
+.lp-millinet img { display: block; width: min(275px, 80vw); height: auto; }
 .lp-ad iframe { display: block; width: 100%; max-width: 1160px; margin-inline: auto; border: 0; background: transparent; }

@@ -5,6 +5,7 @@ import logoUrl from '../assets/logo.png';
 import homeShot from '../assets/landing/home.webp';
 import cardShot from '../assets/landing/m-card.webp';
 import clozeShot from '../assets/landing/cloze-ok.webp';
+import millinetBadge from '../assets/landing/millinet.webp';
 import pathShot from '../assets/landing/path.webp';
 import recapShot from '../assets/landing/m-recap.webp';
 import { IconBook, IconCheck, IconClock, IconExam, IconFlame, IconMedal, IconRepeat, IconShield, IconTarget, IconTrophy, IconUsers } from '../ui/icons';
@@ -67,7 +68,7 @@ const RANKS: [string, string][] = [
 const END = '<' + '/script>';
 const BANNER_DOC =
   '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}body{display:flex;justify-content:center;overflow:hidden}</style></head><body>' +
-  '<!--MilliNet --> <script type="text/javascript" src="https://millinet.az/banner.js?id=842">' + END +
+  '<!--MilliNet --> <script type="text/javascript" src="https://millinet.az/site.php?id=842">' + END +
   '<script>(function(){var send=function(){parent.postMessage({qhBannerHeight:Math.ceil(document.body.getBoundingClientRect().height)},"*")};' +
   'if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);addEventListener("load",send);setInterval(send,1500);})();' + END +
   '</body></html>';
@@ -75,6 +76,12 @@ const BANNER_DOC =
 function MilliNetBanner() {
   const frame = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState(0);
+  const [fallback, setFallback] = useState(false);
+  // If the partner's script renders nothing (blocked, offline, wrong protocol), show the participant badge as a link.
+  useEffect(() => {
+    const t = window.setTimeout(() => setFallback(true), 5000);
+    return () => window.clearTimeout(t);
+  }, []);
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       if (e.source !== frame.current?.contentWindow) return;
@@ -85,8 +92,12 @@ function MilliNetBanner() {
     return () => window.removeEventListener('message', onMessage);
   }, []);
   return (
-    <aside className={`lp-ad ${height > 0 ? 'on' : ''}`} aria-label="Reklam">
-      <span className="lp-ad-label">Reklam</span>
+    <aside className={`lp-ad ${height > 0 || fallback ? 'on' : ''}`} aria-label="MilliNet 2026">
+      {fallback && height === 0 && (
+        <a className="lp-millinet" href="https://millinet.az" target="_blank" rel="noopener noreferrer">
+          <img src={millinetBadge} alt="MilliNet 2026 — Milli İnternet Mükafatı. İştirakçı" width={275} height={141} loading="lazy" />
+        </a>
+      )}
       <iframe
         ref={frame} title="Reklam" srcDoc={BANNER_DOC} style={{ height }}
         sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
