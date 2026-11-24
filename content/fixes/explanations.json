@@ -1,0 +1,223 @@
+{
+ "_about": "Hand-written explanations (id -> {explanation, ref}). Applied last, after tools/content/explain.py, and win over generated text.",
+ "konstitusiya-0e3efc-4": {
+  "ref": "Konstitusiya",
+  "explanation": "Konstitusiya 1995-ci il noyabrın 12-də referendumla qəbul edilib. Ona əlavə və dəyişikliklər üç referendumla edilib: 2002-ci il avqustun 24-də, 2009-cu il martın 18-də və 2016-cı il sentyabrın 26-da. Ona görə cavab «hər birində»dir."
+ },
+ "konstitusiya-0e3efc-10": {
+  "ref": "Preambula",
+  "explanation": "Preambula: «Azərbaycan xalqı … öz suveren hüququndan istifadə edərək, təntənəli surətdə aşağıdakı niyyətlərini bəyan edir». Niyyətləri bəyan edən subyekt Azərbaycan xalqıdır."
+ },
+ "konstitusiya-bb196a-14": {
+  "ref": "Preambula",
+  "explanation": "Preambula: Azərbaycan xalqı öz SUVEREN hüququndan istifadə edərək, təntənəli surətdə niyyətlərini bəyan edir."
+ },
+ "konstitusiya-0e3efc-13": {
+  "ref": "Preambula",
+  "explanation": "Preambulada sonuncu niyyət belədir: «ümumbəşəri dəyərlərə sadiq olaraq, bütün DÜNYA xalqları ilə dostluq, sülh və əmin-amanlıq şəraitində yaşamaq». D variantında «bütün müsəlman xalqları ilə» yazılıb, bu səhvdir. Qalan variantlar preambulada olduğu kimidir."
+ },
+ "konstitusiya-b61376-11": {
+  "ref": "Preambula",
+  "explanation": "Preambulada bəyan edilən niyyətlər: dövlətin müstəqilliyini, suverenliyini və ərazi bütövlüyünü qorumaq (1); Konstitusiya çərçivəsində demokratik quruluşa təminat vermək (4); vətəndaş cəmiyyətinin bərqərar edilməsinə nail olmaq (5); qanunların aliliyini təmin edən hüquqi, dünyəvi dövlət qurmaq; hamının layiqli həyat səviyyəsini təmin etmək; bütün dünya xalqları ilə dostluq və sülh şəraitində yaşamaq. 2-ci və 3-cü bəndlər bu formada preambulada yoxdur. Cavab: 1, 4, 5."
+ },
+ "konstitusiya-b61376-12": {
+  "ref": "Preambula",
+  "explanation": "Preambulada var: xalqın iradəsinin ifadəsi kimi, qanunların aliliyini təmin edən hüquqi, dünyəvi dövlət qurmaq (1); ədalətli iqtisadi və sosial qaydalara uyğun olaraq hamının layiqli həyat səviyyəsini təmin etmək (2); ümumbəşəri dəyərlərə sadiq olaraq bütün dünya xalqları ilə dostluq, sülh və əmin-amanlıq şəraitində yaşamaq (5). «Unitar respublika yaratmaq» və «beynəlxalq müqavilələrə qoşulmaq» niyyət kimi göstərilməyib. Cavab: 1, 2, 5."
+ },
+ "konstitusiya-0e3efc-20": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.II: «Aşağıdakı məsələlər yalnız referendumla həll oluna bilər: 1) AR Konstitusiyasının qəbul edilməsi və ona dəyişikliklər edilməsi; 2) AR dövlət sərhədlərinin dəyişdirilməsi.» Vergilər, büdcə, amnistiya, əfv və vəzifəli şəxslərin seçilməsi (təyini) üzrə isə referendum keçirilə bilməz (3.III)."
+ },
+ "konstitusiya-b61376-18": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.I: xalq öz hüquqları və mənafeləri ilə bağlı hər bir məsələni referendumla həll edə bilər (1, 3). Maddə 3.II: Konstitusiyanın qəbulu və ona dəyişikliklər (2), dövlət sərhədlərinin dəyişdirilməsi (4) yalnız referendumla həll olunur. 5, 6, 7 üzrə referendum keçirilə bilməz (3.III). Cavab: 1, 2, 3, 4."
+ },
+ "konstitusiya-b61376-19": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.II: «Aşağıdakı məsələlər yalnız referendumla həll oluna bilər: 1) AR Konstitusiyasının qəbul edilməsi və ona dəyişikliklər edilməsi; 2) AR dövlət sərhədlərinin dəyişdirilməsi.» Cavab: 2, 4."
+ },
+ "konstitusiya-b61376-20": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.III: «Aşağıdakı məsələlər üzrə referendum keçirilə bilməz: 1) vergilər və dövlət büdcəsi; 2) amnistiya və əfv etmə; 3) seçilməsi, təyin edilməsi və ya təsdiq edilməsi … qanunvericilik və (və ya) icra hakimiyyəti orqanlarının səlahiyyətlərinə aid edilmiş vəzifəli şəxslərin seçilməsi, təyin edilməsi və ya təsdiq edilməsi.» Cavab: 5, 6, 7."
+ },
+ "konstitusiya-bb196a-7": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.I: xalq öz hüquqları və mənafeləri ilə bağlı hər bir məsələni referendumla həll edə bilər (1, 2). Maddə 3.II: Konstitusiyaya dəyişikliklər (3) və dövlət sərhədlərinin dəyişdirilməsi (4) yalnız referendumla həll olunur. Cavab: 1, 2, 3, 4."
+ },
+ "konstitusiya-bb196a-15": {
+  "ref": "Maddə 3",
+  "explanation": "Maddə 3.II: Konstitusiyanın qəbulu və ona dəyişikliklər, dövlət sərhədlərinin dəyişdirilməsi YALNIZ referendumla həll oluna bilər. Ona görə C doğrudur; B və D səhvdir («digər üsullarla yanaşı» deyil). A-da «hüquqları və mənafeləri» əvəzinə «azadlıqları» yazılıb."
+ },
+ "konstitusiya-0e3efc-23": {
+  "ref": "Maddə 5",
+  "explanation": "Maddə 5.II: «Azərbaycan xalqının vahidliyi Azərbaycan dövlətinin təməlini təşkil edir.»"
+ },
+ "konstitusiya-b61376-22": {
+  "ref": "Maddə 5, 6",
+  "explanation": "Maddə 5: Azərbaycan xalqı vahiddir (1); xalqın vahidliyi dövlətin təməlini təşkil edir (2); AR BÜTÜN AR vətəndaşlarının ümumi və bölünməz vətənidir (3-cü bənddə «Azərbaycanda yaşayan» yazıldığı üçün səhvdir). Maddə 6: heç kim hakimiyyəti mənimsəyə bilməz (4); hakimiyyətin mənimsənilməsi xalqa qarşı ən ağır cinayətdir (5). Cavab: 1, 2, 4, 5."
+ },
+ "konstitusiya-b61376-23": {
+  "ref": "Maddə 7",
+  "explanation": "Maddə 7.I: «Azərbaycan dövləti demokratik, hüquqi, dünyəvi, unitar respublikadır.» İslami (2) və federativ (5) respublika deyil. Cavab: 1, 3, 4."
+ },
+ "konstitusiya-b61376-25": {
+  "ref": "Maddə 7",
+  "explanation": "Maddə 7.III: «Azərbaycan Respublikasında dövlət hakimiyyəti hakimiyyətlərin bölünməsi prinsipi əsasında təşkil edilir.»"
+ },
+ "konstitusiya-b61376-26": {
+  "ref": "Maddə 7",
+  "explanation": "Maddə 7.III: qanunvericilik hakimiyyətini Milli Məclis (1), icra hakimiyyətini AR PREZİDENTİ (2-ci bənddə Nazirlər Kabineti yazılıb, bu səhvdir), məhkəmə hakimiyyətini məhkəmələr (3) həyata keçirir. Maddə 7.IV: hakimiyyətlər «bu Konstitusiyanın müddəalarına əsasən» qarşılıqlı fəaliyyət göstərir; 4-cü bənddə «qanuna uyğun olaraq» yazıldığı üçün səhvdir. Cavab: 1, 3."
+ },
+ "konstitusiya-0e3efc-33": {
+  "ref": "Maddə 8",
+  "explanation": "Maddə 8.II: Prezident Azərbaycan XALQININ vahidliyini təcəssüm etdirir və Azərbaycan DÖVLƏTÇİLİYİNİN varisliyini təmin edir. B variantında «dövlətin vahidliyi» və «mülkiyyətin varisliyi» yazılıb, bu səhvdir. A (8.I), C (8.III) və D (8.IV) doğrudur."
+ },
+ "konstitusiya-0e3efc-34": {
+  "ref": "Maddə 8",
+  "explanation": "Maddə 8.III–IV: Prezident dövlətin müstəqilliyinin, ərazi bütövlüyünün və AR-ın tərəfdar çıxdığı beynəlxalq müqavilələrə riayət olunmasının (III), habelə MƏHKƏMƏ hakimiyyətinin müstəqilliyinin (IV) təminatçısıdır. Qanunvericilik və icra hakimiyyətlərinin müstəqilliyinin təminatçısı kimi göstərilməyib."
+ },
+ "konstitusiya-b61376-28": {
+  "ref": "Maddə 8",
+  "explanation": "Maddə 8: dövlətin başçısı Prezidentdir (1); ölkənin daxilində və xarici münasibətlərdə dövləti təmsil edir (2); xalqın vahidliyini təcəssüm etdirir və dövlətçiliyin varisliyini təmin edir (3). Maddə 8.III: Prezident dövlətin MÜSTƏQİLLİYİNİN, ərazi bütövlüyünün … təminatçısıdır. 4-cü bənddə «suverenliyinin» yazıldığı üçün səhvdir. Cavab: 1, 2, 3."
+ },
+ "konstitusiya-bb196a-296": {
+  "ref": "Maddə 8",
+  "explanation": "Maddə 8: Prezident ölkənin daxilində və xarici münasibətlərdə Azərbaycan DÖVLƏTİNİ təmsil edir (1-ci bənddə «xalqını» yazılıb, bu səhvdir); xalqın vahidliyini təcəssüm etdirir (2); dövlətçiliyin varisliyini təmin edir (3); müstəqilliyin, ərazi bütövlüyünün və beynəlxalq müqavilələrə riayətin təminatçısıdır (4); məhkəmə hakimiyyətinin müstəqilliyinin təminatçısıdır (5). Qanunvericilik hakimiyyəti barədə belə müddəa yoxdur (6). Cavab: 2, 3, 4, 5."
+ },
+ "konstitusiya-bb196a-26": {
+  "ref": "Maddə 8, 9",
+  "explanation": "A, B və C 8-ci maddədəndir (Azərbaycan dövlətinin başçısı). «AR Prezidenti AR Silahlı Qüvvələrinin Ali Baş Komandanıdır» müddəası isə 9-cu maddənin (Silahlı Qüvvələr) III hissəsindədir."
+ },
+ "konstitusiya-bb196a-28": {
+  "ref": "Maddə 9",
+  "explanation": "Maddə 9.I-in hazırkı redaksiyası («AR öz təhlükəsizliyini və müdafiəsini təmin etmək məqsədi ilə Silahlı Qüvvələr yaradır. Silahlı Qüvvələr Azərbaycan Ordusundan və başqa silahlı birləşmələrdən ibarətdir») 2016-cı il sentyabrın 26-da keçirilən referendumla qəbul edilmiş əlavə və dəyişikliklərlə verilib."
+ },
+ "konstitusiya-bb196a-5": {
+  "ref": "Bölmə I",
+  "explanation": "Konstitusiyanın I bölməsinin I fəsli «Xalq hakimiyyəti» (maddə 1–6), II fəsli «Dövlətçiliyin əsasları»dır (maddə 7–23). «Silahlı Qüvvələr» 9-cu maddədir, ona görə II fəsilə aiddir. «Xalqın suverenliyi» (maddə 2) I fəsildədir; «Əmək hüququ» və «Məsuliyyət» isə II bölmədədir."
+ },
+ "konstitusiya-0e3efc-37": {
+  "ref": "Maddə 11",
+  "explanation": "Maddə 11.III: dövlət sərhədləri dəyişdirilə bilər, amma yalnız AR Milli Məclisinin qərarı ilə Azərbaycanın bütün əhalisi arasında referendum keçirmək yolu ilə, xalqın iradəsi əsasında. Ona görə «Dövlət sərhədləri dəyişdirilə bilməz» fikri yanlışdır. A, B, C 11-ci maddədə olduğu kimidir."
+ },
+ "konstitusiya-b61376-33": {
+  "ref": "Maddə 11",
+  "explanation": "Maddə 11: ərazi vahiddir, toxunulmazdır və bölünməzdir (1); daxili sular, Xəzərin AR-a mənsub bölməsi və hava məkanı ərazinin tərkib hissəsidir (2); AR öz ərazisinin heç bir hissəsini heç bir şəkildə kimsəyə vermir (4). Maddə 11.III: ərazi ÖZGƏNİNKİLƏŞDİRİLƏ BİLMƏZ, ona görə 3-cü bənd səhvdir. Cavab: 1, 2, 4."
+ },
+ "konstitusiya-bb196a-42": {
+  "ref": "Maddə 11",
+  "explanation": "Maddə 11.III və 3.II: dövlət sərhədlərinin dəyişdirilməsi yalnız referendumla həll olunur. Referendum Azərbaycanın bütün əhalisi arasında, Milli Məclisin qərarı ilə keçirilir. Prezidentin sərəncamı və ya XİN-in təqdimatı belə bir əsas deyil."
+ },
+ "konstitusiya-0e3efc-75": {
+  "ref": "Maddə 34",
+  "explanation": "Maddə 34 (Nikah hüququ): «Uşaqlara qayğı göstərmək, onları tərbiyə etmək valideynlərin həm hüququ, həm də borcudur.» Diqqət: 17-ci maddədə ifadə fərqlidir: «Uşaqların qayğısına qalmaq və onları tərbiyə etmək valideynlərin borcudur.»"
+ },
+ "konstitusiya-bb196a-101": {
+  "ref": "Maddə 34",
+  "explanation": "Maddə 34 (Nikah hüququ): «Uşaqlara qayğı göstərmək, onları tərbiyə etmək valideynlərin həm hüququ, həm də borcudur.» Diqqət: 17-ci maddədə ifadə fərqlidir: «Uşaqların qayğısına qalmaq və onları tərbiyə etmək valideynlərin borcudur.»"
+ },
+ "konstitusiya-0e3efc-45": {
+  "ref": "Maddə 17",
+  "explanation": "Maddə 17.IV: «Uşaqları onların həyatına, sağlamlığına və ya mənəviyyatına təhlükə törədə bilən fəaliyyətə cəlb etmək qadağandır.» Digər variantlar səhvdir: 17.I-də dövlətin xüsusi himayəsində olan ailədir (vətəndaşlar deyil); 17.II-də uşaqların tərbiyəsi valideynlərin borcudur və ona dövlət nəzarət edir; 17.V-də yaş həddi 15-dir (16 deyil)."
+ },
+ "konstitusiya-bb196a-48": {
+  "ref": "Maddə 17",
+  "explanation": "Maddə 17.IV: «Uşaqları onların HƏYATINA, SAĞLAMLIĞINA və ya MƏNƏVİYYATINA təhlükə törədə bilən fəaliyyətə cəlb etmək qadağandır.» «Normal inkişaf» və «əqli inkişaf» sözləri maddədə yoxdur. Cavab: 1, 3, 5."
+ },
+ "konstitusiya-b61376-45": {
+  "ref": "Maddə 17",
+  "explanation": "Maddə 17: ailə dövlətin xüsusi himayəsindədir (1); uşaqların qayğısına qalmaq və onları tərbiyə etmək valideynlərin borcudur və buna dövlət nəzarət edir (2); valideyn qayğısından məhrum uşaqlar dövlətin himayəsindədir (3); 15 yaşına çatmamış uşaqlar işə götürülə bilməz (5); uşaq hüquqlarının həyata keçirilməsinə dövlət nəzarət edir (6). Maddə 17.IV: uşaqları təhlükəli fəaliyyətə cəlb etmək QADAĞANDIR, «qanunla müəyyən olunmuş hallarda» istisna yoxdur. Ona görə 4-cü bənd səhvdir. Cavab: 1, 2, 3, 5, 6."
+ },
+ "konstitusiya-bb196a-36": {
+  "ref": "Maddə 18",
+  "explanation": "Maddə 18.I: «Azərbaycan Respublikasında din dövlətdən ayrıdır. Bütün dini etiqadlar qanun qarşısında bərabərdir.» Söhbət Konstitusiya qanunundan yox, qanun qarşısında bərabərlikdən gedir. Dövlət dini elan edilməyib."
+ },
+ "konstitusiya-bb196a-40": {
+  "ref": "Maddə 18",
+  "explanation": "Maddə 18: din dövlətdən ayrıdır, bütün dini etiqadlar qanun qarşısında bərabərdir (I); dövlət təhsil sistemi dünyəvi xarakter daşıyır (III). «Təhsil sisteminə dövlət tərəfindən nəzarət edilir» müddəası 18-ci maddədə yoxdur, o, 42-ci maddənin (Təhsil hüququ) III hissəsindədir."
+ },
+ "konstitusiya-b61376-48": {
+  "ref": "Maddə 19",
+  "explanation": "Maddə 19: pul vahidi manatdır (1). Pul nişanlarının tədavülə buraxılması hüququ YALNIZ Mərkəzi Banka mənsubdur (2-ci bənddəki «Beynəlxalq Bank» səhvdir). Mərkəzi Bank dövlətin müstəsna mülkiyyətindədir (3). Manatdan başqa pul vahidlərinin ödəniş vasitəsi kimi işlədilməsi QADAĞANDIR, istisna nəzərdə tutulmayıb (4 səhvdir). Cavab: 1, 3."
+ },
+ "konstitusiya-b61376-51": {
+  "ref": "Maddə 23",
+  "explanation": "Maddə 23: dövlət rəmzləri bayraq, gerb və himndir (1). Bayrağın yuxarı zolağı MAVİ rəngdədir (2-ci bənddə «göy» yazılıb). Bayrağın ENİNİN UZUNLUĞUNA nisbəti 1:2-dir (3-cü bənddə tərsinə yazılıb). Təsvir, musiqi və mətn Konstitusiya qanunu ilə müəyyən edilir (4). Cavab: 1, 4."
+ },
+ "konstitusiya-bb196a-50": {
+  "ref": "Maddə 23",
+  "explanation": "Maddə 23: dövlət rəmzləri bayraq, gerb və himndir (1). Bayrağın yuxarı zolağı MAVİ rəngdədir (2-ci bənddə «göy» yazılıb). Bayrağın ENİNİN UZUNLUĞUNA nisbəti 1:2-dir (3-cü bənddə tərsinə yazılıb). Təsvir, musiqi və mətn Konstitusiya qanunu ilə müəyyən edilir (4). Cavab: 1, 4."
+ },
+ "konstitusiya-bb196a-51": {
+  "ref": "Maddə 23",
+  "explanation": "Maddə 23.III: bayrağın və gerbin təsviri, himnin musiqisi və mətni KONSTİTUSİYA QANUNU ilə müəyyən edilir. Variantlarda adi qanun, qərar və Konstitusiya var, Konstitusiya qanunu isə yoxdur. Ona görə cavab «Heç biri ilə»dir."
+ },
+ "konstitusiya-bb196a-306": {
+  "ref": "Maddə 23",
+  "explanation": "Maddə 23.III: himnin musiqisi və mətni adi qanunla deyil, KONSTİTUSİYA QANUNU ilə müəyyən edilir. B doğrudur: eninin uzunluğuna nisbəti 1:2 olduqda, uzunluğun enə nisbəti 2:1 olur."
+ },
+ "konstitusiya-0e3efc-91": {
+  "ref": "Maddə 47–51",
+  "explanation": "Konstitusiyada adında «azadlığı» sözü olan 5 maddə var: Fikir və söz azadlığı (47), Vicdan azadlığı (48), Toplaşmaq azadlığı (49), Məlumat azadlığı (50), Yaradıcılıq azadlığı (51)."
+ },
+ "konstitusiya-bb196a-56": {
+  "ref": "Bölmə I",
+  "explanation": "I bölmədə (maddə 1–23) «Dövlətin borclarına qoyulan məhdudiyyətlər» (20), «Silahlı Qüvvələr» (9) və «Pul vahidi» (19) maddələri var. «Məsuliyyət» maddəsi (80) II bölmədədir."
+ },
+ "konstitusiya-0e3efc-385": {
+  "ref": "Maddə 155",
+  "explanation": "Maddə 155: Konstitusiyanın 1-ci (Hakimiyyətin mənbəyi), 2-ci (Xalqın suverenliyi), 6-cı (Hakimiyyətin mənimsənilməsinə yol verilməməsi), 7-ci, 8-ci və 21-ci maddələrində dəyişikliklər və ya onların ləğvi haqqında təkliflər referenduma çıxarıla bilməz. «Xalqı təmsil etmək hüququ» 4-cü maddədir və bu siyahıda yoxdur."
+ },
+ "konstitusiya-b61376-434": {
+  "ref": "Maddə 155",
+  "explanation": "Maddə 155: 1, 2, 6, 7, 8 və 21-ci maddələrdə dəyişikliklər və ya onların ləğvi haqqında təkliflər referenduma çıxarıla bilməz. «Xalqın suverenliyi» 2-ci maddədir. Xalqın vahidliyi (5), Pul vahidi (19) və Ailə, uşaqlar və dövlət (17) bu siyahıda yoxdur."
+ },
+ "konstitusiya-b61376-435": {
+  "ref": "Maddə 155",
+  "explanation": "Maddə 155: 1, 2, 6, 7, 8 və 21-ci maddələrdə dəyişikliklər və ya onların ləğvi haqqında təkliflər referenduma çıxarıla bilməz. «Hakimiyyətin mənimsənilməsinə yol verilməməsi» 6-cı maddədir. Din və dövlət (18), Mülkiyyət (13) və Silahlı Qüvvələr (9) bu siyahıda yoxdur."
+ },
+ "konstitusiya-bb196a-53": {
+  "ref": "Maddə 155",
+  "explanation": "Maddə 155: 1, 2, 6, 7, 8 və 21-ci maddələrdə dəyişikliklər və ya onların ləğvi haqqında təkliflər referenduma çıxarıla bilməz. «Azərbaycan dövləti» 7-ci maddədir. Silahlı Qüvvələr (9), Ərazi (11) və Xalqın vahidliyi (5) bu siyahıda yoxdur."
+ },
+ "konstitusiya-b61376-445": {
+  "ref": "Maddə 158",
+  "explanation": "Maddə 158: «Bu Konstitusiyanın birinci bölməsində əks etdirilmiş müddəalarla əlaqədar AR Konstitusiyasına əlavələr təklif edilə bilməz.» Birinci bölmə 1–23-cü maddələrdir. Hakimiyyətin mənbəyi (1), Xalqın suverenliyi (2) və referendum məsələləri (3) bu bölmədədir. «Bərabərlik hüququ» isə 25-ci maddədir (II bölmə), ona görə ona əlavə təklif etmək olar."
+ },
+ "konstitusiya-b61376-446": {
+  "ref": "Maddə 158",
+  "explanation": "Maddə 158: Konstitusiyanın birinci bölməsinə (maddə 1–23) aid müddəalarla əlaqədar əlavələr təklif edilə bilməz. Xalqı təmsil etmək hüququ (4), Xalqın vahidliyi (5) və Hakimiyyətin mənimsənilməsinə yol verilməməsi (6) bu bölmədədir. «Təhsil hüququ» 42-ci maddədir (II bölmə)."
+ },
+ "konstitusiya-b61376-447": {
+  "ref": "Maddə 158",
+  "explanation": "Maddə 158: Konstitusiyanın birinci bölməsinə (maddə 1–23) aid müddəalarla əlaqədar əlavələr təklif edilə bilməz. Azərbaycan dövləti (7), dövlətin başçısı (8) və Silahlı Qüvvələr (9) bu bölmədədir. «Cəmiyyətin və dövlətin siyasi həyatında iştirak etmək hüququ» 54-cü maddədir (II bölmə)."
+ },
+ "konstitusiya-b61376-451": {
+  "ref": "Maddə 158",
+  "explanation": "Maddə 158: Konstitusiyanın birinci bölməsinə (maddə 1–23) aid müddəalarla əlaqədar əlavələr təklif edilə bilməz. Dövlətin rəmzləri (23), Dövlət dili (21), Paytaxt (22) və Dövlətin borclarına qoyulan məhdudiyyətlər (20) bu bölmədədir. Təqsirsizlik prezumpsiyası (63) və hüquq və azadlıqların təminatı (71) II bölmədədir. Cavab: 2, 5."
+ },
+ "konstitusiya-bb196a-139": {
+  "ref": "Maddə 15",
+  "explanation": "Maddə 15.II: «Azərbaycan dövləti bazar münasibətləri əsasında sosial yönümlü iqtisadiyyatın inkişafına şərait yaradır (2), azad sahibkarlığa təminat verir (1), iqtisadi münasibətlərdə inhisarçılığa və haqsız rəqabətə yol vermir (6).» 3-cü bənd 16-cı maddədəndir (Sosial inkişaf və dövlət), 4-cü bənd 59-cu maddədəndir. 5-ci bənd səhvdir: iqtisadiyyat MÜXTƏLİF mülkiyyət növlərinə əsaslanır (15.I). Cavab: 1, 2, 6."
+ },
+ "konstitusiya-b61376-41": {
+  "ref": "Maddə 15",
+  "explanation": "Maddə 15.I: «Azərbaycan Respublikasında iqtisadiyyatın inkişafı müxtəlif mülkiyyət növlərinə əsaslanaraq xalqın rifahının yüksəldilməsinə xidmət edir.» Mülkiyyət növləri dövlət, xüsusi və bələdiyyə mülkiyyətidir (13.II). Ona görə cavab «Hər biri»dir."
+ },
+ "konstitusiya-bb196a-72": {
+  "ref": "Maddə 12",
+  "explanation": "Bu cümlə 12-ci maddənin («Dövlətin ali məqsədi») II hissəsidir: «Bu Konstitusiyada sadalanan insan və vətəndaş hüquqları və azadlıqları Azərbaycan Respublikasının tərəfdar çıxdığı beynəlxalq müqavilələrə uyğun tətbiq edilir.»"
+ },
+ "konstitusiya-bb196a-34": {
+  "ref": "Maddə 17, 34",
+  "explanation": "Maddə 34.III: «Nikah və ailə dövlətin himayəsindədir.» Maddə 17.I: ailə dövlətin xüsusi himayəsindədir; 17.III: valideynləri və ya qəyyumları olmayan, valideyn qayğısından məhrum olan uşaqlar dövlətin himayəsindədirlər. Əmək və təhsil «dövlətin himayəsində» kimi göstərilməyib. Cavab: 1, 2, 4, 5."
+ },
+ "konstitusiya-b61376-88": {
+  "ref": "Maddə 34",
+  "explanation": "Maddə 34.III: «Nikah və ailə dövlətin himayəsindədir.»"
+ },
+ "konstitusiya-0e3efc-211": {
+  "ref": "Maddə 98-1",
+  "explanation": "Maddə 98-1.I: Milli Məclis Konstitusiya Məhkəməsi, Ali Məhkəmə və Mərkəzi Bankın İdarə Heyətinin kollegial fəaliyyəti üçün zəruri olan sayda üzvlüyə namizədləri Prezident iki dəfə təqdim etdikdən sonra qanunla müəyyən edilmiş müddətdə təyin etmədikdə, Prezident Milli Məclisi buraxır. Ona görə cavab «hamısı»dır."
+ }
+}
