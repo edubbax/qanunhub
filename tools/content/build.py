@@ -22,6 +22,7 @@ from program import (DRAFT_FILES, KEY_OVERRIDES, OUTDATED_TERMS, QA_TEXT_FIXES, 
                      article_categories, classify_file)
 from authored import merge as merge_authored  # noqa: E402
 from polish import polish  # noqa: E402
+from notes import fix_notes, fix_structure  # noqa: E402
 from lesson2 import enrich  # noqa: E402
 from textutil import build_vocab, cut_promo_tail, fix_split_words, fold, strip_branding, strip_test_headers  # noqa: E402
 
@@ -383,6 +384,7 @@ def main(src, out_path):
     problems = polish(bundle, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'content', 'fixes'))
     for p in problems:
         print('fix problem:', p)
+    print('notes:', fix_notes(bundle), fix_structure(bundle))
     print('lesson 2.0:', enrich(bundle))
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, 'w') as f:

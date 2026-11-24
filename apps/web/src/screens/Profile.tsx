@@ -56,7 +56,7 @@ export function Profile() {
 
       <section className="kpi">
         <div className="card"><b className="row" style={{ gap: 4, color: 'var(--xp)' }}><span style={{ width: 20, display: 'inline-flex' }}><IconFlame /></span>{me.streak}</b><span>ardıcıl gün</span></div>
-        <div className="card"><b>{me.rank.merit}</b><span>xidmət balı</span></div>
+        <div className="card" title={me.rank.merit < 0 ? `Balansın ${me.rank.merit}: səhvlər və fasilələr bal aparıb, düz cavablarla bərpa olunur.` : undefined}><b>{Math.max(0, me.rank.merit)}</b><span>xidmət balı</span></div>
         <div className="card"><b>{me.xpTotal}</b><span>ümumi XP</span></div>
       </section>
 

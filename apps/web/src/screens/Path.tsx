@@ -20,8 +20,8 @@ export function PathScreen({ topicId }: { topicId?: string }) {
         <p className="muted small">Proqramın {data.topics.length} mövzusu, {totalLessons} dərs. Keçilib: {done}.</p>
         <Progress value={totalLessons ? (done / totalLessons) * 100 : 0} tone="ok" />
       </section>
-      {data.topics.map((t) => (
-        <TopicCard key={t.id} t={t} open={firstOpen === t.id} onToggle={() => setOpen(firstOpen === t.id ? '' : t.id)} />
+      {data.topics.map((t, i) => (
+        <TopicCard key={t.id} t={t} no={i + 1} open={firstOpen === t.id} onToggle={() => setOpen(firstOpen === t.id ? '' : t.id)} />
       ))}
     </main>
   );
@@ -34,7 +34,7 @@ function currentSection(t: PathTopicDto): string | null {
   return sec?.id ?? null;
 }
 
-function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onToggle: () => void }) {
+function TopicCard({ t, no, open, onToggle }: { t: PathTopicDto; no: number; open: boolean; onToggle: () => void }) {
   const { nav } = useApp();
   const [shown, setShown] = useState<Set<string>>(() => new Set([currentSection(t) ?? t.sections[0]?.id ?? '']));
   const toggleSection = (id: string) => setShown((prev) => {
@@ -47,7 +47,7 @@ function TopicCard({ t, open, onToggle }: { t: PathTopicDto; open: boolean; onTo
   return (
     <section className="card topic">
       <button className="topic-head" onClick={onToggle} aria-expanded={open}>
-        <span className="topic-no">{t.programNo}</span>
+        <span className="topic-no" title={`İmtahan proqramında bənd ${t.programNo}`}>{no}</span>
         <span className="grow stack tight">
           <span className="row between">
             <b>{t.shortTitle}</b>

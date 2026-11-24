@@ -8,7 +8,7 @@ import { useApp } from '../app';
 import { ApiError } from '../api/types';
 import { comingSoon, Modal, Progress, Spinner, toast, untilText } from '../ui/components';
 import { AWARDS, ROMAN } from '@qanunhub/core';
-import { IconAlert, IconBolt, IconCheck, IconClock, IconFlag, IconFlame, IconShield, IconStar, IconX } from '../ui/icons';
+import { IconAlert, IconBolt, IconCheck, IconClock, IconFlag, IconFlame, IconInfo, IconShield, IconStar, IconX } from '../ui/icons';
 import { Epaulette, LifeStars, Medal } from '../ui/insignia';
 
 type SessionRoute = Extract<Route, { name: 'session' }>;
@@ -66,7 +66,12 @@ export function SessionScreen({ route }: { route: SessionRoute }) {
 
   const answeredCount = pos;
   const total = queue.length;
-  const progress = phase === 'intro' || phase === 'cards' ? 0 : phase === 'result' ? 100 : (answeredCount / Math.max(1, total)) * 100;
+  // One bar for the whole lesson: the cards take the first third when there are any, the questions the rest.
+  const cardCount = session.cards.length;
+  const cardShare = cardCount ? 35 : 0;
+  const progress = phase === 'intro' ? 0 : phase === 'result' ? 100
+    : phase === 'cards' ? (cardIdx / Math.max(1, cardCount)) * cardShare
+    : cardShare + (answeredCount / Math.max(1, total)) * (100 - cardShare);
 
   return (
     <>
@@ -195,15 +200,20 @@ function Cards({ title, subtitle, cards, idx, setIdx, onDone }: { title: string;
           {c.kind === 'qa' ? (
             <>
               <div className="head">{c.title}</div>
-              {revealed ? <div className="body" style={{ fontFamily: 'var(--f-ui)' }}>{c.body}</div> : (
+              {revealed ? <QaAnswer text={c.body} /> : (
                 <button className="btn secondary block" onClick={() => setRevealed(true)}>Cavabı göstər</button>
               )}
+            </>
+          ) : c.kind === 'note' ? (
+            <>
+              <div className="head note-head"><IconInfo /><span>Qeyd</span></div>
+              <div className="body"><Marked text={c.body} /></div>
             </>
           ) : (
             <>
               {c.title && <div className="head">{c.title}</div>}
               {c.heat != null && c.heat >= 2 && <HeatBadge heat={c.heat} count={c.examCount ?? 0} />}
-              <div className="body"><Marked text={c.body} /></div>
+              <LawText text={c.body} />
             </>
           )}
         </article>
@@ -214,6 +224,7 @@ function Cards({ title, subtitle, cards, idx, setIdx, onDone }: { title: string;
           </aside>
         )}
         {c.kind === 'qa' && <p className="tiny muted">Əvvəlcə cavabı özün xatırlamağa çalış, sonra yoxla.</p>}
+        {c.kind === 'note' && <p className="tiny muted">Bu, yadda saxlamaq üçün qısa izahdır, qanunun mətni deyil.</p>}
         {c.kind === 'law' && <p className="tiny muted">Mənbə: qanunun mətni. <span className="hl-num">Rəqəmlər</span>, <span className="hl-org">orqanlar</span> və <span className="hl-mod">qadağalar</span> rənglə seçilib; [izah: …] qanunun sözü deyil, müəllif qeydidir. Rəsmi redaksiya e-qanun.az-dadır.</p>}
       </main>
       <div className="sheet">
@@ -294,7 +305,7 @@ function QuestionView({ session, q, index, total, onAnswered, onNext, isLast }: 
             <span className="chip num">Rəqəm məşqi · qanunun mətni</span>
             <p className="stem cloze"><ClozeStem text={q.stem} /></p>
           </>
-        ) : <p className="stem">{q.stem}</p>}
+        ) : <p className="stem"><DottedStem text={q.stem} /></p>}
         {q.statements && q.statements.length > 0 && (
           <ol className="statements">{q.statements.map((s, i) => <li key={i}><b>{i + 1}.</b><span>{s}</span></li>)}</ol>
         )}
@@ -438,7 +449,7 @@ function Result({ r, back, cards }: { r: CompleteDto; back: Route; cards: CardDt
         );
       })}
       {r.heartEarned && <div className="banner"><IconStar />Paqonuna 1 ulduz qayıtdı.</div>}
-      {!r.completed && <div className="banner bad"><IconAlert />Ulduzlar bitdiyi üçün dərs bitmiş sayılmadı. Cavabların təkrar cədvəlinə düşüb.</div>}
+      {!r.completed && <div className="banner bad"><IconAlert /><span>Ulduzlar bitdiyi üçün dərs bitmiş sayılmadı{r.rank.meritDelta < 0 ? ' və xidmət balı azaldı' : ''}. Səhv etdiyin suallar təkrar cədvəlinə düşüb: təkrarda 10 sualdan 8-ni düz cavablandırsan, paqonuna ulduz qayıdır.</span></div>}
       {LB_NOTES[r.leaderboard] && <div className="banner warn"><IconAlert />{LB_NOTES[r.leaderboard]}</div>}
       {r.kind === 'mock' && <p className="small muted">Sınaq yalnız qanunvericilik bölməsini (40 tapşırıq) ölçür. Real imtahanda keçid balı dörd fənnin cəmi üzrə hesablanır.</p>}
 
@@ -512,7 +523,7 @@ function LessonIntro({ session, onStart, onSkip }: { session: SessionDto; onStar
           <p className="muted">Təxminən {minutes} dəqiqə</p>
         </div>
         <ol className="lesson-steps">
-          <li><b>Öyrən</b><span>{law.length} maddə{facts ? ` · ${facts} əsas fakt` : ''}{hot ? ` · ${hot} maddə imtahanda tez-tez soruşulur` : ''}</span></li>
+          <li><b>Öyrən</b><span>{law.length} maddə{facts ? ` · ${facts} əsas fakt` : ''}{hot ? (hot === law.length ? ' · hamısı imtahanda tez-tez soruşulur' : ` · imtahanda tez-tez soruşulan: ${hot}`) : ''}</span></li>
           <li><b>Yoxla</b><span>{session.questions.length} sual{drills ? `, onlardan ${drills}-i qanunun mətnindən rəqəm məşqi` : ''}</span></li>
           <li><b>Yekun</b><span>Əsas faktlar və səhv etdiyin suallar qanunun sözləri ilə</span></li>
         </ol>
@@ -562,6 +573,55 @@ function Marked({ text }: { text: string }) {
   }
   out.push(text.slice(last));
   return <>{out}</>;
+}
+
+/**
+ * Law text split into its parts: "I."/"II." parts and "28.1." clauses become paragraphs, "1)"/"a)" points become
+ * list rows, so a long article reads like the official layout instead of one block.
+ */
+const PART = /\s+(?=(?:[IVX]{1,6}|\d{1,3}(?:-\d+)?(?:\.\d+){1,3})\.\s+\S)/u;
+const POINT = /(?<=[:;])\s+(?=(?:\d{1,2}(?:-\d)?|[a-zçğıöşüə])\)\s)/u;
+const LEAD = /^((?:[IVX]{1,6}|\d{1,3}(?:-\d+)?(?:\.\d+){0,3})[.)]|[a-zçğıöşüə]\))\s+/u;
+
+export function LawText({ text }: { text: string }) {
+  const paras = text.split(PART).filter(Boolean);
+  return (
+    <div className="body law-text">
+      {paras.map((p, i) => {
+        const [first, ...points] = p.split(POINT);
+        return (
+          <div key={i} className="lt-para">
+            <LeadLine text={first} />
+            {points.length > 0 && <ul className="lt-points">{points.map((x, j) => <li key={j}><LeadLine text={x} /></li>)}</ul>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function LeadLine({ text }: { text: string }) {
+  const m = text.match(LEAD);
+  if (!m) return <p><Marked text={text} /></p>;
+  return <p><span className="lt-no">{m[1]}</span><Marked text={text.slice(m[0].length)} /></p>;
+}
+
+/** A Q&A answer; notes glued to it ("Qeyd: ...") are shown as callouts under the answer. */
+function QaAnswer({ text }: { text: string }) {
+  const [answer, ...notes] = text.split(/\n\n(?=Qeyd:)/);
+  return (
+    <div className="body qa-answer">
+      <p>{answer}</p>
+      {notes.map((n, i) => <p key={i} className="qa-note"><b>Qeyd.</b> {n.replace(/^Qeyd:\s*/, '')}</p>)}
+    </div>
+  );
+}
+
+/** Older test questions mark the gap with a row of dots ("......."); show it as a blank line instead. */
+function DottedStem({ text }: { text: string }) {
+  const parts = text.split(/\s*\.{5,}\s*/);
+  if (parts.length === 1) return <>{text}</>;
+  return <>{parts.map((p, i) => <span key={i}>{i > 0 && <span className="blank" aria-label="boşluq" />}{i > 0 && p && !/^[?.,;:]/.test(p) ? ' ' : ''}{p}</span>)}</>;
 }
 
 function ClozeStem({ text }: { text: string }) {
