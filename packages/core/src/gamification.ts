@@ -114,6 +114,8 @@ export function visibleStreak(s: StreakState, now: number, premium: boolean): nu
  */
 export const premiumSettings = { available: false };
 
-export function isPremium(u: Pick<UserRecord, 'premiumUntil'>, now: number): boolean {
+export function isPremium(u: Pick<UserRecord, 'premiumUntil'> & { role?: UserRecord['role'] }, now: number): boolean {
+  // Administrators always have Premium (for testing the paid features); learners need the global switch and a grant.
+  if (u.role === 'admin') return true;
   return premiumSettings.available && !!u.premiumUntil && u.premiumUntil > now;
 }
