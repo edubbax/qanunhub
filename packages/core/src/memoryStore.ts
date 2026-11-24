@@ -33,7 +33,7 @@ export function emptyMemoryData(): MemoryData {
 }
 
 /** The rank shown next to a learner: the military rank on Premium, Gizir otherwise. */
-export function displayRankCode(u: Pick<UserRecord, 'premiumUntil' | 'game'>, now: number): string {
+export function displayRankCode(u: Pick<UserRecord, 'premiumUntil' | 'game'> & { email?: string | null }, now: number): string {
   if (!isPremium(u, now)) return GIZIR.code;
   return MILITARY_RANKS[Math.min(Math.max(u.game?.level ?? 1, 0), MILITARY_RANKS.length - 1)].code;
 }

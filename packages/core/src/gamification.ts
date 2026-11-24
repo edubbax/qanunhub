@@ -112,10 +112,13 @@ export function visibleStreak(s: StreakState, now: number, premium: boolean): nu
  * Premium is announced but not on sale yet: until payments open nobody has it, whatever premiumUntil says.
  * Every learner is on the free plan (the Konstitusiya topic, three stars a day, the rank of Gizir).
  */
-export const premiumSettings = { available: false };
+/**
+ * available: Premium for everyone who has a grant (still closed).
+ * emails: accounts that have Premium regardless (set by the server from PREMIUM_EMAILS, or ADMIN_EMAIL when unset).
+ */
+export const premiumSettings: { available: boolean; emails: string[] } = { available: false, emails: [] };
 
-export function isPremium(u: Pick<UserRecord, 'premiumUntil'> & { role?: UserRecord['role'] }, now: number): boolean {
-  // Administrators always have Premium (for testing the paid features); learners need the global switch and a grant.
-  if (u.role === 'admin') return true;
+export function isPremium(u: Pick<UserRecord, 'premiumUntil'> & { email?: string | null }, now: number): boolean {
+  if (u.email && premiumSettings.emails.includes(u.email.trim().toLowerCase())) return true;
   return premiumSettings.available && !!u.premiumUntil && u.premiumUntil > now;
 }

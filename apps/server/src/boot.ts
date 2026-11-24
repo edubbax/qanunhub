@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import type { ContentBundle } from '@qanunhub/core';
+import { premiumSettings } from '@qanunhub/core';
 import { hasAuthUsers } from './accounts';
 import { createApp } from './app';
 import { config } from './config';
@@ -28,6 +29,7 @@ export async function boot(opts: BootOptions = {}) {
   if (!config.supabaseUrl && !config.supabaseJwtSecret) {
     console.warn('SUPABASE_URL is not set: no one can sign in until it is.');
   }
+  premiumSettings.emails = config.premiumEmails;
   const sql = connect(config.databaseUrl, { prepare: config.databasePrepare });
   await migrate(sql);
   if (opts.seedPath) {

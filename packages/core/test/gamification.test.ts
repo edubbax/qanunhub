@@ -116,3 +116,20 @@ describe('military ranks', () => {
     expect(gained).toEqual([{ id: 'streak', title: 'Dəmir iradə', tier: 2 }]);
   });
 });
+
+describe('Premium allow-list', () => {
+  it('gives Premium only to the listed e-mails while Premium is closed', async () => {
+    const { isPremium, premiumSettings } = await import('../src/gamification');
+    const before = premiumSettings.emails;
+    premiumSettings.emails = ['owner@example.com'];
+    try {
+      expect(premiumSettings.available).toBe(false);
+      expect(isPremium({ premiumUntil: null, email: 'Owner@Example.com ' }, 0)).toBe(true);
+      expect(isPremium({ premiumUntil: null, email: 'someone@example.com' }, 0)).toBe(false);
+      expect(isPremium({ premiumUntil: Date.now() + 1e9, email: 'someone@example.com' }, Date.now())).toBe(false);
+      expect(isPremium({ premiumUntil: null }, 0)).toBe(false);
+    } finally {
+      premiumSettings.emails = before;
+    }
+  });
+});

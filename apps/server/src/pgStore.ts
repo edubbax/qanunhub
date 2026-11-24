@@ -26,7 +26,7 @@ export function rowToUser(r: Row): UserRecord {
 function rowToBoard(r: Row, now: number): LeaderboardRow {
   return {
     userId: r.user_id, nickname: r.nickname, xp: r.xp, correct: r.correct, answered: r.answered, reachedAt: ts(r.reached_at)!,
-    rank: Number(r.rank), rankCode: displayRankCode({ premiumUntil: ts(r.premium_until), game: r.game }, now),
+    rank: Number(r.rank), rankCode: displayRankCode({ premiumUntil: ts(r.premium_until), game: r.game, email: r.email }, now),
     sample: String(r.email ?? '').endsWith(SAMPLE_EMAIL_SUFFIX) || undefined,
   };
 }

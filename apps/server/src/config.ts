@@ -36,6 +36,11 @@ export const config = {
   get categoryChangeLimit() {
     return bool(process.env.CATEGORY_CHANGE_LIMIT, true);
   },
+  /** Accounts with Premium while Premium is closed for everyone else (comma-separated); ADMIN_EMAIL when unset. */
+  get premiumEmails(): string[] {
+    const raw = process.env.PREMIUM_EMAILS ?? process.env.ADMIN_EMAIL ?? '';
+    return raw.split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
+  },
   /** The account with this email becomes admin when it first signs in. */
   get adminEmail() {
     return (process.env.ADMIN_EMAIL ?? '').trim().toLowerCase();
